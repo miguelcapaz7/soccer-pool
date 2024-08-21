@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import '../assets/styles/Login.css'
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import logo from '../assets/images/world-cup-2026-logo.jpg';
 
 const Login = () => {
   // Should probably use username/password auth if we can
@@ -18,11 +20,21 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
+    <div className="container">
+      <div className="left-section">
+        <img src={logo} alt="FIFA World Cup 2026 Logo" />
+      </div>
+      <div className="right-section">
+        <form onSubmit={handleSubmit}>
+          <h2>Login</h2>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Username" required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+          <button type="submit">Login</button>
+          <div className="or-divider"><span>OR</span></div>
+          <a className="createAccount" href="/createAccount">Create Account</a>
+        </form>
+      </div>
+    </div>
   );
 };
 
