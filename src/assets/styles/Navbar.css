@@ -1,0 +1,67 @@
+  .dropdown {
+    position: absolute; /* Position the dropdown */
+    top: 100%; /* Position it below the name */
+    right: 0; /* Align to the right */
+    background-color: 2d5a89; /* Background color of dropdown */
+    border: 1px solid #ccc; /* Border for dropdown */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Shadow effect */
+    z-index: 1000; /* Ensure it's on top of other elements */
+  }
+  
+  .dropdown button {
+    display: block; /* Display buttons as block for full width */
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding for buttons */
+    border: none; /* Remove border */
+    background: none; /* No background */
+    text-align: left; /* Align text to the left */
+    cursor: pointer; /* Change cursor to pointer */
+  }
+  
+  .dropdown button:hover {
+    background-color: #2d5a89; /* Background color on hover */
+  }
+
+  nav {
+    width: 100%;
+    background-color: #2d5a89;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav ul {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+  }
+  
+  nav ul li {
+    color: white;
+    font-size: 18px;
+    margin-left: 20px;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .nav-right {
+    position: relative; /* Set the position relative for dropdown placement */
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-right span {
+    color: white;
+    margin-left: 10px;
+  }
+  
+  .nav-right button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding-left: 10px;
+  }

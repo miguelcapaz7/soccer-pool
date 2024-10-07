@@ -1,0 +1,126 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f4f8;
+  }
+  
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2d5a89;
+  }
+  
+  h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .group-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin-top: 20px;
+  }
+  
+  .group-box {
+    width: 180px;
+    margin: 10px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .group-box h3 {
+    background-color: #2d5a89; /* Change this color based on the group */
+    color: white;
+    padding: 10px;
+    border-radius: 4px 4px 0 0;
+    margin: -10px -10px 10px -10px;
+  }
+  
+  .group-box h3[data-group="A"] { background-color: #2d5a89; }
+  .group-box h3[data-group="B"] { background-color: #ff5f40; }
+  .group-box h3[data-group="C"] { background-color: #28a745; }
+  .group-box h3[data-group="D"] { background-color: #f9c846; }
+  .group-box h3[data-group="E"] { background-color: #adb5bd; }
+  .group-box h3[data-group="F"] { background-color: #d6a2e8; }
+  .group-box h3[data-group="G"] { background-color: #bfa05a; }
+  .group-box h3[data-group="H"] { background-color: #343a40; }
+  
+  .group-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .group-box ul li {
+    padding: 5px 0;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .start-button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #2d5a89;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .start-button:hover {
+    background-color: #1e3d66;
+  }
+  
+  nav {
+    width: 100%;
+    background-color: #2d5a89;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav ul {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+  }
+  
+  nav ul li {
+    color: white;
+    font-size: 18px;
+    margin-left: 20px;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .nav-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-right span {
+    color: white;
+    margin-left: 10px;
+  }
+  
+  .nav-right button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding-left: 10px;
+  }
