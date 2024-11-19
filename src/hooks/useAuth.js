@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+// import authPersistence from './authPersistence';
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -18,6 +19,7 @@ const useAuth = () => {
   }, []);
 
   useEffect(() => {
+    // authPersistence();
     if (!authStatus && !user) {
       navigate('/login');
     }

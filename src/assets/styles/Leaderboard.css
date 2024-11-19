@@ -1,0 +1,44 @@
+.leaderboard-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .leaderboard-table thead {
+    background-color: #2e6da4; /* The blue color similar to the header in the image */
+    color: white;
+  }
+  
+  .leaderboard-table th {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .leaderboard-table th:first-child {
+    width: 5%;
+  }
+  
+  .leaderboard-table th:last-child {
+    width: 10%;
+  }
+  
+  .leaderboard-table th,
+  .leaderboard-table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+  }
+  
+  .leaderboard-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .leaderboard-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }

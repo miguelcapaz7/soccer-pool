@@ -1,15 +1,14 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import Navbar from '../components/Navbar';
 
 const ProtectedRoute = ({ children }) => {
-  const user = useAuth();
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+  useAuth();
+  return (
+    <>
+      <Navbar/>
+      {children}
+    </>
+  )
 };
 
 export default ProtectedRoute;

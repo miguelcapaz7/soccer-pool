@@ -1,12 +1,28 @@
 import React from 'react';
-import Navbar from './Navbar';
+import '../assets/styles/Leaderboard.css';
 
 const Leaderboard = () => {
   return (
     <div>
-      <Navbar/>
-      <div className="home-container">
-        <h1>Leaderboard</h1>
+        <div className="leaderboard-container">
+          <h2>Leaderboard</h2>
+          <table className="leaderboard-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Step 1 Pts</th>
+                <th>Step 2 Pts</th>
+                <th>Step 3 Pts</th>
+                <th>Step 4 Pts</th>
+                <th>Total</th>
+                <th>Winner</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Rows will go here */}
+            </tbody>
+          </table>
       </div>
     </div>
   )

@@ -7,6 +7,9 @@ import Login from './components/Login';
 import Home from './components/Home';
 import Leaderboard from './components/Leaderboard';
 import Rules from './components/Rules';
+import Step1 from './components/Step1';
+import Step2 from './components/Step2';
+import Step3 from './components/Step3';
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
            <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
            <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
            <Route path="/rules" element={<ProtectedRoute><Rules /></ProtectedRoute>} />
+           <Route path="/step1" element={<ProtectedRoute><Step1 /></ProtectedRoute>} />
+           <Route path="/step2" element={<ProtectedRoute><Step2 /></ProtectedRoute>} />
+           <Route path="/step3" element={<ProtectedRoute><Step3 /></ProtectedRoute>} />
          </Routes>
       </div>
     </Router>
