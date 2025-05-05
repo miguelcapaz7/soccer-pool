@@ -30,5 +30,21 @@ export const teamsData = [
     {
       group: "H",
       teams: ["England", "Switzerland", "Serbia", "Venezuela"]
+    },
+    {
+      group: "I",
+      teams: ["New Zealand", "Kosovo", "Georgia", "Latvia"]
+    },
+    {
+      group: "J",
+      teams: ["China", "Mali", "San Marino", "Greece"]
+    },
+    {
+      group: "K",
+      teams: ["Egypt", "India", "Belarus", "Hungary"]
+    },
+    {
+      group: "L",
+      teams: ["Tunisia", "Paraguay", "Congo", "Belize"]
     }
   ];

@@ -3,9 +3,10 @@
     flex-direction: column;
     align-items: center;
     padding: 60px;
+    height: 90vh;
+    width: 140vh;
     background-color: #f0f4f8;
     max-width: 100%;
-    height: 100%;
     margin: 0 auto;
     position: relative;
   }
@@ -50,14 +51,18 @@
     margin: -10px -10px 10px -10px;
   }
   
-  .group-box h3[data-group="A"] { background-color: #2d5a89; }
-  .group-box h3[data-group="B"] { background-color: #ff5f40; }
-  .group-box h3[data-group="C"] { background-color: #28a745; }
-  .group-box h3[data-group="D"] { background-color: #f9c846; }
-  .group-box h3[data-group="E"] { background-color: #adb5bd; }
-  .group-box h3[data-group="F"] { background-color: #d6a2e8; }
-  .group-box h3[data-group="G"] { background-color: #bfa05a; }
-  .group-box h3[data-group="H"] { background-color: #343a40; }
+  .group-box h3[data-group="A"] { background-color: #80e5e0; }
+  .group-box h3[data-group="B"] { background-color: #4c71d7; }
+  .group-box h3[data-group="C"] { background-color: #d8840f; }
+  .group-box h3[data-group="D"] { background-color: #98d80f; }
+  .group-box h3[data-group="E"] { background-color: #9b58c5; }
+  .group-box h3[data-group="F"] { background-color: #69d9ac; }
+  .group-box h3[data-group="G"] { background-color: #ecec29; }
+  .group-box h3[data-group="H"] { background-color: #d14aa9; }
+  .group-box h3[data-group="I"] { background-color: #3c9ecf; }
+  .group-box h3[data-group="J"] { background-color: #ce612b; }
+  .group-box h3[data-group="K"] { background-color: #660cc6; }
+  .group-box h3[data-group="L"] { background-color: #dc91d2; }
   
   .group-box ul {
     list-style: none;

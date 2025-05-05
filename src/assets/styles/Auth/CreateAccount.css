@@ -1,0 +1,24 @@
+input[type="firstName"], input[type="lastName"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 15px; /* Increased padding for larger input fields */
+    margin: 15px 0; /* Increased margin for spacing */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.2em; /* Increased font size */
+}
+
+button {
+    width: 100%;
+    padding: 15px; /* Increased padding */
+    margin-top: 30px; /* Increased margin for spacing */
+    background-color: #326589;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em; /* Increased font size */
+}
+
+button:hover {
+    background-color: #2a4f70;
+}

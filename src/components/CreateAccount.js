@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/CreateAccount.css'
+import '../assets/styles/Auth/common.css'
+import '../assets/styles/Auth/CreateAccount.css'
 import logo from '../assets/images/world-cup-2026-logo.jpg';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
@@ -40,8 +41,9 @@ const CreateAccount = () => {
       <div className="left-section">
         <img src={logo} alt="FIFA World Cup 2026 Logo" />
       </div>
-      <div className="right-section">  
+      <div className="right-section">
         <form onSubmit={handleSubmit}>
+          
           <h2>Create Account</h2>
           {error && <p style={{ color: 'red' }}>{error}</p>}
           <input type="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First Name" required />
