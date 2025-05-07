@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from "../context/AuthContext";
 import '../assets/styles/Navbar.css';
 
 const Navbar = () => {
@@ -13,7 +13,6 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate('/login');
     } catch (error) {
       console.error("Error signing out: ", error);
     }
@@ -23,27 +22,46 @@ const Navbar = () => {
     setDropdownOpen((prev) => !prev);
   };
 
-  if (authStatus) {
-    return null
+  if (!authStatus) {
+    return null;
   }
 
   return (
     <nav>
-    <ul>
-        <li><a href="/home">Home</a></li>
-        <li><a href="/rules">Rules</a></li>
-        <li><a href="/leaderboard">Leaderboard</a></li>
+      <ul>
+        <li>
+          <a onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
+            Home
+          </a>
+        </li>
+        <li>
+          <a onClick={() => navigate("/rules")} style={{ cursor: "pointer" }}>
+            Rules
+          </a>
+        </li>
+        <li>
+          <a
+            onClick={() => navigate("/leaderboard")}
+            style={{ cursor: "pointer" }}
+          >
+            Leaderboard
+          </a>
+        </li>
         <div className="nav-right">
-        <div>
-            <span onClick={toggleDropdown} style={{ cursor: 'pointer' }}>{user ? `${user.displayName}` : 'Logged out'}</span>
+          <div>
+            <span onClick={toggleDropdown} style={{ cursor: "pointer" }}>
+              {user.displayName}
+            </span>
             {dropdownOpen && (
-            <div className="dropdown">
-                <button onClick={handleLogout} className="btn logout-btn">Logout</button>
-            </div>
+              <div className="dropdown">
+                <button onClick={handleLogout} className="btn logout-btn">
+                  Logout
+                </button>
+              </div>
             )}
+          </div>
         </div>
-        </div>
-    </ul>
+      </ul>
     </nav>
   );
 };
