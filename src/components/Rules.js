@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Rules = () => {
   return (
@@ -7,7 +7,7 @@ const Rules = () => {
         <h1>Rules</h1>
       </div>
     </div>
-  )
+  );
 };
 
 export default Rules;

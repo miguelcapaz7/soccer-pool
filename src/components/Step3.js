@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../assets/styles/Step3.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../assets/styles/Step3.css";
 
 const Step3 = ({ topTeams }) => {
   const navigate = useNavigate();
-  
+
   // Assuming topTeams is coming as a prop from Step 2 (already filled with the top 2 teams from each group)
   const roundOf16 = topTeams || []; // Static array filled from Step 2
-  
+
   const [quarterFinals, setQuarterFinals] = useState(Array(8).fill(null));
   const [semiFinals, setSemiFinals] = useState(Array(4).fill(null));
   const [finals, setFinals] = useState(Array(2).fill(null));
@@ -26,13 +26,22 @@ const Step3 = ({ topTeams }) => {
 
   return (
     <div className="step3-container">
-      <h1>STEP 3 - Complete the bracket with your predictions for the knockout stages</h1>
+      <h1>
+        STEP 3 - Complete the bracket with your predictions for the knockout
+        stages
+      </h1>
       <div className="bracket">
         {/* Round of 16 */}
         <div className="round round-of-16">
           {roundOf16.length > 0 ? (
             roundOf16.map((team, index) => (
-              <div key={index} className="team" onClick={() => advanceTeam(team, quarterFinals, setQuarterFinals)}>
+              <div
+                key={index}
+                className="team"
+                onClick={() =>
+                  advanceTeam(team, quarterFinals, setQuarterFinals)
+                }
+              >
                 {team}
               </div>
             ))
@@ -44,7 +53,11 @@ const Step3 = ({ topTeams }) => {
         {/* Quarter Finals */}
         <div className="round quarter-finals">
           {quarterFinals.map((team, index) => (
-            <div key={index} className="team" onClick={() => advanceTeam(team, semiFinals, setSemiFinals)}>
+            <div
+              key={index}
+              className="team"
+              onClick={() => advanceTeam(team, semiFinals, setSemiFinals)}
+            >
               {team}
             </div>
           ))}
@@ -53,7 +66,11 @@ const Step3 = ({ topTeams }) => {
         {/* Semi Finals */}
         <div className="round semi-finals">
           {semiFinals.map((team, index) => (
-            <div key={index} className="team" onClick={() => advanceTeam(team, finals, setFinals)}>
+            <div
+              key={index}
+              className="team"
+              onClick={() => advanceTeam(team, finals, setFinals)}
+            >
               {team}
             </div>
           ))}
@@ -71,8 +88,12 @@ const Step3 = ({ topTeams }) => {
         {/* 3rd Place */}
         <div className="round third-place">
           <h3>3rd Place</h3>
-          <div onClick={() => setThirdPlace(semiFinals[2])}>{semiFinals[2]}</div>
-          <div onClick={() => setThirdPlace(semiFinals[3])}>{semiFinals[3]}</div>
+          <div onClick={() => setThirdPlace(semiFinals[2])}>
+            {semiFinals[2]}
+          </div>
+          <div onClick={() => setThirdPlace(semiFinals[3])}>
+            {semiFinals[3]}
+          </div>
         </div>
 
         {/* Champion */}
@@ -82,7 +103,7 @@ const Step3 = ({ topTeams }) => {
         </div>
       </div>
 
-      <button onClick={() => navigate('/step4')} className="next-button">
+      <button onClick={() => navigate("/step4")} className="next-button">
         Submit
       </button>
     </div>

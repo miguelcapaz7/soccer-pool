@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import '../assets/styles/Navbar.css';
 
 const Navbar = () => {
   const { user, authStatus } = useAuth();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -18,50 +15,32 @@ const Navbar = () => {
     }
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
-  };
 
   if (!authStatus) {
     return null;
   }
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <a onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
-            Home
-          </a>
-        </li>
-        <li>
-          <a onClick={() => navigate("/rules")} style={{ cursor: "pointer" }}>
-            Rules
-          </a>
-        </li>
-        <li>
-          <a
-            onClick={() => navigate("/leaderboard")}
-            style={{ cursor: "pointer" }}
-          >
-            Leaderboard
-          </a>
-        </li>
-        <div className="nav-right">
-          <div>
-            <span onClick={toggleDropdown} style={{ cursor: "pointer" }}>
-              {user.displayName}
-            </span>
-            {dropdownOpen && (
-              <div className="dropdown">
-                <button onClick={handleLogout} className="btn logout-btn">
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
+    <nav class="navbar navbar-expand-lg bg-primary">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <NavLink className="nav-link" to="/home">Home</NavLink>
+            <NavLink className="nav-link" to="/rules">Rules</NavLink>
+            <NavLink className="nav-link" to="/leaderboard">Leaderboard</NavLink>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {user.displayName}
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><button class="dropdown-item" onClick={handleLogout}>Logout</button></li>
+              </ul>
+            </li>
+          </ul>
         </div>
-      </ul>
+      </div>
     </nav>
   );
 };

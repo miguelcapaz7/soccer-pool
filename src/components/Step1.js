@@ -1,13 +1,13 @@
-import React from 'react';
-import { teamsData } from '../data/teamsData';
-import '../assets/styles/Step1.css';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { teamsData } from "../data/teamsData";
+import "../assets/styles/Step1.css";
+import { useNavigate } from "react-router-dom";
 
 const Step1 = () => {
   const navigate = useNavigate();
-  
+
   const handleNext = () => {
-    navigate('/step2');
+    navigate("/step2");
   };
 
   const generateMatches = (matchDay) => {
@@ -15,7 +15,6 @@ const Step1 = () => {
       const [team1, team2, team3, team4] = groupData.teams;
       return (
         <div key={groupIndex} className="group-table">
-          <h4>Group {groupData.group}</h4>
           <table>
             <thead>
               <tr>
@@ -63,7 +62,9 @@ const Step1 = () => {
           {generateMatches(3)}
         </div>
       </div>
-      <button onClick={handleNext} className="next-btn">Next</button>
+      <button onClick={handleNext} className="next-btn">
+        Next
+      </button>
     </div>
   );
 };

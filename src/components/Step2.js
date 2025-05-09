@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { teamsData } from '../data/teamsData';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import '../assets/styles/Step2.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { teamsData } from "../data/teamsData";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import "../assets/styles/Step2.css";
 
 const DraggableTeam = ({ team, index, moveTeam }) => {
   const [, ref] = useDrag({
-    type: 'TEAM',
+    type: "TEAM",
     item: { index },
   });
 
   const [, drop] = useDrop({
-    accept: 'TEAM',
+    accept: "TEAM",
     hover: (draggedItem) => {
       if (draggedItem.index !== index) {
         moveTeam(draggedItem.index, index);
@@ -31,9 +31,9 @@ const DraggableTeam = ({ team, index, moveTeam }) => {
 const Step2 = () => {
   const navigate = useNavigate();
   const [groups, setGroups] = useState(teamsData);
-  
+
   const handleNext = () => {
-    navigate('/step3');
+    navigate("/step3");
   };
 
   const moveTeam = (groupIndex, fromIndex, toIndex) => {
@@ -52,7 +52,9 @@ const Step2 = () => {
         key={index}
         team={team}
         index={index}
-        moveTeam={(fromIndex, toIndex) => moveTeam(groupIndex, fromIndex, toIndex)}
+        moveTeam={(fromIndex, toIndex) =>
+          moveTeam(groupIndex, fromIndex, toIndex)
+        }
       />
     ));
   };
