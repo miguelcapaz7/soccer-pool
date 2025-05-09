@@ -1,5 +1,4 @@
 import React from "react";
-import "../assets/styles/Home.css";
 import { useNavigate } from "react-router-dom";
 import { teamsData } from "../data/teamsData";
 
@@ -10,37 +9,39 @@ const Home = () => {
     navigate("/step1");
   };
 
-  const generateGroups = () => {
-    return teamsData.map((groupData, groupIndex) => {
-      const [team1, team2, team3, team4] = groupData.teams;
-      return (
-        <div key={groupIndex} className="group-box">
-          <h3 data-group={groupData.group}>Group {groupData.group}</h3>
-          <ul>
-            <li>{team1}</li>
-            <li>{team2}</li>
-            <li>{team3}</li>
-            <li>{team4}</li>
-          </ul>
-        </div>
-      );
-    });
-  };
+  const rows = [];
+  for (let i = 0; i < teamsData.length; i += 4) {
+    const groupRow = teamsData.slice(i, i + 4);
+    rows.push(groupRow);
+  }
 
   return (
     <div>
-      <div className="container-fluid text-center">
-        <h1>Soccer fans, welcome to the World Cup 2026 soccer pool!</h1>
-        <p>
-          Before starting, please view the <a href="/rules">rules</a>.
-        </p>
-        <p>
-          Below are the teams and their respective groups that will be competing
-          in the tournament. Good luck everyone!
-        </p>
-        <div className="group-container">{generateGroups()}</div>
-
-        <button onClick={handleStart} className="start-button">
+      <div className="container py-4 text-center">
+        <h2 className="text-center mb-4">
+          Welcome to the World Cup 2026 soccer pool!
+        </h2>
+        {rows.map((row, rowIndex) => (
+          <div className="row mb-4" key={rowIndex}>
+            {row.map((group, colIndex) => (
+              <div className="col" key={colIndex}>
+                <div className="card shadow-sm">
+                  <div className="card-body">
+                    <h5 className="card-title text-center">Group {group.group}</h5>
+                    <ul className="list-group list-group-flush">
+                      {group.teams.map((team, teamIndex) => (
+                        <li className="list-group-item text-center" key={teamIndex}>
+                          {team}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+        <button onClick={handleStart} className="btn btn-primary">
           Start
         </button>
       </div>

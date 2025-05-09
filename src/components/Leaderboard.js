@@ -1,22 +1,21 @@
 import React from "react";
-import "../assets/styles/Leaderboard.css";
 
 const Leaderboard = () => {
   return (
     <div>
-      <div className="leaderboard-container">
-        <h2>Leaderboard</h2>
-        <table className="leaderboard-table">
+      <div className="container py-4 text-center">
+        <h2 className="text-center mb-4">Leaderboard</h2>
+        <table className="table-primary">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Step 1 Pts</th>
-              <th>Step 2 Pts</th>
-              <th>Step 3 Pts</th>
-              <th>Step 4 Pts</th>
-              <th>Total</th>
-              <th>Winner</th>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Step 1 Pts</th>
+              <th scope="col">Step 2 Pts</th>
+              <th scope="col">Step 3 Pts</th>
+              <th scope="col">Step 4 Pts</th>
+              <th scope="col">Total</th>
+              <th scope="col">Winner</th>
             </tr>
           </thead>
           <tbody>{/* Rows will go here */}</tbody>

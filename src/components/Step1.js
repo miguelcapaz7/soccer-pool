@@ -45,7 +45,7 @@ const Step1 = () => {
   };
 
   return (
-    <div className="step1-container">
+    <div className="container py-4 text-center">
       <h2>STEP 1 - Select the team you predict will win in each match</h2>
       <p>2 pts for every correct prediction.</p>
       <div className="matchday-section">
