@@ -1,8 +1,49 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Step3 = ({ topTeams }) => {
+const Step3 = () => {
   const navigate = useNavigate();
+  
+  const stages = [
+    "Round of 32",
+    "Round of 16",
+    "Quarter Finals",
+    "Semi Finals"
+  ];
+
+  const columnLabels = [
+    ...stages,
+    "Finals + 3rd Place",
+    ...stages.slice().reverse()
+  ]
+
+  const matchups = {
+    0: Array.from({ length: 8 }, (_, i) => [`Team ${i * 2 + 1}`, `Team ${i * 2 + 2}`]),
+    1: Array.from({ length: 4 }, (_, i) => [`Winner RO32 ${i * 2 + 1}`, `Winner RO32 ${i * 2 + 2}`]),
+    2: Array.from({ length: 2 }, (_, i) => [`Winner RO16 ${i * 2 + 1}`, `Winner RO16 ${i * 2 + 2}`]),
+    3: [[`Winner QF 1`, `Winner QF 2`]],
+    4: [
+      [`Winner SF 1`, `Winner SF 2`],
+      [`Loser SF 1`, `Loser SF 2`]
+    ],
+    5: [[`Winner QF 3`, `Winner QF 4`]],
+    6: Array.from({ length: 2 }, (_, i) => [`Winner RO16 ${i * 2 + 5}`, `Winner RO16 ${i * 2 + 6}`]),
+    7: Array.from({ length: 4 }, (_, i) => [`Winner RO32 ${i * 2 + 9}`, `Winner RO32 ${i * 2 + 10}`]),
+    8: Array.from({ length: 8 }, (_, i) => [`Team ${i * 2 + 17}`, `Team ${i * 2 + 18}`])
+  };
+
+  const renderColumn = (colIndex) => (
+  <div className="col d-flex flex-column justify-content-around" key={colIndex}>
+    {matchups[colIndex]?.map((pair, idx) => (
+      <table className="table table-bordered mb-2" key={idx}>
+        <tbody>
+          <tr><td>{pair[0]}</td></tr>
+          <tr><td>{pair[1]}</td></tr>
+        </tbody>
+      </table>
+    ))}
+    </div>
+  );
 
   return (
     <div className="container-fluid py-4 text-center">
@@ -11,373 +52,12 @@ const Step3 = ({ topTeams }) => {
         stages
       </h2>
       <div className="row text-center fw-bold mb-3">
-        <div className="col">
-          Round of 32
-        </div>
-        <div className="col">
-          Round of 16
-        </div>
-        <div className="col">
-          Quarter Finals
-        </div>
-        <div className="col">
-          Semi Finals
-        </div>
-        <div className="col">
-          Finals + 3rd Place
-        </div>
-        <div className="col">
-          Semi Finals
-        </div>
-        <div className="col">
-          Quarter Finals
-        </div>
-               <div className="col">
-          Round of 16
-        </div>
-        <div className="col">
-          Round of 32
-        </div>
+        {columnLabels.map((colLabel, idx) => (
+          <div className="col" key={idx}>{colLabel}</div>
+        ))}
       </div>
-      <div class="row text-center d-flex">
-        <div class="col d-flex flex-column justify-content-evenly">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 1</td>
-              </tr>
-              <tr>
-                <td>Team 2</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 3</td>
-              </tr>
-              <tr>
-                <td>Team 4</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 5</td>
-              </tr>
-              <tr>
-                <td>Team 6</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 7</td>
-              </tr>
-              <tr>
-                <td>Team 8</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 9</td>
-              </tr>
-              <tr>
-                <td>Team 10</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 11</td>
-              </tr>
-              <tr>
-                <td>Team 12</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 13</td>
-              </tr>
-              <tr>
-                <td>Team 14</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 15</td>
-              </tr>
-              <tr>
-                <td>Team 16</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="col d-flex flex-column justify-content-around">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO32 1</td>
-              </tr>
-              <tr>
-                <td>Winner RO32 2</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO32 3</td>
-              </tr>
-              <tr>
-                <td>Winner RO32 4</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO32 5</td>
-              </tr>
-              <tr>
-                <td>Winner RO32 6</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO32 7</td>
-              </tr>
-              <tr>
-                <td>Winner RO32 8</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="col d-flex flex-column justify-content-around">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO16 1</td>
-              </tr>
-              <tr>
-                <td>Winner RO16 2</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO16 3</td>
-              </tr>
-              <tr>
-                <td>Winner RO16 4</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="col d-flex flex-column justify-content-around">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner QF 1</td>
-              </tr>
-              <tr>
-                <td>Winner QF 2</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="col d-flex flex-column justify-content-around">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner SF 1</td>
-              </tr>
-              <tr>
-                <td>Winner SF 2</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Loser SF 1</td>
-              </tr>
-              <tr>
-                <td>Loser SF 2</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="col d-flex flex-column justify-content-around">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner QF 3</td>
-              </tr>
-              <tr>
-                <td>Winner QF 4</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="col d-flex flex-column justify-content-around">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO16 5</td>
-              </tr>
-              <tr>
-                <td>Winner RO16 6</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO16 7</td>
-              </tr>
-              <tr>
-                <td>Winner RO16 8</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="col d-flex flex-column justify-content-around">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO32 9</td>
-              </tr>
-              <tr>
-                <td>Winner RO32 10</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO32 11</td>
-              </tr>
-              <tr>
-                <td>Winner RO32 12</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO32 13</td>
-              </tr>
-              <tr>
-                <td>Winner RO32 14</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Winner RO32 15</td>
-              </tr>
-              <tr>
-                <td>Winner RO32 16</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="col">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 17</td>
-              </tr>
-              <tr>
-                <td>Team 18</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 19</td>
-              </tr>
-              <tr>
-                <td>Team 20</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 21</td>
-              </tr>
-              <tr>
-                <td>Team 22</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 23</td>
-              </tr>
-              <tr>
-                <td>Team 24</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 25</td>
-              </tr>
-              <tr>
-                <td>Team 26</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 27</td>
-              </tr>
-              <tr>
-                <td>Team 28</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 29</td>
-              </tr>
-              <tr>
-                <td>Team 30</td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td>Team 31</td>
-              </tr>
-              <tr>
-                <td>Team 32</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div className="row text-center d-flex">
+        {columnLabels.map((_, colIndex) => renderColumn(colIndex))}
       </div>
       <button onClick={() => navigate("/step4")} className="btn btn-primary">
         Next

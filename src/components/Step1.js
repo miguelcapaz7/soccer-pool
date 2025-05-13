@@ -31,7 +31,7 @@ const Step1 = () => {
         <h3 className="bg-primary text-white py-2 mb-3 rounded">Match Day {matchDay}</h3>
         <table className="table table-bordered mb-2">
           <thead>
-            <tr>
+            <tr className="table-light">
               <th>Group</th>
               <th>Team 1</th>
               <th>Tie</th>
