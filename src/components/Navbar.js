@@ -15,25 +15,24 @@ const Navbar = () => {
     }
   };
 
-
   if (!authStatus) {
     return null;
   }
 
   return (
-    <nav class="navbar navbar-expand-lg bg-primary">
+    <nav class="navbar navbar-expand-lg bg-primary rounded">
       <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <NavLink className="nav-link" to="/home">Home</NavLink>
-            <NavLink className="nav-link" to="/rules">Rules</NavLink>
-            <NavLink className="nav-link" to="/leaderboard">Leaderboard</NavLink>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <NavLink className="nav-link mx-3" style={{color: 'white'}} to="/home">Home</NavLink>
+            <NavLink className="nav-link mx-3" style={{color: 'white'}} to="/rules">Rules</NavLink>
+            <NavLink className="nav-link mx-3" style={{color: 'white'}} to="/leaderboard">Leaderboard</NavLink>
+            <li class="nav-item dropdown mx-3">
+              <button class="nav-link dropdown-toggle" style={{color: 'white'}} data-bs-toggle="dropdown" aria-expanded="false">
                 {user.displayName}
-              </a>
+              </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><button class="dropdown-item">Profile</button></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li><button class="dropdown-item" onClick={handleLogout}>Logout</button></li>
               </ul>

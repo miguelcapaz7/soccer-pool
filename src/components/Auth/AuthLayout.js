@@ -1,6 +1,6 @@
 import logo from "../../assets/images/world-cup-2026-logo.jpg";
 
-const AuthLayout = ({ children, title }) => {
+const AuthLayout = ({ title, children }) => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="container text-center">

@@ -9,7 +9,7 @@ import CreateAccount from "./components/Auth/CreateAccount";
 import Login from "./components/Auth/Login";
 import Home from "./components/Home";
 import Leaderboard from "./components/Leaderboard";
-import Rules from "./components/Rules";
+import Rules from "./components/Rules/Rules";
 import Step1 from "./components/Step1";
 import Step2 from "./components/Step2";
 import Step3 from "./components/Step3";

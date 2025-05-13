@@ -3,18 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { teamsData } from "../data/teamsData";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import "../assets/styles/Step2.css";
 
-const DraggableTeam = ({ team, index, moveTeam }) => {
+const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
   const [, ref] = useDrag({
     type: "TEAM",
-    item: { index },
+    item: { index, groupIndex },
   });
 
   const [, drop] = useDrop({
     accept: "TEAM",
     hover: (draggedItem) => {
-      if (draggedItem.index !== index) {
+      if (draggedItem.index !== index && draggedItem.groupIndex === groupIndex) {
         moveTeam(draggedItem.index, index);
         draggedItem.index = index;
       }
@@ -36,6 +35,12 @@ const Step2 = () => {
     navigate("/step3");
   };
 
+  const rows = [];
+  for (let i = 0; i < groups.length; i += 4) {
+    const groupRow = groups.slice(i, i + 4);
+    rows.push(groupRow);
+  }
+
   const moveTeam = (groupIndex, fromIndex, toIndex) => {
     const updatedGroups = [...groups];
     const group = updatedGroups[groupIndex];
@@ -49,9 +54,11 @@ const Step2 = () => {
   const renderTeams = (groupData, groupIndex) => {
     return groupData.teams.map((team, index) => (
       <DraggableTeam
-        key={index}
+        key={team.id || `${groupIndex}-${index}`}
         team={team}
         index={index}
+        groupIndex={groupIndex}
+
         moveTeam={(fromIndex, toIndex) =>
           moveTeam(groupIndex, fromIndex, toIndex)
         }
@@ -61,23 +68,33 @@ const Step2 = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="step2-container">
+      <div className="container py-4 text-center">
         <h1>STEP 2 - Predict the top 2 teams to advance from each group</h1>
         <p>
-          2 points for every correct team selected. Bonus of 2 points if they
+          2 pts for every correct team selected. Bonus of 2 points if they
           are in the correct order of finishing 1st or 2nd in the group.
         </p>
-        <div className="group-container">
-          {groups.map((groupData, groupIndex) => (
-            <div key={groupIndex} className="group-box">
-              <h3>Group {groupData.group}</h3>
-              <ul className="team-list">
-                {renderTeams(groupData, groupIndex)}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <button onClick={handleNext} className="next-button">
+        {rows.map((row, rowIndex) => (
+          <div className="row mb-4" key={rowIndex}>
+            {row.map((group, colIndex) => {
+              const groupIndex = rowIndex * 4 + colIndex;
+              return(
+                <div className="col" key={colIndex}>
+                  <div className="card shadow-sm">
+                    <div className="card-body">
+                      <h5 className="card-title text-center">Group {group.group}</h5>
+                      <ul className="list-group list-group-flush">
+                        {renderTeams(group, groupIndex)}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+       
+        <button onClick={handleNext} className="btn btn-primary">
           Next
         </button>
       </div>
