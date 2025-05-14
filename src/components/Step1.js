@@ -29,7 +29,7 @@ const Step1 = () => {
     return (
       <div className="col">
         <h3 className="bg-primary text-white py-2 mb-3 rounded">Match Day {matchDay}</h3>
-        <table className="table table-bordered mb-2">
+        <table className="table table-bordered mb-2 table-hover">
           <thead>
             <tr className="table-light">
               <th>Group</th>
@@ -72,19 +72,19 @@ const Step1 = () => {
                   <tr key={matchId}>
                     <td>{groupData.group}</td>
                     <td 
-                      className={`clickable text-center ${selected === "team1" ? "table-primary" : ""}`}
-                      onClick={() => handlePick(matchId, "team1")}
+                      className={`clickable text-center ${selected === teams[i] ? "table-primary" : ""}`}
+                      onClick={() => handlePick(matchId, teams[i])}
                     >
                       {teams[i]}
                     </td>
                     <td 
-                      className={`clickable text-center ${selected === "tie" ? "table-primary" : ""}`}
-                      onClick={() => handlePick(matchId, "tie")}
+                      className={`clickable text-center ${selected === "Tie" ? "table-primary" : ""}`}
+                      onClick={() => handlePick(matchId, "Tie")}
                     >
                     </td>
                     <td 
-                      className={`clickable text-center ${selected === "team2" ? "table-primary" : ""}`}
-                      onClick={() => handlePick(matchId, "team2")}
+                      className={`clickable text-center ${selected === teams[j] ? "table-primary" : ""}`}
+                      onClick={() => handlePick(matchId, teams[j])}
                     >
                       {teams[j]}
                     </td>

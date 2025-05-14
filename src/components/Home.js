@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { teamsData } from "../data/teamsData";
-import '../assets/styles/styles.scss';
 
 const Home = () => {
   const navigate = useNavigate();
