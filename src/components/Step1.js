@@ -65,7 +65,7 @@ const Step1 = () => {
                   return null;
               }
               return matchups.map(([i, j], matchIndex) => {
-                const matchId = `MD${matchDay}-G${groupData.group}-${matchIndex}`;
+                const matchId = `MD${matchDay}-G${groupData.group}-${matchIndex+1}`;
                 const selected = picks[matchId];
 
                 return (
@@ -99,7 +99,7 @@ const Step1 = () => {
   };
 
   return (
-    <div className="container py-4 text-center">
+    <div className="container py-5 text-center">
       <h2>STEP 1 - Select the team you predict will win in each match</h2>
       <p>2 pts for every correct prediction.</p>
       <div className="row">

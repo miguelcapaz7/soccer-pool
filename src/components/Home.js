@@ -16,7 +16,7 @@ const Home = () => {
   }
 
   return (
-    <div className="container py-4 text-center">
+    <div className="container py-5 text-center">
       <h2 className="text-center mb-4">
         Welcome to the World Cup 2026 soccer pool!
       </h2>
