@@ -5,11 +5,11 @@ const AuthLayout = ({ title, children }) => {
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="container text-center">
         <div className="row shadow-lg">
-          <div className="col d-flex justify-content-center align-items-center bg-primary">
+          <div className="col d-flex justify-content-center align-items-center bg-dark">
             <img
               src={logo}
               alt="FIFA World Cup 2026 Logo"
-              className="img-fluid"
+              className="img-fluid h-75"
             />
           </div>
           <div className="col-5 p-5">

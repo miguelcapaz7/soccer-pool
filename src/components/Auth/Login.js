@@ -45,13 +45,13 @@ const Login = () => {
           placeholder="Password"
           required
         />
-        <button type="submit" className="btn btn-primary" style={{width: '135px'}}>Login</button>
+        <button type="submit" className="btn btn-dark" style={{width: '135px'}}>Login</button>
         <div className="d-flex align-items-center my-3">
           <hr className="flex-grow-1" />
           <span className="mx-2 text-muted">OR</span>
           <hr className="flex-grow-1" />
         </div>
-        <button type="button" className="btn btn-primary" onClick={handleCreateAccount}>Create Account</button>
+        <button type="button" className="btn btn-dark" onClick={handleCreateAccount}>Create Account</button>
       </form>
     </AuthLayout>
   );

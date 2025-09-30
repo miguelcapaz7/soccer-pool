@@ -33,11 +33,11 @@ export const teamsData = [
     },
     {
       group: "I",
-      teams: ["New Zealand", "Kosovo", "Georgia", "Latvia"]
+      teams: ["New Zealand", "Kosovo", "Georgia", "Uzbekistan"]
     },
     {
       group: "J",
-      teams: ["China", "Mali", "San Marino", "Greece"]
+      teams: ["China", "Mali", "Jordan", "Greece"]
     },
     {
       group: "K",

@@ -5,13 +5,21 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
-  const [, ref] = useDrag({
+  const [{ isDragging }, drag] = useDrag({
     type: "TEAM",
     item: { index, groupIndex },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
   });
 
-  const [, drop] = useDrop({
+  const [{ isOver, canDrop, draggedGroup }, drop] = useDrop({
     accept: "TEAM",
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+      draggedGroup: monitor.getItem()?.groupIndex,
+    }),
     hover: (draggedItem) => {
       if (draggedItem.index !== index && draggedItem.groupIndex === groupIndex) {
         moveTeam(draggedItem.index, index);
@@ -20,15 +28,20 @@ const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
     },
   });
 
+  const isActive = isOver && canDrop && draggedGroup === groupIndex;
+
   return (
-      <li
-        ref={(node) => ref(drop(node))}
-        className="list-group-item border-0 p-2"
-        style={{ cursor: "grab" }}
-      >
-        {team}
-      </li>
-    );
+    <button
+      type="button"
+      ref={(node) => drag(drop(node))}
+      className={`list-group-item list-group-item-action border p-2 ${
+        isActive ? "bg-dark text-white" : ""
+      }`}
+      style={{ cursor: isDragging ? "grabbing" : "grab", transition: "0.2s" }}
+    >
+      {team}
+    </button>
+  );
 };
 
 const Step2 = () => {
@@ -95,9 +108,9 @@ const Step2 = () => {
                       <h5 className="card-title text-center">
                         Group {group.group}
                       </h5>
-                      <ul className="list-unstyled m-0">
+                      <div className="list-group">
                         {renderTeams(group, groupIndex)}
-                      </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -106,7 +119,7 @@ const Step2 = () => {
           </div>
         ))}
 
-        <button onClick={handleNext} className="btn btn-primary">
+        <button onClick={handleNext} className="btn btn-dark">
           Next
         </button>
       </div>

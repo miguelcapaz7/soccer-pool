@@ -40,7 +40,7 @@ const Home = () => {
           ))}
         </div>
       ))}
-      <button onClick={handleStart} className="btn btn-primary">
+      <button onClick={handleStart} className="btn btn-dark">
         Start
       </button>
     </div>

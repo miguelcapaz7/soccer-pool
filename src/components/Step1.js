@@ -28,7 +28,7 @@ const Step1 = () => {
   const generateMatches = (matchDay) => {
     return (
       <div className="col">
-        <h3 className="bg-primary text-white py-2 mb-3 rounded">Match Day {matchDay}</h3>
+        <h3 className="bg-dark text-white py-2 mb-3 rounded">Match Day {matchDay}</h3>
         <table className="table table-bordered mb-2 table-hover">
           <thead>
             <tr className="table-light">
@@ -73,17 +73,20 @@ const Step1 = () => {
                     <td>{groupData.group}</td>
                     <td 
                       className={`clickable text-center ${selected === teams[i] ? "table-primary" : ""}`}
+                      style={{ cursor: "pointer" }}
                       onClick={() => handlePick(matchId, teams[i])}
                     >
                       {teams[i]}
                     </td>
                     <td 
                       className={`clickable text-center ${selected === "Tie" ? "table-primary" : ""}`}
+                      style={{ cursor: "pointer" }}
                       onClick={() => handlePick(matchId, "Tie")}
                     >
                     </td>
                     <td 
                       className={`clickable text-center ${selected === teams[j] ? "table-primary" : ""}`}
+                      style={{ cursor: "pointer" }}
                       onClick={() => handlePick(matchId, teams[j])}
                     >
                       {teams[j]}
@@ -108,7 +111,7 @@ const Step1 = () => {
           {generateMatches(3)}
       </div>
       <br></br>
-      <button onClick={handleNext} className="btn btn-primary">
+      <button onClick={handleNext} className="btn btn-dark">
         Next
       </button>
     </div>

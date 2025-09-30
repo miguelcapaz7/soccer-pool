@@ -82,7 +82,7 @@ const CreateAccount = () => {
           placeholder="Password Confirmation"
           required
         />
-        <button type="submit" className="btn btn-primary">Create Account</button>
+        <button type="submit" className="btn btn-dark">Create Account</button>
       </form>
     </AuthLayout>
   );
