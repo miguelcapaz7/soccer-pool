@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import AuthLayout from "./AuthLayout";
+import AuthLayout from "../../layouts/AuthLayout";
+import Button from "../../components/Button";
 
 const CreateAccount = () => {
   const [firstName, setFirstName] = useState("");
@@ -82,7 +83,7 @@ const CreateAccount = () => {
           placeholder="Password Confirmation"
           required
         />
-        <button type="submit" className="btn btn-dark">Create Account</button>
+        <Button type="submit" color="dark">Create Account</Button>
       </form>
     </AuthLayout>
   );

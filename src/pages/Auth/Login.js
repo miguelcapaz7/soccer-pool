@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import AuthLayout from "./AuthLayout";
+import AuthLayout from "../../layouts/AuthLayout";
+import Button from "../../components/Button";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,10 +20,6 @@ const Login = () => {
       console.error("Error logging in: ", error);
       setError("Failed to log in. Please check your credentials.");
     }
-  };
-
-  const handleCreateAccount = () => {
-    navigate("/createAccount");
   };
 
   return (
@@ -45,13 +42,13 @@ const Login = () => {
           placeholder="Password"
           required
         />
-        <button type="submit" className="btn btn-dark" style={{width: '135px'}}>Login</button>
+        <Button type="submit" color="dark" style={{width: '135px'}}>Login</Button>
         <div className="d-flex align-items-center my-3">
           <hr className="flex-grow-1" />
           <span className="mx-2 text-muted">OR</span>
           <hr className="flex-grow-1" />
         </div>
-        <button type="button" className="btn btn-dark" onClick={handleCreateAccount}>Create Account</button>
+        <Button type="button" onClick={() => navigate("/createAccount")} color="dark">Create Account</Button>
       </form>
     </AuthLayout>
   );

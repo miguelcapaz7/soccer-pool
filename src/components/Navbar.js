@@ -21,7 +21,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav class="navbar navbar-expand-lg bg-dark rounded">
+    <nav class="navbar navbar-expand-lg fixed-top bg-dark rounded">
       <div class="container-fluid">
         <NavLink className="navbar-brand d-flex align-items-center" to="/home">  
           <img

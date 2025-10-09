@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { teamsData } from "../data/teamsData";
+import { GroupsData } from "../../data/GroupsData";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import Button from "../../components/Button";
 
 const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
   const [{ isDragging }, drag] = useDrag({
@@ -21,7 +22,10 @@ const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
       draggedGroup: monitor.getItem()?.groupIndex,
     }),
     hover: (draggedItem) => {
-      if (draggedItem.index !== index && draggedItem.groupIndex === groupIndex) {
+      if (
+        draggedItem.index !== index &&
+        draggedItem.groupIndex === groupIndex
+      ) {
         moveTeam(draggedItem.index, index);
         draggedItem.index = index;
       }
@@ -46,17 +50,19 @@ const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
 
 const Step2 = () => {
   const navigate = useNavigate();
-  const [groups, setGroups] = useState(teamsData);
+
+  const [groups, setGroups] = useState(GroupsData);
 
   const handleNext = () => {
-    const results = groups.map(group => ({
+    const results = groups.map((group) => ({
       group: group.group,
       first: group.teams[0],
       second: group.teams[1],
       third: group.teams[2],
     }));
     localStorage.setItem("step2Results", JSON.stringify(results));
-    navigate("/step3");
+    navigate("/knockoutStagePicks");
+    window.scrollTo(0, 0);
   };
 
   const rows = [];
@@ -91,11 +97,11 @@ const Step2 = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="container py-5 text-center">
+      <div className="container py-5 text-center mt-5">
         <h1>STEP 2 - Predict the top 2 teams to advance from each group</h1>
         <p>
-          2 pts for every correct team selected. Bonus of 2 points if they
-          are in the correct order of finishing 1st or 2nd in the group.
+          2 pts for every correct team selected. Bonus of 2 points if they are
+          in the correct order of finishing 1st or 2nd in the group.
         </p>
         {rows.map((row, rowIndex) => (
           <div className="row mb-4" key={rowIndex}>
@@ -118,10 +124,9 @@ const Step2 = () => {
             })}
           </div>
         ))}
+        <Button onClick={() => navigate("/groupStagePicks")} color="dark">Back</Button>
+        <Button onClick={handleNext} color="dark">Next</Button>
 
-        <button onClick={handleNext} className="btn btn-dark">
-          Next
-        </button>
       </div>
     </DndProvider>
   );

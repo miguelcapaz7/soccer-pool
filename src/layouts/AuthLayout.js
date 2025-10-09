@@ -1,4 +1,4 @@
-import logo from "../../assets/images/world-cup-2026-logo.jpg";
+import logo from "../assets/images/world-cup-2026-logo.jpg";
 
 const AuthLayout = ({ title, children }) => {
   return (
@@ -12,7 +12,7 @@ const AuthLayout = ({ title, children }) => {
               className="img-fluid h-75"
             />
           </div>
-          <div className="col-5 p-5">
+          <div className="col-5 p-5 bg-white">
             <div className="form-group p-5">
               <h2 className="text-center my-5">{title}</h2>
               {children}

@@ -6,15 +6,15 @@ import {
   Navigate,
 } from "react-router-dom";
 import '../src/assets/styles/styles.scss';
-import CreateAccount from "./components/Auth/CreateAccount";
-import Login from "./components/Auth/Login";
-import Home from "./components/Home";
-import Leaderboard from "./components/Leaderboard";
-import Rules from "./components/Rules/Rules";
-import Step1 from "./components/Step1";
-import Step2 from "./components/Step2";
-import Step3 from "./components/Step3";
-import Step4 from "./components/Step4";
+import CreateAccount from "./pages/Auth/CreateAccount";
+import Login from "./pages/Auth/Login";
+import Home from "./pages/Home";
+import Leaderboard from "./pages/Leaderboard";
+import Rules from "./pages/Rules";
+import Step1 from "./pages/Picks/GroupStagePicks";
+import Step2 from "./pages/Picks/AdvancedTeamsPicks";
+import Step3 from "./pages/Picks/KnockoutStagePicks";
+import Step4 from "./pages/Picks/TopScorerPicks";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -31,10 +31,10 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/rules" element={<Rules />} />
-            <Route path="/step1" element={<Step1 />} />
-            <Route path="/step2" element={<Step2 />} />
-            <Route path="/step3" element={<Step3 />} />
-            <Route path="/step4" element={<Step4 />} />
+            <Route path="/groupStagePicks" element={<Step1 />} />
+            <Route path="/advancedTeamsPicks" element={<Step2 />} />
+            <Route path="/knockoutStagePicks" element={<Step3 />} />
+            <Route path="/topScorerPicks" element={<Step4 />} />
           </Routes>
         </div>
       </AuthProvider>

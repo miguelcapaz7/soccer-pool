@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "../../components/Button";
 
 const Step3 = () => {
   const navigate = useNavigate();
@@ -55,15 +56,16 @@ const Step3 = () => {
   // Initialize bracket once
   const [bracket, setBracket] = useState(() => {
     const initial = [];
-    initial[0] = getInitialRoundOf32();
-    initial[1] = Array(8).fill(["", ""]);
-    initial[2] = Array(4).fill(["", ""]);
-    initial[3] = Array(2).fill(["", ""]);
+    const roundOf32 = getInitialRoundOf32();
+    initial[0] = roundOf32.slice(0, 8);
+    initial[1] = Array(4).fill(["", ""]);
+    initial[2] = Array(2).fill(["", ""]);
+    initial[3] = Array(1).fill(["", ""]);
     initial[4] = [["", ""], ["", ""]]; // Final + 3rd
-    initial[5] = Array(2).fill(["", ""]);
-    initial[6] = Array(4).fill(["", ""]);
-    initial[7] = Array(8).fill(["", ""]);
-    initial[8] = Array(16).fill(["", ""]);
+    initial[5] = Array(1).fill(["", ""]);
+    initial[6] = Array(2).fill(["", ""]);
+    initial[7] = Array(4).fill(["", ""]);
+    initial[8] = roundOf32.slice(8, 16);
     return initial;
   });
 
@@ -71,13 +73,51 @@ const Step3 = () => {
     const teamName = bracket[colIndex][matchIndex][teamIndex];
     if (!teamName) return;
 
-    const nextCol = colIndex + 1;
-    const nextMatchIndex = Math.floor(matchIndex / 2);
-    const nextSlot = matchIndex % 2 === 0 ? 0 : 1;
-
     setBracket((prev) => {
       const updated = prev.map((col) => col.map((match) => [...match]));
-      if (updated[nextCol]) {
+
+      const totalCols = updated.length;
+      const midPoint = Math.floor(totalCols / 2); // roughly where finals sit
+      const isLeftSide = colIndex < midPoint; // left or right half?
+
+      const nextCol = isLeftSide ? colIndex + 1 : colIndex - 1;
+      const nextMatchIndex = Math.floor(matchIndex / 2);
+      const nextSlot = matchIndex % 2 === 0 ? 0 : 1;
+
+      // Stop if beyond Finals
+      if (
+        (isLeftSide && nextCol > midPoint) ||
+        (!isLeftSide && nextCol < midPoint)
+      ) {
+        return updated;
+      }
+
+      // Handle Finals + 3rd place separately
+      if (
+        (isLeftSide && nextCol === midPoint) ||
+        (!isLeftSide && nextCol === midPoint)
+      ) {
+        // === SEMIFINALS TO FINALS ===
+        const semis = updated[colIndex];
+        const opponentName = semis[matchIndex][1 - teamIndex];
+        const isLeftWinnerSlot = isLeftSide ? 0 : 1;
+
+        // Winner -> Finals
+        if (updated[midPoint][0]) {
+          updated[midPoint][0][isLeftWinnerSlot] = teamName;
+        }
+
+        // Loser -> 3rd place
+        const isLeftLoserSlot = isLeftSide ? 0 : 1;
+        if (updated[midPoint][1]) {
+          updated[midPoint][1][isLeftLoserSlot] = opponentName;
+        }
+
+        return updated;
+      }
+
+      // Update the next column with selected team
+      if (updated[nextCol] && updated[nextCol][nextMatchIndex]) {
         updated[nextCol][nextMatchIndex][nextSlot] = teamName;
       }
       return updated;
@@ -111,7 +151,7 @@ const Step3 = () => {
   );
 
   return (
-    <div className="container-fluid py-5 text-center">
+    <div className="container-fluid py-5 text-center mt-5">
       <h2 className="mb-4">
         STEP 3 - Complete the bracket with your predictions for the knockout
         stages
@@ -126,12 +166,8 @@ const Step3 = () => {
       <div className="row text-center d-flex">
         {columnLabels.map((_, colIndex) => renderColumn(colIndex))}
       </div>
-      <button
-        onClick={() => navigate("/step4", { state: { bracket } })}
-        className="btn btn-dark mt-3"
-      >
-        Next
-      </button>
+      <Button onClick={() => navigate("/advancedTeamsPicks")} color="dark">Back</Button>
+      <Button onClick={() => navigate("/topScorerPicks")} color="dark">Next</Button>
     </div>
   );
 };

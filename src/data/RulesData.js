@@ -1,4 +1,4 @@
-const RulesContent = [
+const RulesData = [
   {
     title: "Tournament Format",
     content: `There are 48 teams entered into the 2026 World Cup tournament. The teams
@@ -74,4 +74,4 @@ const RulesContent = [
   }
 ]
 
-export default RulesContent;
+export default RulesData;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import MainLayout from "../layouts/MainLayout";
 
 const Leaderboard = () => {
   const [leaders, setLeaders] = useState([]);
@@ -21,9 +22,8 @@ const Leaderboard = () => {
   }, []);
 
   return (
-    <div className="container py-5 text-center">
-      <h2 className="text-center mb-4">Leaderboard</h2>
-      <table className="table table-bordered mb-2">
+    <MainLayout title="Leaderboard">
+      <table className="table table-bordered mb-2 text-center">
         <thead className="table-light">
           <tr>
             <th scope="col">#</th>
@@ -51,7 +51,7 @@ const Leaderboard = () => {
           ))}
         </tbody>
       </table>
-    </div>
+    </MainLayout>
   );
 };
 

@@ -1,50 +1,92 @@
-export const teamsData = [
+export const TeamsData = [
     {
-      group: "A",
-      teams: ["USA", "Belgium", "Japan", "Morocco"]
+      team: "Portugal",
+      players: [
+        "Diogo Costa", 
+        "Jose Sa", 
+        "Rui Silva", 
+        "Joao Cancelo",
+        "Diogo Dalot",
+        "Ruben Dias",
+        "Goncalo Inacio",
+        "Renato Veiga",
+        "Antonio Silva",
+        "Nuno Mendes",
+        "Joao Palhinha",
+        "Ruben Neves",
+        "Joao Neves",
+        "Matheus Nunes",
+        "Bruno Fernandes",
+        "Bernardo Silva",
+        "Vitinha",
+        "Pedro Goncalves",
+        "Rafael Leao",
+        "Pedro Neto",
+        "Joao Felix",
+        "Francisco Trincao",
+        "Francisco Conceicao",
+        "Goncalo Ramos",
+        "Cristiano Ronaldo"
+        ]
     },
     {
-      group: "B",
-      teams: ["Canada", "Netherlands", "Nigeria", "South Korea"]
+      team: "France",
+      players: [
+        "Mike Maignan",
+        "Lucas Chevalier",
+        "Brice Samba",
+        "Dayot Upamecano",
+        "Malo Gusto",
+        "Lucas Hernandez",
+        "Theo Hernandez",
+        "Ibrahim Konate",
+        "Jules Kounde",
+        "William Saliba",
+        "Lucas Digne",
+        "Eduardo Camavinga",
+        "Youssouf Fofana",
+        "Manu Kone",
+        "Michael Olise",
+        "Adrien Rabiot",
+        "Khephren Thuram",
+        "Bradley Barcola",
+        "Desire Doue",
+        "Hugo Ekitike",
+        "Christopher Nkunku",
+        "Kingsley Coman",
+        "Jean-Philippe Mateta",
+        "Marcus Thuram",
+        "Kylian Mbappe"
+      ]
     },
     {
-      group: "C",
-      teams: ["Mexico", "Portugal", "Senegal", "Uruguay"]
-    },
-    {
-      group: "D",
-      teams: ["Spain", "Germany", "Colombia", "Australia"]
-    },
-    {
-      group: "E",
-      teams: ["Argentina", "Italy", "Cote d'Ivoire", "Austria"]
-    },
-    {
-      group: "F",
-      teams: ["France", "Croatia", "Iran", "Cameroon"]
-    },
-    {
-      group: "G",
-      teams: ["Brazil", "Denmark", "Turkey", "Ecuador"]
-    },
-    {
-      group: "H",
-      teams: ["England", "Switzerland", "Serbia", "Venezuela"]
-    },
-    {
-      group: "I",
-      teams: ["New Zealand", "Kosovo", "Georgia", "Uzbekistan"]
-    },
-    {
-      group: "J",
-      teams: ["China", "Mali", "Jordan", "Greece"]
-    },
-    {
-      group: "K",
-      teams: ["Egypt", "India", "Belarus", "Hungary"]
-    },
-    {
-      group: "L",
-      teams: ["Tunisia", "Paraguay", "Congo", "Belize"]
+      team: "Spain",
+      players: [
+        "Unai Simon",
+        "David Raya",
+        "Alex Remiro",
+        "Dani Carvajal",
+        "Pedro Porro",
+        "Dean Huijsen",
+        "Pau Cubarsi",
+        "Robin Le Normand",
+        "Dani Vivian",
+        "Alex Grimaldo",
+        "Marc Cucurella",
+        "Rodri",
+        "Martin Zubimendi",
+        "Mikel Merino",
+        "Pedri",
+        "Aleix Garcia",
+        "Fermin Lopez",
+        "Dani Olmo",
+        "Jorge De Frutos",
+        "Jesus Rodriguez",
+        "Samu Aghehowa",
+        "Ferran Torres",
+        "Nico Williams",
+        "Mikel Oyarzabal",
+        "Lamine Yamal"
+      ]
     }
   ];
