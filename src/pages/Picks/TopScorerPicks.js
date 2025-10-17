@@ -1,56 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { TeamsData } from "../../data/TeamsData";
 import Button from "../../components/Button";
 import MainLayout from "../../layouts/MainLayout";
+import useTopScorerPicks from "../../hooks/Picks/useTopScorerPicks";
 
-const Step4 = () => {
+const TopScorerPicks = () => {
   const navigate = useNavigate();
-
-  const [selections, setSelections] = useState([
-    { team: "", player: "" },
-    { team: "", player: "" },
-    { team: "", player: "" },
-  ]);
-
-  const handleTeamChange = (index, e) => {
-    const newSelections = [...selections];
-    newSelections[index].team = e.target.value;
-    newSelections[index].player = ""; // reset player when team changes
-    setSelections(newSelections);
-  };
-
-  const handlePlayerChange = (index, e) => {
-    const newSelections = [...selections];
-    newSelections[index].player = e.target.value;
-    setSelections(newSelections);
-  };
-
-  const [goalPrediction, setGoalPrediction] = useState("");
-  const [error, setError] = useState("");
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    // Only allow digits
-    if (/^\d*$/.test(value)) {
-      setGoalPrediction(value);
-      setError("");
-    } else {
-      setError("Please enter a valid number");
-    }
-  };
+  const {
+      selections,
+      goalPrediction,
+      error,
+      handleTeamChange,
+      handlePlayerChange,
+      handleGoalInput,
+      validate,
+    } = useTopScorerPicks();
 
   const handleSubmit = () => {
-    const incomplete = selections.some(sel => !sel.team || !sel.player);
-    if (incomplete) {
-      alert("Please select both a team and a player for each pick!");
-      return;
-    }
-    if (goalPrediction === "" || isNaN(goalPrediction)) {
-      setError("Please enter a valid number");
-      return;
-    }
-
+    if (!validate()) return;
     localStorage.setItem("topScorerPicks", JSON.stringify(selections));
     localStorage.setItem("goalPrediction", goalPrediction);
     navigate("/step5");
@@ -61,16 +29,14 @@ const Step4 = () => {
       <p className="text-center">3 pts will be awarded for each goal that player scores.</p>
       <div className="row text-center">
         {selections.map((sel, i) => {
-          const selectedTeamData = TeamsData.find(
-            (t) => t.team === sel.team
-          );
+          const selectedTeamData = TeamsData.find((t) => t.team === sel.team);
           return (
             <div className="col mb-4" key={i}>
               <label className="form-label fw-bold">Select Team:</label>
               <select
                 className="form-select w-50 mx-auto"
                 value={sel.team}
-                onChange={(e) => handleTeamChange(i, e)}
+                onChange={(e) => handleTeamChange(i, e.target.value)}
               >
                 <option value="">-- Choose a Team --</option>
                 {TeamsData.map((teamObj, idx) => (
@@ -84,7 +50,7 @@ const Step4 = () => {
               <select
                 className="form-select w-50 mx-auto"
                 value={sel.player}
-                onChange={(e) => handlePlayerChange(i, e)}
+                onChange={(e) => handlePlayerChange(i, e.target.value)}
                 disabled={!sel.team}
               >
                 <option value="">-- Choose a Player --</option>
@@ -113,7 +79,7 @@ const Step4 = () => {
             className="form-control w-25 text-center"
             placeholder="e.g. 145"
             value={goalPrediction}
-            onChange={handleInputChange}
+            onChange={(e) => handleGoalInput(e.target.value)}
           />
           {error && <div className="text-danger mt-2">{error}</div>}
         </div>
@@ -124,4 +90,4 @@ const Step4 = () => {
   );
 };
 
-export default Step4;
+export default TopScorerPicks;

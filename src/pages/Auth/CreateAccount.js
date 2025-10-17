@@ -1,90 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import AuthLayout from "../../layouts/AuthLayout";
-import Button from "../../components/Button";
+import Form from "../../components/Auth/Form";
 
 const CreateAccount = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleCreateAccount = async ({ firstName, lastName, email, password, confirmPassword }) => {
     if (password !== confirmPassword) {
-      setError("Passwords do not match!");
-      return;
+      throw new Error("Passwords do not match.");
     }
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const currentUser = userCredential.user;
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const currentUser = userCredential.user
 
-      await updateProfile(currentUser, {
-        displayName: `${firstName} ${lastName}`,
-      });
-      navigate("/home");
-    } catch (error) {
-      console.error("Error creating account: ", error);
-      setError("Failed to create account. Please try again.");
-    }
+    await updateProfile(currentUser, {
+      displayName: `${firstName} ${lastName}`,
+    });
+
+    navigate("/home");
   };
+
+  const fields = [
+    { name: "firstName", type: "text", placeholder: "First Name", required: true },
+    { name: "lastName", type: "text", placeholder: "Last Name", required: true },
+    { name: "email", type: "email", placeholder: "Email", required: true },
+    { name: "password", type: "password", placeholder: "Password", required: true },
+    { name: "confirmPassword", type: "password", placeholder: "Password Confirmation", required: true, marginBottom: 5},
+  ];
 
   return (
     <AuthLayout title="Create Account">
-      <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <input
-          type="firstName"
-          className="form-control mb-3"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          placeholder="First Name"
-          required
-        />
-        <input
-          type="lastName"
-          className="form-control mb-3"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          placeholder="Last Name"
-          required
-        />
-        <input
-          type="email"
-          className="form-control mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          className="form-control mb-3"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <input
-          type="password"
-          className="form-control mb-5"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Password Confirmation"
-          required
-        />
-        <Button type="submit" color="dark">Create Account</Button>
-      </form>
+      <Form fields={fields} onSubmit={handleCreateAccount} buttonText="Create Account"/>
     </AuthLayout>
   );
 };

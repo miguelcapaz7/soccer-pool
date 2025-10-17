@@ -1,55 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import AuthLayout from "../../layouts/AuthLayout";
 import Button from "../../components/Button";
+import Form from "../../components/Auth/Form";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/home");
-    } catch (error) {
-      console.error("Error logging in: ", error);
-      setError("Failed to log in. Please check your credentials.");
-    }
+  const handleLogin = async ({ email, password }) => {
+    await signInWithEmailAndPassword(auth, email, password);
+    navigate("/home");
   };
+
+  const fields = [
+    { name: "email", type: "email", placeholder: "Email", required: true},
+    { name: "password", type: "password", placeholder: "Password", required: true, marginBottom: 5},
+  ]
 
   return (
     <AuthLayout title="Login">
-      <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <input
-          type="email"
-          className="form-control mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          className="form-control mb-5"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <Button type="submit" color="dark" style={{width: '135px'}}>Login</Button>
-        <div className="d-flex align-items-center my-3">
-          <hr className="flex-grow-1" />
-          <span className="mx-2 text-muted">OR</span>
-          <hr className="flex-grow-1" />
-        </div>
-        <Button type="button" onClick={() => navigate("/createAccount")} color="dark">Create Account</Button>
-      </form>
+      <Form fields={fields} onSubmit={handleLogin} buttonText="Login" 
+        extraButton={
+          <Button type="button" onClick={() => navigate("/createAccount")} color="dark">Create Account</Button>
+        } 
+      />
     </AuthLayout>
   );
 };

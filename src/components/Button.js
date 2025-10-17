@@ -9,6 +9,6 @@ const Button = ({children, type="button", onClick, color, style={}}) => {
       {children}
     </button>
   )
-}
+};
 
 export default Button

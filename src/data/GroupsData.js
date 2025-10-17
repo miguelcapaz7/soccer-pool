@@ -41,22 +41,22 @@ export const GroupsData = [
     },
     {
       group: "I",
-      teams: ["New Zealand", "Kosovo", "Georgia", "Uzbekistan"],
+      teams: ["New Zealand", "South Africa", "Georgia", "Uzbekistan"],
       colour: ""
     },
     {
       group: "J",
-      teams: ["China", "Mali", "Jordan", "Greece"],
+      teams: ["Qatar", "Mali", "Jordan", "Greece"],
       colour: ""
     },
     {
       group: "K",
-      teams: ["Egypt", "India", "Belarus", "Hungary"],
+      teams: ["Egypt", "Saudi Arabia", "Belarus", "Hungary"],
       colour: ""
     },
     {
       group: "L",
-      teams: ["Tunisia", "Paraguay", "Congo", "Belize"],
+      teams: ["Tunisia", "Paraguay", "Congo", "Cape Verde"],
       colour: ""
     }
   ];

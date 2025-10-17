@@ -11,10 +11,10 @@ import Login from "./pages/Auth/Login";
 import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
 import Rules from "./pages/Rules";
-import Step1 from "./pages/Picks/GroupStagePicks";
-import Step2 from "./pages/Picks/AdvancedTeamsPicks";
-import Step3 from "./pages/Picks/KnockoutStagePicks";
-import Step4 from "./pages/Picks/TopScorerPicks";
+import GroupStagePicks from "./pages/Picks/GroupStagePicks";
+import StandingsPicks from "./pages/Picks/StandingsPicks";
+import KnockoutStagePicks from "./pages/Picks/KnockoutStagePicks";
+import TopScorerPicks from "./pages/Picks/TopScorerPicks";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -31,10 +31,10 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/rules" element={<Rules />} />
-            <Route path="/groupStagePicks" element={<Step1 />} />
-            <Route path="/advancedTeamsPicks" element={<Step2 />} />
-            <Route path="/knockoutStagePicks" element={<Step3 />} />
-            <Route path="/topScorerPicks" element={<Step4 />} />
+            <Route path="/groupStagePicks" element={<GroupStagePicks />} />
+            <Route path="/standingsPicks" element={<StandingsPicks />} />
+            <Route path="/knockoutStagePicks" element={<KnockoutStagePicks />} />
+            <Route path="/topScorerPicks" element={<TopScorerPicks />} />
           </Routes>
         </div>
       </AuthProvider>

@@ -14,14 +14,14 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [authStatus, setAuthStatus] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setAuthStatus(!!currentUser);
+      setIsLoggedIn(!!currentUser);
 
       const publicRoutes = ["/login", "/createAccount"];
       if (!currentUser && !publicRoutes.includes(location.pathname)) {
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
-    authStatus,
+    isLoggedIn,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
