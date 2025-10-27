@@ -3,10 +3,12 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/world-cup-2026-logo.jpg";
 
 const Navbar = () => {
-  const { user, isLoggedIn } = useAuth();
+  const { user, isLoggedIn, role } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -43,7 +45,10 @@ const Navbar = () => {
                 {user.displayName}
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
-                <li><button className="dropdown-item">Profile</button></li>
+                {role === "Admin" && (
+                  <li><button className="dropdown-item" onClick={() => navigate("/admin")}>Admin</button></li>
+                )}
+                <li><button className="dropdown-item" onClick={() => navigate("/profile")}>Profile</button></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
               </ul>

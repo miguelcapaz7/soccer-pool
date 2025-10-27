@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 import AuthLayout from "../../layouts/AuthLayout";
 import Form from "../../components/Auth/Form";
 
@@ -18,6 +20,14 @@ const CreateAccount = () => {
 
     await updateProfile(currentUser, {
       displayName: `${firstName} ${lastName}`,
+    });
+
+    await setDoc(doc(db, "users", currentUser.uid), {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      role: "User",
+      createdAt: new Date(),
     });
 
     navigate("/home");

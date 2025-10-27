@@ -2,19 +2,16 @@
 import { useEffect, useRef, useState } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import { generateEmptyGroupStagePicks } from "../../utils/groupStageUtils.js";
 
 const useGroupStagePicks = (user) => {
-  const [picks, setPicks] = useState({});
+  const [picks, setPicks] = useState(generateEmptyGroupStagePicks());
   const savingTimer = useRef(null);
 
   const handlePick = (matchId, value) => {
     setPicks((prev) => {
       const updated = { ...prev };
-      if (prev[matchId] === value) {
-        delete updated[matchId];
-      } else {
-        updated[matchId] = value;
-      }
+      updated[matchId] = prev[matchId] === value ? "" : value;
       scheduleSave(updated);
       return updated;
     });
@@ -32,7 +29,7 @@ const useGroupStagePicks = (user) => {
       }
       try {
         const ref = doc(db, "userPicks", user.uid);
-        await setDoc(ref, { step1: newPicks }, { merge: true });
+        await setDoc(ref, { step1Picks: newPicks }, { merge: true });
       } catch (err) {
         console.error("Error saving step1 picks:", err);
       }
@@ -42,7 +39,6 @@ const useGroupStagePicks = (user) => {
   useEffect(() => {
     const load = async () => {
       if (!user) {
-        setPicks({});
         return;
       }
       try {
@@ -50,10 +46,12 @@ const useGroupStagePicks = (user) => {
         const snap = await getDoc(ref);
         if (snap.exists()) {
           const data = snap.data();
-          setPicks(data.step1 || data.step1Picks || {});
-        } else {
-          setPicks({});
-        }
+          const savedPicks = data.step1Picks || {};
+          const emptyPicks = generateEmptyGroupStagePicks();
+          const merged = { ...emptyPicks, ...savedPicks };
+          setPicks(merged);
+          scheduleSave(merged)
+        } 
       } catch (err) {
         console.error("Error loading step1 picks:", err);
       }

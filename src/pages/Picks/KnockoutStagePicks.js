@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Button from "../../components/Button";
 import Bracket from "../../components/Picks/Bracket";
-import useKnockoutStage from "../../hooks/Picks/useKnockoutStagePicks";
+import useKnockoutStagePicks from "../../hooks/Picks/useKnockoutStagePicks";
 
 const KnockoutStagePicks = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { step2Results, loading } = useKnockoutStage(user);
+  const { bracket, handleSelectTeam } = useKnockoutStagePicks(user);
 
   const stages = useMemo (
     () => [
@@ -40,13 +40,13 @@ const KnockoutStagePicks = () => {
         stages
       </h2>
       <div className="row text-center fw-bold mb-3">
-        {columnLabels.map((colLabel, idx) => (
-          <div className="col" key={idx}>
+        {columnLabels.map((colLabel, colLabelIndex) => (
+          <div className="col" key={colLabelIndex}>
             {colLabel}
           </div>
         ))}
       </div>
-      <Bracket step2Results={step2Results} isLoading={loading} />
+      <Bracket bracket={bracket} handleSelectTeam={handleSelectTeam} />
       <Button onClick={handleBack} color="dark">Back</Button>
       <Button onClick={() => navigate("/topScorerPicks")} color="dark">Next</Button>
     </div>

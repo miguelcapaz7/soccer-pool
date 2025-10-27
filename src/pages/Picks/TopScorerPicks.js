@@ -14,15 +14,9 @@ const TopScorerPicks = () => {
       handleTeamChange,
       handlePlayerChange,
       handleGoalInput,
-      validate,
     } = useTopScorerPicks();
 
-  const handleSubmit = () => {
-    if (!validate()) return;
-    localStorage.setItem("topScorerPicks", JSON.stringify(selections));
-    localStorage.setItem("goalPrediction", goalPrediction);
-    navigate("/step5");
-  };
+
 
   return (
     <MainLayout title={"STEP 4 - Choose 3 players from any team in the tournament"}>
@@ -84,7 +78,7 @@ const TopScorerPicks = () => {
           {error && <div className="text-danger mt-2">{error}</div>}
         </div>
         <Button onClick={() => navigate("/knockoutStagePicks")} color="dark">Back</Button>
-        <Button onClick={() => navigate("/step4")} color="dark">Next</Button>
+        <Button onClick={() => navigate("/reviewPicks")} color="dark">Next</Button>
       </div>
     </MainLayout>
   );

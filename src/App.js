@@ -15,7 +15,9 @@ import GroupStagePicks from "./pages/Picks/GroupStagePicks";
 import StandingsPicks from "./pages/Picks/StandingsPicks";
 import KnockoutStagePicks from "./pages/Picks/KnockoutStagePicks";
 import TopScorerPicks from "./pages/Picks/TopScorerPicks";
+import ReviewPicks from "./pages/Picks/ReviewPicks";
 import Navbar from "./components/Navbar";
+import Profile from "./pages/Profile";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -31,10 +33,12 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/rules" element={<Rules />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/groupStagePicks" element={<GroupStagePicks />} />
             <Route path="/standingsPicks" element={<StandingsPicks />} />
             <Route path="/knockoutStagePicks" element={<KnockoutStagePicks />} />
             <Route path="/topScorerPicks" element={<TopScorerPicks />} />
+            <Route path="/reviewPicks" element={<ReviewPicks />} />
           </Routes>
         </div>
       </AuthProvider>

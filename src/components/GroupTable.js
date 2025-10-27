@@ -2,7 +2,7 @@ import React from "react";
 import DraggableTeam from "./Picks/DraggableTeam"
 
 const GroupTable = ({ group, groupIndex, moveTeam, draggable = false }) => (
-  <div className="card shadow-sm">
+  <div className="card shadow-sm" style={{ backgroundColor: group.colour }}>
     <div className="card-body text-center">
       <h5 className="card-title">Group {group.group}</h5>
       <div className="list-group">
