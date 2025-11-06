@@ -1,17 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import useGroupStagePicks from "../../hooks/Picks/useGroupStagePicks";
-import Button from "../../components/Button";
-import MatchDayTable from "../../components/Picks/MatchDayTable";
+import { useAuth } from "../../../context/AuthContext";
+import useGroupStagePicks from "../../../hooks/Picks/GroupStage/useGroupStagePicks";
+import Button from "../../../components/Button";
+import MatchDayTable from "../../../components/Picks/GroupStage/MatchDayTable";
 
 const GroupStagePicks = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { picks, handlePick } = useGroupStagePicks(user);
+  const { groupStagePicks, handlePick } = useGroupStagePicks(user);
 
   const handleNext = () => {
-    console.log("Selections:", picks);
+    console.log("Selections:", groupStagePicks);
     navigate("/standingsPicks");
     window.scrollTo(0, 0);
   };
@@ -25,7 +25,7 @@ const GroupStagePicks = () => {
           <MatchDayTable
             key={matchDay}
             matchDay={matchDay}
-            picks={picks}
+            groupStagePicks={groupStagePicks}
             handlePick={handlePick}
           />
         ))}

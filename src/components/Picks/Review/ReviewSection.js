@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../Button";
+import Button from "../../Button";
 
 const ReviewSection = ({ title, items, onEdit }) => (
   <div className="card mb-4">

@@ -2,10 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useAuth } from "../../context/AuthContext";
-import useStandingsPicks from "../../hooks/Picks/useStandingsPicks";
-import Button from "../../components/Button";
-import GroupTable from "../../components/GroupTable";
+import { useAuth } from "../../../context/AuthContext";
+import useStandingsPicks from "../../../hooks/Picks/Standings/useStandingsPicks";
+import Button from "../../../components/Button";
+import GroupTable from "../../../components/GroupTable";
 
 const StandingsPicks = () => {
   const navigate = useNavigate();

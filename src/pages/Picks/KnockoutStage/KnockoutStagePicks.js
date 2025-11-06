@@ -1,14 +1,14 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import Button from "../../components/Button";
-import Bracket from "../../components/Picks/Bracket";
-import useKnockoutStagePicks from "../../hooks/Picks/useKnockoutStagePicks";
+import { useAuth } from "../../../context/AuthContext";
+import Button from "../../../components/Button";
+import Bracket from "../../../components/Picks/KnockoutStage/Bracket";
+import useKnockoutStagePicks from "../../../hooks/Picks/KnockoutStage/useKnockoutStagePicks";
 
 const KnockoutStagePicks = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { bracket, handleSelectTeam } = useKnockoutStagePicks(user);
+  const { bracket, handleSelectTeam, loading } = useKnockoutStagePicks(user);
 
   const stages = useMemo (
     () => [

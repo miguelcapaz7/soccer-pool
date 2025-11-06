@@ -1,4 +1,4 @@
-import { GroupsData } from "../data/GroupsData"; 
+import { GroupsData } from "../../../data/GroupsData"; 
 
 export const generateInitialStandings = () => {
   return GroupsData.map(({ group, teams }) => ({

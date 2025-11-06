@@ -1,5 +1,5 @@
 import React from "react";
-import DraggableTeam from "./Picks/DraggableTeam"
+import DraggableTeam from "./Picks/Standings/DraggableTeam"
 
 const GroupTable = ({ group, groupIndex, moveTeam, draggable = false }) => (
   <div className="card shadow-sm" style={{ backgroundColor: group.colour }}>

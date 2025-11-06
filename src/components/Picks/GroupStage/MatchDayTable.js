@@ -1,9 +1,9 @@
 // components/MatchDayTable.js
 import React from "react";
-import { GroupsData } from "../../data/GroupsData";
-import { getMatchId, getGroupStageMatchups } from "../../utils/groupStageUtils";
+import { GroupsData } from "../../../data/GroupsData";
+import { getMatchId, getGroupStageMatchups } from "../../../utils/Picks/GroupStage/groupStageUtils";
 
-const MatchDayTable = ({ matchDay, picks, handlePick }) => {
+const MatchDayTable = ({ matchDay, groupStagePicks, handlePick }) => {
   const matchups = getGroupStageMatchups(matchDay)
 
   return (
@@ -26,7 +26,7 @@ const MatchDayTable = ({ matchDay, picks, handlePick }) => {
 
             return matchups.map(([i, j], matchIndex) => {
               const matchId = getMatchId(matchDay, groupData.group, matchIndex)
-              const selected = picks[matchId];
+              const selected = groupStagePicks[matchId];
               const options = [teams[i], "Tie", teams[j]];
 
               return (

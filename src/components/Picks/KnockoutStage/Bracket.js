@@ -6,16 +6,17 @@ const Bracket = React.memo(({ bracket, handleSelectTeam }) => {
       className="col d-flex flex-column justify-content-around"
       key={colIndex}
     >
-      {bracket[colIndex]?.map((matchup, matchupIndex) => (
+      {bracket[colIndex]?.map(({ matchId, teams }, matchupIndex) => (
         <table
           className="table table-bordered mb-2"
-          key={matchupIndex}
+          key={matchId}
           style={{ transition: "none" }}
         >
           <tbody>
-            {matchup.map((team, teamIndex) => (
+            {teams.map((team, teamIndex) => (
               <tr
-                onClick={() => handleSelectTeam(colIndex, matchupIndex, teamIndex)}
+                key={teamIndex}
+                onClick={() => handleSelectTeam(matchId, colIndex, matchupIndex, teamIndex)}
                 style={{ cursor: "pointer", height: "41px" }}
               >
                 <td>{team}</td>
