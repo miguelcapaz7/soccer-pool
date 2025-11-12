@@ -11,7 +11,10 @@ const useLeaderboard = () => {
     const fetchLeaderboard = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "leaderboard"));
-        const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         data.sort((a, b) => a.placing - b.placing);
         setLeaders(data);
       } catch (err) {
@@ -26,6 +29,6 @@ const useLeaderboard = () => {
   }, []);
 
   return { leaders, loading, error };
-}
+};
 
 export default useLeaderboard;
