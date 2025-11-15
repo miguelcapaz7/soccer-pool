@@ -1,6 +1,7 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
+  HashRouter,
   Route,
   Routes,
   Navigate,
@@ -19,6 +20,8 @@ import ReviewPicks from "./pages/Picks/Review/ReviewPicks";
 import Navbar from "./components/Navbar";
 import Profile from "./pages/Profile";
 import { AuthProvider } from "./context/AuthContext";
+
+const Router = import.meta.env.MODE === 'production' ? HashRouter : BrowserRouter;
 
 function App() {
   return (

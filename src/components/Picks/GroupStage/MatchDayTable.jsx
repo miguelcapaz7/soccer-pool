@@ -7,49 +7,51 @@ const MatchDayTable = ({ matchDay, groupStagePicks, handlePick }) => {
   const matchups = getGroupStageMatchups(matchDay)
 
   return (
-    <div className="col">
-      <h3 className="bg-dark text-white py-2 mb-3 rounded">
-        Match Day {matchDay}
-      </h3>
-      <table className="table table-bordered mb-2 table-hover">
-        <thead>
-          <tr className="table-light">
-            <th>Group</th>
-            <th>Team 1</th>
-            <th>Tie</th>
-            <th>Team 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          {GroupsData.map((groupData) => {
-            const teams = groupData.teams;
+    <div className="card shadow-sm h-100">
+      <div className="card-header bg-dark text-white text-center py-2">
+        <h5 className="mb-0">Match Day {matchDay}</h5>
+      </div>
 
-            return matchups.map(([i, j], matchIndex) => {
-              const matchId = getMatchId(matchDay, groupData.group, matchIndex)
-              const selected = groupStagePicks[matchId];
-              const options = [teams[i], "Tie", teams[j]];
+      <div className="card-body p-0">
+        <table className="table table-sm table-hover mb-0">
+          <thead className="table-light">
+            <tr>
+              <th className="small-col text-center">Grp</th>
+              <th className="text-center small-col">Team 1</th>
+              <th className="text-center small-col">Tie</th>
+              <th className="text-center small-col">Team 2</th>
+            </tr>
+          </thead>
 
-              return (
-                <tr key={matchId}>
-                  <td>{groupData.group}</td>
-                  {options.map((option) => (
-                    <td
-                      key={option}
-                      className={`clickable text-center ${
-                        selected === option ? "table-primary" : ""
-                      }`}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handlePick(matchId, option)}
-                    >
-                      {option !== "Tie" ? option : ""}
-                    </td>
-                  ))}
-                </tr>
-              );
-            });
-          })}
-        </tbody>
-      </table>
+          <tbody>
+            {GroupsData.map((groupData) =>
+              matchups.map(([i, j], matchIndex) => {
+                const matchId = getMatchId(matchDay, groupData.group, matchIndex);
+                const selected = groupStagePicks[matchId];
+                const options = [groupData.teams[i], "Tie", groupData.teams[j]];
+
+                return (
+                  <tr key={matchId}>
+                    <td className="text-center fw-bold">{groupData.group}</td>
+                    {options.map(option => (
+                      <td
+                        key={option}
+                        className={`text-center clickable ${
+                          selected === option ? "table-primary" : ""
+                        }`}
+                        style={{ cursor: "pointer", minWidth: "70px" }}
+                        onClick={() => handlePick(matchId, option)}
+                      >
+                        {option !== "Tie" ? option : "–"}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

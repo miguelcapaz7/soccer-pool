@@ -1,12 +1,11 @@
-import { useEffect, useState, useRef } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../../firebase";
+import { useEffect, useState } from "react";
 import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils";
-import { saveToFirestore } from "../../../utils/Picks/firestoreUtils";
+
+const getLocalStorageKey = (uid) => `standingsPicks_${uid}`;
 
 const useStandingsPicks = (user) => {
   const [standings, setStandings] = useState(generateInitialStandings());
-  const savingTimer = useRef(null);
+  const [thirdPlaceOrder, setThirdPlaceOrder] = useState([]);
 
   const moveTeam = (groupIndex, fromIndex, toIndex) => {
     setStandings((prev) => {
@@ -16,36 +15,65 @@ const useStandingsPicks = (user) => {
       const [movedTeam] = teamList.splice(fromIndex, 1);
       teamList.splice(toIndex, 0, movedTeam);
       updatedStandings[groupIndex] = { ...group, teams: teamList };
-      saveToFirestore("userPicks", { step2Picks: updatedStandings }, user, savingTimer);
+
+      saveToLocalStorage(updatedStandings, thirdPlaceOrder);
+
       return updatedStandings;
     });
   };
 
+  const moveThirdPlaceTeam = (fromIndex, toIndex) => {
+    setThirdPlaceOrder((prev) => {
+      const updated = [...prev];
+      const [movedTeam] = updated.splice(fromIndex, 1);
+      updated.splice(toIndex, 0, movedTeam);
+
+      saveToLocalStorage(standings, updated);
+      return updated;
+    });
+  };
+
+  const saveToLocalStorage = (updatedStandings, updatedThirdPlace) => {
+    if (user) {
+      const localKey = getLocalStorageKey(user.uid);
+      const data = {
+        standings: updatedStandings,
+        thirdPlaceOrder: updatedThirdPlace,
+      };
+      localStorage.setItem(localKey, JSON.stringify(data));
+    }
+  };
+
   useEffect(() => {
-    const loadStandings = async () => {
-      if (!user) return;
+    if (!user) return;
+
+    const localKey = getLocalStorageKey(user.uid);
+    const localData = localStorage.getItem(localKey);
+
+    if (localData) {
       try {
-        const docRef = doc(db, "userPicks", user.uid);
-        const snapshot = await getDoc(docRef);
-        const data = snapshot.exists() ? snapshot.data() : null;
-        const savedStandings = data?.step2Picks || [];
-        const emptyStandings = generateInitialStandings();
-        const mergedStandings = emptyStandings.map((group, index) => {
-          const savedGroup = savedStandings[index];
-          return savedGroup
-            ? { ...group, teams: savedGroup.teams || group.teams }
-            : group;
-        });
-        setStandings(mergedStandings);
-        saveToFirestore("userPicks", { step2Picks: mergedStandings}, user, savingTimer);
+        const parsed = JSON.parse(localData);
+        if (Array.isArray(parsed.standings)) {
+          setStandings(parsed.standings);
+        }
+        if (Array.isArray(parsed.thirdPlaceOrder)) {
+          setThirdPlaceOrder(parsed.thirdPlaceOrder);
+        }
       } catch (err) {
-        console.error("Error loading Step 2 picks:", err);
+        console.error("Error parsing local standings:", err);
       }
-    };
-    loadStandings();
+    } else {
+      const initialThirdPlace = standings.map((group) => group.teams[2]);
+      setThirdPlaceOrder(initialThirdPlace);
+    }
   }, [user]);
 
-  return { groups: standings, moveTeam };
+  useEffect(() => {
+    const initialThirdPlace = standings.map((group) => group.teams[2]);
+    setThirdPlaceOrder(initialThirdPlace);
+  }, [standings]);
+
+  return { groups: standings, thirdPlaceOrder, moveTeam, moveThirdPlaceTeam };
 };
 
 export default useStandingsPicks;

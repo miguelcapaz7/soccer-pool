@@ -1,10 +1,10 @@
 export const columnHeaders = {
   placing: '#',
   name: 'Name',
-  step1pts: 'Step 1 Pts',
-  step2pts: 'Step 2 Pts',
-  step3pts: 'Step 3 Pts',
-  step4pts: 'Step 4 Pts',
+  step1pts: 'Step 1',
+  step2pts: 'Step 2',
+  step3pts: 'Step 3',
+  step4pts: 'Step 4',
   total: 'Total',
   winner: 'Winner'
 };

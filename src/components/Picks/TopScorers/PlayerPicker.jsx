@@ -14,10 +14,11 @@ const PlayerPicker = ({ index, selection, onTeamChange, onPlayerChange }) => {
         <div key={idx}>
           <label className="form-label fw-bold">{field.label}:</label>
           <select
-            className="form-select w-50 mx-auto"
+            className="form-select mx-auto"
             value={field.value}
             onChange={field.onChange}
             disabled={field.disabled}
+            style={{width: "65%"}}
           >
             <option value="">-- {field.label} --</option>
             {field.options.map((opt, i) => (

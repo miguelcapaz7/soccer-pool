@@ -16,7 +16,24 @@ const CreateAccount = () => {
 
   return (
     <AuthLayout title="Create Account">
-      <Form fields={createAccountFields} onSubmit={handleCreateAccount} buttonText="Create Account"/>
+      <Form
+        fields={createAccountFields}
+        onSubmit={handleCreateAccount}
+        buttonText="Create Account"
+        signUpLink={
+          <span>
+            Already have an account?{" "}
+            <button
+              type="button"
+              className="btn btn-link p-0 text-decoration-none fw-bold"
+              onClick={() => navigate("/login")}
+            >
+              Log in
+            </button>
+          </span>
+        }
+        showDivider={false}
+      />
     </AuthLayout>
   );
 };

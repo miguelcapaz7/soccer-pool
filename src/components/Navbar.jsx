@@ -9,6 +9,7 @@ import logo from "../assets/images/world-cup-2026-logo.jpg";
 const Navbar = () => {
   const { user, isLoggedIn, role } = useAuth();
   const navigate = useNavigate();
+  const navItems = ["Home", "Rules", "Leaderboard"];
 
   const handleLogout = async () => {
     try {
@@ -17,13 +18,22 @@ const Navbar = () => {
       console.error("Error signing out: ", error);
     }
   };
+  
+  const dropdownItems = [
+    ...(role === "Admin"
+      ? [{ label: "Admin", onClick: () => navigate("/admin") }]
+      : []),
+    { label: "Profile", onClick: () => navigate("/profile") },
+    { type: "divider" },
+    { label: "Logout", onClick: handleLogout },
+  ];
 
   if (!isLoggedIn) {
     return null;
   }
 
   return (
-    <nav className="navbar navbar-expand-lg fixed-top bg-dark rounded">
+    <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark rounded">
       <div className="container-fluid">
         <NavLink className="navbar-brand d-flex align-items-center" to="/home">
           <img
@@ -33,67 +43,53 @@ const Navbar = () => {
             style={{ height: "35px", width: "auto" }}
           />
         </NavLink>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav mb-2 mb-lg-0">
-            <NavLink
-              className="nav-link mx-3"
-              style={{ color: "white" }}
-              to="/home"
-            >
-              Home
-            </NavLink>
-            <NavLink
-              className="nav-link mx-3"
-              style={{ color: "white" }}
-              to="/rules"
-            >
-              Rules
-            </NavLink>
-            <NavLink
-              className="nav-link mx-3"
-              style={{ color: "white" }}
-              to="/leaderboard"
-            >
-              Leaderboard
-            </NavLink>
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {navItems.map((item, index) => (
+              <li className="nav-item" key={index}>
+                <NavLink
+                  className="nav-link mx-3 text-white"
+                  to={`/${item.toLowerCase()}`}
+                >
+                  {item}
+                </NavLink>
+              </li>
+            ))}
           </ul>
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item dropdown mx-3">
               <button
-                className="nav-link dropdown-toggle"
-                style={{ color: "white" }}
+                className="nav-link dropdown-toggle text-white bg-transparent border-0"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 {user.displayName}
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
-                {role === "Admin" && (
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => navigate("/admin")}
-                    >
-                      Admin
-                    </button>
-                  </li>
+                {dropdownItems.map((item, idx) =>
+                  item.type === "divider" ? (
+                    <li key={idx}>
+                      <hr className="dropdown-divider" />
+                    </li>
+                  ) : (
+                    <li key={idx}>
+                      <button className="dropdown-item" onClick={item.onClick}>
+                        {item.label}
+                      </button>
+                    </li>
+                  )
                 )}
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => navigate("/profile")}
-                  >
-                    Profile
-                  </button>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <button className="dropdown-item" onClick={handleLogout}>
-                    Logout
-                  </button>
-                </li>
               </ul>
             </li>
           </ul>

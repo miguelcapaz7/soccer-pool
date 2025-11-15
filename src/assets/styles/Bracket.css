@@ -1,0 +1,69 @@
+.bracket-label-col {
+  width: 100%;
+  margin: 0 8px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bracket-col {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  margin: 0 8px;
+  position: relative;
+}
+
+/* Visual separator lines */
+.bracket-col:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -8px;
+  width: 2px;
+  height: 100%;
+  background: #e3e3e3;
+}
+
+/* Match card */
+.bracket-match {
+  background: white;
+  border-radius: 10px;
+  width: 85%;
+  margin-bottom: 15px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+/* Team row */
+.team-row {
+  padding: 8px;
+  height: 41px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s;
+  user-select: none;
+}
+.team-row:hover {
+  background: #f8f9ff;
+}
+
+/* Champion styling */
+.champion-box {
+  background: linear-gradient(to bottom, #fff9d6, #ffe98a);
+  padding: 15px;
+  height: 41px;
+  text-align: center;
+  font-weight: bold;
+  border: 2px solid #d4b100;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}
+
+.page-container{
+    max-width: 1700px;
+    margin: 0 auto;
+}

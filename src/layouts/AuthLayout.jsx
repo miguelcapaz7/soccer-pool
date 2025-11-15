@@ -2,19 +2,19 @@ import logo from "../assets/images/world-cup-2026-logo.jpg";
 
 const AuthLayout = ({ title, children }) => {
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="container text-center">
-        <div className="row shadow-lg">
-          <div className="col d-flex justify-content-center align-items-center bg-dark">
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      <div className="container">
+        <div className="row shadow-lg rounded overflow-hidden" style={{ minHeight: "100%" }}>
+          <div className="col-12 col-md-7 d-flex justify-content-center align-items-center bg-dark p-4 d-none d-md-flex">
             <img
               src={logo}
               alt="FIFA World Cup 2026 Logo"
-              className="img-fluid h-75"
+              className="img-fluid rounded h-75"
             />
           </div>
-          <div className="col-5 p-5 bg-white">
-            <div className="form-group p-5">
-              <h2 className="text-center my-5">{title}</h2>
+          <div className="col-12 col-md-5 bg-white d-flex justify-content-center align-items-center">
+            <div className=" p-3 p-md-5 w-100" style={{ maxWidth: "400px" }}>
+              <h2 className="text-center mb-4">{title}</h2>
               {children}
             </div>
           </div>

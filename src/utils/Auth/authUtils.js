@@ -26,7 +26,7 @@ export const loginUser = async ({ email, password }) => {
 
 export const loginFields = [
   { name: "email", type: "email", placeholder: "Email", required: true },
-  { name: "password", type: "password", placeholder: "Password", required: true, marginBottom: 5 },
+  { name: "password", type: "password", placeholder: "Password", required: true, marginBottom: 4 },
 ];
 
 export const createAccountFields = [
@@ -34,5 +34,5 @@ export const createAccountFields = [
   { name: "lastName", type: "text", placeholder: "Last Name", required: true },
   { name: "email", type: "email", placeholder: "Email", required: true },
   { name: "password", type: "password", placeholder: "Password", required: true },
-  { name: "confirmPassword", type: "password", placeholder: "Confirm Password", required: true, marginBottom: 5 },
+  { name: "confirmPassword", type: "password", placeholder: "Confirm Password", required: true, marginBottom: 4 },
 ];

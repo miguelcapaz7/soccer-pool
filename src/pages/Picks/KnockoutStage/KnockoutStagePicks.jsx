@@ -4,51 +4,56 @@ import { useAuth } from "../../../context/AuthContext";
 import Button from "../../../components/Button";
 import Bracket from "../../../components/Picks/KnockoutStage/Bracket";
 import useKnockoutStagePicks from "../../../hooks/Picks/KnockoutStage/useKnockoutStagePicks";
+import "../../../assets/styles/Bracket.css";
 
 const KnockoutStagePicks = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { bracket, handleSelectTeam, loading } = useKnockoutStagePicks(user);
 
-  const stages = useMemo (
-    () => [
-      "Round of 32",
-      "Round of 16",
-      "Quarter Finals",
-      "Semi Finals",
-    ], 
+  const stages = useMemo(
+    () => ["Round of 32", "Round of 16", "Quarter Finals", "Semi Finals"],
     []
   );
 
   const columnLabels = useMemo(
-    () => [
-      ...stages,
-      "Finals + 3rd Place",
-      ...stages.slice().reverse(),
-    ], [stages]
+    () => [...stages, "Finals/3rd Place", ...stages.slice().reverse()],
+    [stages]
   );
 
   const handleBack = () => {
-    navigate("/standingsPicks")
-    window.scrollTo(0, 0)
-  }
+    navigate("/standingsPicks");
+    window.scrollTo(0, 0);
+  };
 
   return (
-    <div className="container-fluid py-5 text-center mt-5">
-      <h2 className="mb-4">
-        STEP 3 - Complete the bracket with your predictions for the knockout
-        stages
-      </h2>
-      <div className="row text-center fw-bold mb-3">
+    <div className="page-container py-5 text-center mt-5">
+      <div className="card shadow-sm p-4 mb-4 mx-auto">
+        <h2 className="mb-3">
+          STEP 3 - Complete the bracket with your predictions for the knockout
+          stages
+        </h2>
+        <p className="text-muted mb-0">Click a team to advance them.</p>
+      </div>
+      <div className="d-flex justify-content-center">
         {columnLabels.map((colLabel, colLabelIndex) => (
-          <div className="col" key={colLabelIndex}>
+          <div
+            className="bracket-label-col text-center fw-bold py-2"
+            key={colLabelIndex}
+          >
             {colLabel}
           </div>
         ))}
       </div>
-      <Bracket bracket={bracket} handleSelectTeam={handleSelectTeam} />
-      <Button onClick={handleBack} color="dark">Back</Button>
-      <Button onClick={() => navigate("/topScorerPicks")} color="dark">Next</Button>
+      <div className="mb-4 d-flex justify-content-center">
+        <Bracket bracket={bracket} handleSelectTeam={handleSelectTeam} />
+      </div>
+      <Button onClick={handleBack} color="dark">
+        Back
+      </Button>
+      <Button onClick={() => navigate("/topScorerPicks")} color="dark">
+        Next
+      </Button>
     </div>
   );
 };

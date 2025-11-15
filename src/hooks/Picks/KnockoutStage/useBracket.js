@@ -1,117 +1,117 @@
-
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import {
-  generateBracket, 
+  generateBracketMap,
   generateRoundOf32,
-  convertBracketMapToColumns,
+  convertTeamsToColumns,
   updateBracketWithR32,
-  updateStep3Picks,
 } from "../../../utils/Picks/KnockoutStage/knockoutStageUtils";
 
-const useBracket = (user, step2Results) => {  
-  const [bracket, setBracket] = useState(generateBracket())
-  const { bracketMap } = bracket;
+const useBracket = (user, step2Results) => {
+  const localKey = user ? `step3Picks_${user.uid}` : null;
+  const [teamsByMatchId, setTeamsByMatchId] = useState({});
 
-  const roundOf32 = useMemo(() => generateRoundOf32(step2Results), [step2Results]);
-  const validTeams = useMemo(() => new Set(roundOf32.flat().filter(t => t !== "")), [roundOf32]);
+  const roundOf32 = useMemo(
+    () => generateRoundOf32(step2Results),
+    [step2Results]
+  );
+  const validTeams = useMemo(
+    () => new Set(roundOf32.flat().filter(Boolean)),
+    [roundOf32]
+  );
 
-  const applyStep3PicksToBracket = (picks) => {
-    setBracket((prev) => {
-      const updatedMap = { ...prev.bracketMap };
-      Object.entries(picks).forEach(([matchId, teams]) => {
-        if (updatedMap[matchId]) {
-          updatedMap[matchId].teams = [...teams];
-        }
-      });
-      const updatedColumns = convertBracketMapToColumns(updatedMap);
-      return { bracketMap: updatedMap, bracketColumns: updatedColumns };
-    });
-  };
-
-  const updateBracketFromStep2 = async () => {
-    const updatedMap = updateBracketWithR32(bracketMap, roundOf32, validTeams);
-    const updatedColumns = convertBracketMapToColumns(updatedMap);
-    setBracket({ bracketMap: updatedMap, bracketColumns: updatedColumns });
-
-    if (!user) return;
-    
-    const fullInit = Object.entries(updatedMap).reduce((acc, [matchId, data]) => {
-      acc[`step3Picks.${matchId}`] = [...data.teams];
-      return acc;
-    }, {});
-
-    try {
-      await updateStep3Picks(user.uid, fullInit);
-    } catch (err) {
-      console.error("Error initializing empty matches:", err);
+  useEffect(() => {
+    if (!localKey) return;
+    const saved = localStorage.getItem(localKey);
+    if (saved) {
+      try {
+        setTeamsByMatchId(JSON.parse(saved));
+      } catch (err) {
+        console.error("Error parsing Step3 picks from localStorage:", err);
+      }
     }
-  };
+  }, [localKey]);
 
-  const saveStep3Picks = async (matchId, matchup) => {
-    if (!user) return;
-    await updateStep3Picks(user.uid, { [`step3Picks.${matchId}`]: matchup });
-  };
+  useEffect(() => {
+    if (!localKey) return;
+    localStorage.setItem(localKey, JSON.stringify(teamsByMatchId));
+  }, [teamsByMatchId, localKey]);
 
-  const handleSelectTeam = (matchId, colIndex, matchupIndex, teamIndex) => {
-    const teamName = bracketMap[matchId].teams[teamIndex];
-    if (!teamName) return;
+  const updateBracketFromStep2 = useCallback(() => {
+    setTeamsByMatchId((prev) =>
+      updateBracketWithR32(prev, roundOf32, validTeams)
+    );
+  }, [roundOf32, validTeams]);
 
-    setBracket((prev) => {
-      const updatedMap = { ...prev.bracketMap };
+  const handleSelectTeam = useCallback(
+    (matchId, colIndex, matchupIndex, teamIndex) => {
+      const teamName = teamsByMatchId[matchId]?.[teamIndex];
+      if (!teamName) return;
+
       const totalCols = 9;
       const midPoint = Math.floor(totalCols / 2);
       const isLeftSide = colIndex < midPoint;
 
       const nextCol = isLeftSide ? colIndex + 1 : colIndex - 1;
-      const nextMatchupIndex = Math.floor(matchupIndex / 2);
+      const nextMatchup = Math.floor(matchupIndex / 2);
       const nextSlot = matchupIndex % 2 === 0 ? 0 : 1;
 
-      const currentMatch = updatedMap[matchId];
-      const opponentIndex = teamIndex === 0 ? 1 : 0;
-      const opponentName = currentMatch.teams[opponentIndex];
+      setTeamsByMatchId((prev) => {
+        const updated = { ...prev };
 
-      if (matchId.startsWith("SF")) {
-        const finalMatch = updatedMap["F"];
-        const thirdPlaceMatch = updatedMap["3P"];
-
-        if (isLeftSide) {
-          finalMatch.teams[0] = teamName;
-          thirdPlaceMatch.teams[0] = opponentName;
-        } else {
-          finalMatch.teams[1] = teamName;
-          thirdPlaceMatch.teams[1] = opponentName;
+        if (matchId === "F") {
+          const winner = prev["F"]?.[teamIndex];
+          if (winner) {
+            updated["CHAMPION"] = [winner];
+          }
+          return updated;
         }
 
-        saveStep3Picks("F", [...finalMatch.teams]);
-        saveStep3Picks("3P", [...thirdPlaceMatch.teams]);
-      } else {
-        const nextMatch = Object.entries(updatedMap).find(
-          ([, val]) =>
-            val.colIndex === nextCol && val.matchupIndex === nextMatchupIndex
+        // Handle semifinal → final & 3rd place
+        if (matchId.startsWith("SF")) {
+          const opponentIdx = teamIndex === 0 ? 1 : 0;
+          const opponent = prev[matchId]?.[opponentIdx];
+
+          updated["F"] = updated["F"] || ["", ""];
+          updated["3P"] = updated["3P"] || ["", ""];
+
+          if (isLeftSide) {
+            updated["F"][0] = teamName;
+            updated["3P"][0] = opponent;
+          } else {
+            updated["F"][1] = teamName;
+            updated["3P"][1] = opponent;
+          }
+          return updated;
+        } 
+          // Find next match in bracket map
+        const nextMatch = Object.entries(generateBracketMap).find(
+          ([, meta]) =>
+            meta.colIndex === nextCol && meta.matchupIndex === nextMatchup
         );
 
         if (nextMatch) {
-          const [nextId, nextVal] = nextMatch;
-          nextVal.teams[nextSlot] = teamName;
-          updatedMap[nextId] = nextVal;
-          saveStep3Picks(nextId, [...nextVal.teams]);
+          const [nextMatchId] = nextMatch;
+          updated[nextMatchId] = updated[nextMatchId] || ["", ""];
+          updated[nextMatchId][nextSlot] = teamName;
         }
-      }
+        
+        return updated;
+      });
+    },
+    [teamsByMatchId]
+  );
 
-      saveStep3Picks(matchId, [...currentMatch.teams]);
-
-      const updatedColumns = convertBracketMapToColumns(updatedMap);
-      return { bracketMap: updatedMap, bracketColumns: updatedColumns };
-    });
-  };
+  const bracketColumns = useMemo(
+    () => convertTeamsToColumns(teamsByMatchId),
+    [teamsByMatchId]
+  );
 
   return {
-    bracket: bracket.bracketColumns,
+    bracket: bracketColumns,
     handleSelectTeam,
-    applyStep3PicksToBracket,
-    updateBracketFromStep2
+    updateBracketFromStep2,
+    teamsByMatchId,
   };
-
 };
 
 export default useBracket;

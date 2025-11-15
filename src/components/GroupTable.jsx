@@ -1,11 +1,15 @@
 import React from "react";
-import DraggableTeam from "./Picks/Standings/DraggableTeam"
+import DraggableTeam from "./Picks/Standings/DraggableTeam";
 
 const GroupTable = ({ group, groupIndex, moveTeam, draggable = false }) => (
-  <div className="card shadow-sm" style={{ backgroundColor: group.colour }}>
-    <div className="card-body text-center">
-      <h5 className="card-title">Group {group.group}</h5>
-      <div className="list-group">
+  <div
+    className="card shadow-sm h-100"
+    style={{ backgroundColor: group.colour }}
+  >
+    <div className="card-body text-center d-flex flex-column">
+      <h5 className="card-title mb-3">Group {group.group}</h5>
+
+      <div className="list-group flex-grow-1">
         {group.teams.map((team, index) => {
           const key = team.id || `${groupIndex}-${index}`;
           return draggable ? (
@@ -14,7 +18,9 @@ const GroupTable = ({ group, groupIndex, moveTeam, draggable = false }) => (
               team={team}
               index={index}
               groupIndex={groupIndex}
-              moveTeam={(fromIndex, toIndex) => moveTeam(groupIndex, fromIndex, toIndex)}
+              moveTeam={(fromIndex, toIndex) =>
+                moveTeam(groupIndex, fromIndex, toIndex)
+              }
             />
           ) : (
             <button

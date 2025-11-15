@@ -4,6 +4,7 @@ import { useAuth } from "../../../context/AuthContext";
 import useGroupStagePicks from "../../../hooks/Picks/GroupStage/useGroupStagePicks";
 import Button from "../../../components/Button";
 import MatchDayTable from "../../../components/Picks/GroupStage/MatchDayTable";
+import MainLayout from "../../../layouts/MainLayout";
 
 const GroupStagePicks = () => {
   const navigate = useNavigate();
@@ -17,20 +18,28 @@ const GroupStagePicks = () => {
   };
 
   return (
-    <div className="container py-5 text-center mt-5">
-      <h2>STEP 1 - Select the team you predict will win in each match</h2>
-      <p>2 pts for every correct prediction.</p>
-      <div className="row mb-4">
-        {[1, 2, 3].map((matchDay) => (
-          <MatchDayTable
-            key={matchDay}
-            matchDay={matchDay}
-            groupStagePicks={groupStagePicks}
-            handlePick={handlePick}
-          />
+    <div className="container text-center py-5 mt-5">
+      <div className="card mb-3 shadow-sm p-4">
+        <h2>STEP 1 - Predict the Winners of Each Match</h2>
+        <p className="text-muted mb-0">2 points for every correct prediction.</p>
+      </div>
+      <div className="row g-4">
+        {[1, 2, 3].map((md) => (
+          <div key={md} className="col-12 col-lg-4">
+            <MatchDayTable
+              matchDay={md}
+              groupStagePicks={groupStagePicks}
+              handlePick={handlePick}
+            />
+          </div>
         ))}
       </div>
-      <Button onClick={handleNext} color="dark">Next</Button>
+
+      <div className="text-center mt-4">
+        <Button onClick={handleNext} color="dark">
+          Next
+        </Button>
+      </div>
     </div>
   );
 };
