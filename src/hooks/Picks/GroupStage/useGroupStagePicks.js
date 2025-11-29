@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 import { generateEmptyGroupStagePicks } from "../../../utils/Picks/GroupStage/groupStageUtils";
 
-const getLocalStorageKey = (userId) => `groupStagePicks_${userId}`;
+const getLocalStorageKey = (userId) => `step1Picks_${userId}`;
 
 const useGroupStagePicks = (user) => {
-  const [groupStagePicks, setGroupStagePicks] = useState(generateEmptyGroupStagePicks());
+  const [groupStagePicks, setGroupStagePicks] = useState(
+    generateEmptyGroupStagePicks()
+  );
 
   const handlePick = (matchId, value) => {
     setGroupStagePicks((prev) => {
       const updatedPick = { ...prev };
-      updatedPick[matchId] = prev[matchId] === value ? "" : value;
+
+      updatedPick[matchId] = {
+        ...updatedPick[matchId],
+        result: updatedPick[matchId].result === value ? "" : value,
+      };
+
       if (user) {
         const localKey = getLocalStorageKey(user.uid);
         localStorage.setItem(localKey, JSON.stringify(updatedPick));
@@ -28,7 +35,6 @@ const useGroupStagePicks = (user) => {
       try {
         const parsed = JSON.parse(localData);
         setGroupStagePicks((prev) => ({ ...prev, ...parsed }));
-        return;
       } catch (err) {
         console.error("Error parsing local group stage picks:", err);
       }

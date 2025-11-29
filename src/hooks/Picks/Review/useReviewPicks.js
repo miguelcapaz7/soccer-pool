@@ -1,55 +1,81 @@
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../../firebase";
 
 const useReviewPicks = (user) => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    step1Picks: {},
+    step2Picks: {},
+    step3Picks: {},
+    step4Picks: [],
+    step5Picks: {},
+  });
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
 
+  const parseKey = (key) => {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : null;
+    } catch (err) {
+      console.error(`Error parsing ${key}:`, err);
+      return null;
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (!user) return;
-      try {
-        const ref = doc(db, "userPicks", user.uid);
-        const snap = await getDoc(ref);
-        if (snap.exists()) {
-          const picks = snap.data();
-          const validationErrors = [];
+    if (!user) return;
 
-          // Validate each step
-          if (!picks.step1Picks || Object.keys(picks.step1Picks).some((value) => value === "")) {
-            validationErrors.push("Group Stage picks are incomplete.");
-          }
-          if (!picks.step2Picks || picks.step2Picks.length !== 12) {
-            validationErrors.push("Standings picks are incomplete.");
-          }
-          if (!picks.bracket || picks.bracket.length === 0) {
-            validationErrors.push("Knockout bracket is incomplete.");
-          }
-          const topScorer = JSON.parse(localStorage.getItem("topScorerPicks"));
-          const goalPrediction = localStorage.getItem("goalPrediction");
-          if (!topScorer || topScorer.length !== 3 || topScorer.some(p => !p.team || !p.player)) {
-            validationErrors.push("Top scorer picks are incomplete.");
-          }
-          if (!goalPrediction || isNaN(goalPrediction)) {
-            validationErrors.push("Goal prediction is invalid.");
-          }
+    const validationErrors = [];
 
-          setData({ ...picks, topScorer, goalPrediction });
-          setErrors(validationErrors);
-        }
-      } catch (err) {
-        console.error("Error loading review data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const step1Picks = parseKey(`step1Picks_${user.uid}`);
+    const step2Picks = parseKey(`step2Picks_${user.uid}`);
+    const step3Picks = parseKey(`step3Picks_${user.uid}`);
+    const step4Picks = parseKey(`step4Picks_${user.uid}`);
+    const step5Picks = parseKey(`step5Picks_${user.uid}`);
 
-    fetchData();
+    if (
+      !step1Picks || Object.keys(step1Picks).length === 0 ||
+      Object.values(step1Picks).some(
+        (pick) => !pick.result || pick.result.trim() === ""
+      )
+    ) {
+      validationErrors.push("Group Stage picks are incomplete.");
+    }
+
+    if (
+      !step2Picks || Object.keys(step2Picks).length === 0 
+    ) {
+      validationErrors.push("Standings picks are incomplete.");
+    }
+
+    if (!step3Picks || Object.keys(step3Picks).length === 0) {
+      validationErrors.push("Knockout bracket is incomplete.");
+    }
+
+    if (!step4Picks || !Array.isArray(step4Picks) ||
+      step4Picks.length !== 3 ||
+      step4Picks.some((p) => !p.team || !p.player)
+    ) {
+      validationErrors.push("Top scorer picks are incomplete.");
+    }
+
+    if (!step5Picks || Object.keys(step5Picks).length === 0 || 
+      isNaN(step5Picks?.totalGoals)) {
+      validationErrors.push("Goal prediction is invalid.");
+    }
+
+    setData({
+      step1Picks: step1Picks || {},
+      step2Picks: step2Picks || {},
+      step3Picks: step3Picks || {}, 
+      step4Picks: Array.isArray(step4Picks) ? step4Picks : [],
+      step5Picks: step5Picks || {},
+    });
+    setErrors(validationErrors);
+    setLoading(false);
   }, [user]);
 
   return { data, loading, errors };
 };
+
 
 export default useReviewPicks;

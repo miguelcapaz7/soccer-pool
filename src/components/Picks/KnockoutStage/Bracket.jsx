@@ -11,28 +11,32 @@ const Bracket = React.memo(({ bracket, handleSelectTeam }) => {
           {matchId === "CHAMPION" ? (
             <div className="champion-box">{teams[0]}</div>
           ) : (
-            teams.map((team, i) => (
-              <div
-                key={i}
-                className="team-row"
-                onClick={() =>
-                  handleSelectTeam(matchId, colIndex, matchupIndex, i)
-                }
-              >
-                {team}
-              </div>
-            ))
+            teams.map((team, i) => {
+              const isThirdPlaceWinner =
+                matchId === "3P" &&
+                // teamsByMatchId["3rdWinner"] might be ["Team"] or "Team" depending on your choice
+                (Array.isArray(bracket.thirdPlaceWinner)
+                  ? bracket.thirdPlaceWinner?.[0] === team
+                  : bracket.thirdPlaceWinner === team);
+              return (
+                <div
+                  key={i}
+                  className={`team-row ${isThirdPlaceWinner ? "third-winner" : ""}`}
+                  onClick={() =>
+                    handleSelectTeam(matchId, colIndex, matchupIndex, i)
+                  }
+                >
+                  {team}
+                </div>
+              );
+            })
           )}
         </div>
       ))}
     </div>
   );
 
-  return (
-    <>
-      {bracket.map((_, colIndex) => renderColumn(colIndex))}
-    </>
-  );
+  return <>{bracket.map((_, colIndex) => renderColumn(colIndex))}</>;
 });
 
 export default Bracket;

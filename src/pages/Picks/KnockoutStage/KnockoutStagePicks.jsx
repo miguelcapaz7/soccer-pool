@@ -9,7 +9,7 @@ import "../../../assets/styles/Bracket.css";
 const KnockoutStagePicks = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { bracket, handleSelectTeam, loading } = useKnockoutStagePicks(user);
+  const { bracket, handleSelectTeam, loading, missingStep2 } = useKnockoutStagePicks(user);
 
   const stages = useMemo(
     () => ["Round of 32", "Round of 16", "Quarter Finals", "Semi Finals"],
@@ -25,6 +25,21 @@ const KnockoutStagePicks = () => {
     navigate("/standingsPicks");
     window.scrollTo(0, 0);
   };
+
+  if (loading) {
+    return <div className="text-center py-5">Loading...</div>;
+  }
+
+  if (missingStep2) {
+    return (
+      <div className="text-center py-5">
+        <h3>Please complete Step 2 before proceeding to the knockout stage.</h3>
+        <Button color="primary" onClick={() => navigate("/standingsPicks")}>
+          Go to Step 2
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="page-container py-5 text-center mt-5">
@@ -45,7 +60,12 @@ const KnockoutStagePicks = () => {
           </div>
         ))}
       </div>
-      <div className="mb-4 d-flex justify-content-center">
+      <div className="mb-4 d-flex justify-content-center" style={{position: 'relative'}}>
+        <img
+          src="src/assets/images/world-cup-2026-logo.jpg"  // ✅ Replace with your logo path
+          alt="World Cup Logo"
+          className="bracket-logo"
+        />
         <Bracket bracket={bracket} handleSelectTeam={handleSelectTeam} />
       </div>
       <Button onClick={handleBack} color="dark">

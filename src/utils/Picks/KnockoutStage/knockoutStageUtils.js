@@ -14,13 +14,11 @@ export const generateBracketMap = (() => {
   stages.forEach(({ stage, numMatches, cols }) => {
     cols.forEach((colIndex, colIdx) => {
       const matchesPerCol = numMatches / cols.length;
-
       for (let i = 1; i <= matchesPerCol; i++) {
         const matchId =
           stage === "F" || stage === "CHAMPION" || stage === "3P"
             ? stage
             : `${stage}-M${colIdx * matchesPerCol + i}`;
-
         const matchupIndex =
           stage === "F"
             ? 0
@@ -29,7 +27,6 @@ export const generateBracketMap = (() => {
             : stage === "3P"
             ? 2
             : i - 1;
-
         map[matchId] = {
           colIndex,
           matchupIndex,
@@ -42,31 +39,22 @@ export const generateBracketMap = (() => {
 })();
 
 export const convertTeamsToColumns = (teamsByMatchId) => {
-  const totalCols =
-    Math.max(...Object.values(generateBracketMap).map((m) => m.colIndex)) + 1;
-
+  const totalCols = Math.max(...Object.values(generateBracketMap).map((m) => m.colIndex)) + 1;
   const columns = Array.from({ length: totalCols }, () => []);
-
+  const thirdPlaceWinner = teamsByMatchId["3rdWinner"];
   Object.entries(generateBracketMap).forEach(([matchId, meta]) => {
     const { colIndex, matchupIndex } = meta;
     const teams = teamsByMatchId[matchId] || ["", ""];
     columns[colIndex][matchupIndex] = { matchId, teams };
   });
+  columns.thirdPlaceWinner = thirdPlaceWinner;
 
   return columns;
 };
 
-export const generateBracket = () => {
-  const bracketMap = generateBracketMap();
-  const bracketColumns = convertBracketMapToColumns(bracketMap);
-  return { bracketMap, bracketColumns };
-};
-
 export const generateRoundOf32 = (step2Results) => {
   if (!step2Results || !Array.isArray(step2Results.groups)) return [];
-
   const { groups, thirdPlace } = step2Results;
-
   const getPlacing = (groupLetter, placing) => {
     const group = groups.find((g) => g.group === groupLetter);
     if (!group) return "";
@@ -74,7 +62,6 @@ export const generateRoundOf32 = (step2Results) => {
     if (placing === 2) return group.second;
     return ""; // third place handled separately
   };
-
   const getThirdPlace = (index) => {
     return thirdPlace && thirdPlace[index] ? thirdPlace[index] : "";
   };
@@ -101,13 +88,10 @@ export const generateRoundOf32 = (step2Results) => {
 
 export const updateBracketWithR32 = (prevTeams, r32, validTeams) => {
   const updated = { ...prevTeams };
-
   for (let i = 1; i <= 16; i++) {
     const matchId = `R32-M${i}`;
     const pair = r32[i - 1];
-
     updated[matchId] = pair.map((t) => (validTeams.has(t) ? t : ""));
   }
-
   return updated;
 };

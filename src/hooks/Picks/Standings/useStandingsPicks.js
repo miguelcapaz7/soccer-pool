@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils";
 
-const getLocalStorageKey = (uid) => `standingsPicks_${uid}`;
+const getLocalStorageKey = (uid) => `step2Picks_${uid}`;
 
 const useStandingsPicks = (user) => {
   const [standings, setStandings] = useState(generateInitialStandings());

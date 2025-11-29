@@ -27,7 +27,7 @@ const MatchDayTable = ({ matchDay, groupStagePicks, handlePick }) => {
             {GroupsData.map((groupData) =>
               matchups.map(([i, j], matchIndex) => {
                 const matchId = getMatchId(matchDay, groupData.group, matchIndex);
-                const selected = groupStagePicks[matchId];
+                const { result } = groupStagePicks[matchId];
                 const options = [groupData.teams[i], "Tie", groupData.teams[j]];
 
                 return (
@@ -37,7 +37,7 @@ const MatchDayTable = ({ matchDay, groupStagePicks, handlePick }) => {
                       <td
                         key={option}
                         className={`text-center clickable ${
-                          selected === option ? "table-primary" : ""
+                          result === option ? "table-primary" : ""
                         }`}
                         style={{ cursor: "pointer", minWidth: "70px" }}
                         onClick={() => handlePick(matchId, option)}

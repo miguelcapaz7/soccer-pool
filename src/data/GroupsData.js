@@ -1,22 +1,22 @@
 export const GroupsData = [
     {
       group: "A",
-      teams: ["USA", "Belgium", "Japan", "Morocco"],
+      teams: ["USA", "Qatar", "Japan", "Morocco"],
       colour: ""
     },
     {
       group: "B",
-      teams: ["Canada", "Netherlands", "Nigeria", "South Korea"],
+      teams: ["Mexico", "Curacao", "Norway", "South Korea"],
       colour: ""
     },
     {
       group: "C",
-      teams: ["Mexico", "Portugal", "Senegal", "Uruguay"],
+      teams: ["Canada", "New Zealand", "Senegal", "Uruguay"],
       colour: ""
     },
     {
       group: "D",
-      teams: ["Spain", "Germany", "Colombia", "Australia"],
+      teams: ["Spain", "Tunisia", "Colombia", "Australia"],
       colour: ""
     },
     {
@@ -36,27 +36,27 @@ export const GroupsData = [
     },
     {
       group: "H",
-      teams: ["England", "Switzerland", "Serbia", "Venezuela"],
+      teams: ["England", "Switzerland", "Wales", "Algeria"],
       colour: ""
     },
     {
       group: "I",
-      teams: ["New Zealand", "South Africa", "Georgia", "Uzbekistan"],
+      teams: ["Portugal", "South Africa", "Scotland", "Uzbekistan"],
       colour: ""
     },
     {
       group: "J",
-      teams: ["Qatar", "Mali", "Jordan", "Greece"],
+      teams: ["Belgium", "Poland", "Jordan", "Panama"],
       colour: ""
     },
     {
       group: "K",
-      teams: ["Egypt", "Saudi Arabia", "Belarus", "Hungary"],
+      teams: ["Netherlands", "Saudi Arabia", "Haiti", "Ireland"],
       colour: ""
     },
     {
       group: "L",
-      teams: ["Tunisia", "Paraguay", "Congo", "Cape Verde"],
+      teams: ["Germany", "Paraguay", "Slovakia", "Cape Verde"],
       colour: ""
     }
   ];

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const getLocalStorageKey = (userId) => `totalGoalsPrediction_${userId}`;
+const getLocalStorageKey = (userId) => `step5Picks_${userId}`;
 
 const useTotalGoalsPrediction = (user) => {
   const [goalPrediction, setGoalPrediction] = useState("");
