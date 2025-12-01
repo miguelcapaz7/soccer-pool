@@ -27,13 +27,13 @@ const KnockoutStagePicks = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-5">Loading...</div>;
+    return <div className="text-center py-5 mt-5">Loading...</div>;
   }
 
   if (missingStep2) {
     return (
-      <div className="text-center py-5">
-        <h3>Please complete Step 2 before proceeding to the knockout stage.</h3>
+      <div className="text-center py-5 mt-5">
+        <h2 className="mb-3">Please complete Step 2 before proceeding to the knockout stage.</h2>
         <Button color="primary" onClick={() => navigate("/standingsPicks")}>
           Go to Step 2
         </Button>

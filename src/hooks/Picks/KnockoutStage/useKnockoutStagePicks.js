@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   generateBracketMap,
+  generateEmptyTeamsMap,
   generateRoundOf32,
   convertTeamsToColumns,
   updateBracketWithR32,
@@ -10,7 +11,7 @@ const useKnockoutStagePicks = (user) => {
   const [step2Results, setStep2Results] = useState([]);
   const [initialized, setInitialized] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [teamsByMatchId, setTeamsByMatchId] = useState({});
+  const [teamsByMatchId, setTeamsByMatchId] = useState(generateEmptyTeamsMap());
   const [missingStep2, setMissingStep2] = useState(false);
 
   const localKey = user ? `step3Picks_${user.uid}` : null;
@@ -24,25 +25,6 @@ const useKnockoutStagePicks = (user) => {
     () => new Set(roundOf32.flat().filter(Boolean)),
     [roundOf32]
   );
-
-  // Load Step3 picks from local storage
-  useEffect(() => {
-    if (!localKey) return;
-    const saved = localStorage.getItem(localKey);
-    if (saved) {
-      try {
-        setTeamsByMatchId(JSON.parse(saved));
-      } catch (err) {
-        console.error("Error parsing Step3 picks:", err);
-      }
-    }
-  }, [localKey]);
-
-  // Persist Step 3 picks to local storage
-  useEffect(() => {
-    if (!localKey) return;
-    localStorage.setItem(localKey, JSON.stringify(teamsByMatchId));
-  }, [teamsByMatchId, localKey]);
 
   // Load Step 2 results from local storage
   useEffect(() => {
@@ -73,17 +55,50 @@ const useKnockoutStagePicks = (user) => {
     setLoading(false);
   }, [user]);
 
+  // Load Step3 picks from local storage
+  useEffect(() => {
+    if (loading || !localKey) return;
+    const saved = localStorage.getItem(localKey);
+    if (!saved) return;
+
+    try {
+      const parsed = JSON.parse(saved);
+      setTeamsByMatchId((prev) => ({
+        ...prev,
+        ...parsed,
+      }));
+    } catch (err) {
+      console.error("Error parsing Step3 picks:", err);
+    }
+  }, [loading, localKey]);
+
+  // Persist Step 3 picks to local storage
+  useEffect(() => {
+    if (!localKey || loading || !initialized) return;
+
+    try {
+      localStorage.setItem(localKey, JSON.stringify(teamsByMatchId));
+    } catch (err) {
+      console.error("Error saving Step3 picks:", err);
+    }
+  }, [teamsByMatchId, localKey, loading, initialized]);
+
   // Initialize bracket after Step 2 results load
   useEffect(() => {
-    if (loading || initialized || missingStep2) return;
+    if (loading || initialized || missingStep2 || !step2Results) return;
+
     setTeamsByMatchId((prev) => {
-      if (Object.keys(prev).length === 0) {
-        return updateBracketWithR32(prev, roundOf32, validTeams);
-      }
-      return prev; // Keep existing picks
+      let updated = { ...prev };
+
+      // Inject R32 teams into empty slots only
+      const r32Updated = updateBracketWithR32(updated, roundOf32, validTeams);
+      updated = { ...updated, ...r32Updated };
+
+      return updated;
     });
+
     setInitialized(true);
-  }, [loading, initialized, roundOf32, validTeams]);
+  }, [loading, missingStep2, initialized, step2Results, roundOf32, validTeams]);
 
   // Handles team selection and propogate winners
   const handleSelectTeam = useCallback(
@@ -127,7 +142,7 @@ const useKnockoutStagePicks = (user) => {
         if (matchId === "3P") {
           const winner = prev["3P"]?.[teamIndex];
           if (winner) {
-            updated["3rdWinner"] = [winner]; // store as single-element array (consistent with CHAMPION)
+            updated["3rdWinner"] = [winner];
           }
           return updated;
         }

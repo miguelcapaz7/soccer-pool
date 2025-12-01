@@ -9,7 +9,7 @@ import Button from "../../../components/Button";
 const ReviewPicks = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { data, loading, errors } = useReviewPicks(user);
+  const { data, loading, errors, handleSubmit} = useReviewPicks(user);
 
   if (loading) return <div className="text-center py-5">Loading...</div>;
 
@@ -91,7 +91,7 @@ const ReviewPicks = () => {
         <Button
           color="success"
           disabled={errors.length > 0}
-          onClick={() => alert("Final picks submitted!")}
+          onClick={handleSubmit}
         >
           Submit Final Picks
         </Button>

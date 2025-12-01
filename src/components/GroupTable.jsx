@@ -7,8 +7,7 @@ const GroupTable = ({ group, groupIndex, moveTeam, draggable = false }) => (
     style={{ backgroundColor: group.colour }}
   >
     <div className="card-body text-center d-flex flex-column">
-      <h5 className="card-title mb-3">Group {group.group}</h5>
-
+      <h5 className="card-title">Group {group.group}</h5>
       <div className="list-group flex-grow-1">
         {group.teams.map((team, index) => {
           const key = team.id || `${groupIndex}-${index}`;
@@ -23,15 +22,24 @@ const GroupTable = ({ group, groupIndex, moveTeam, draggable = false }) => (
               }
             />
           ) : (
-            <button
-              type="button"
+            <div
               key={key}
-              className="list-group-item list-group-item-action border p-2"
+              className="d-flex justify-content-start p-2"
               style={{ cursor: "default" }}
-              disabled
             >
-              {team.name || team}
-            </button>
+              <img
+                src={`${import.meta.env.BASE_URL}public/flags/${team}.png`}
+                alt={`${team} flag`}
+                className="me-3 mx-2"
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  objectFit: "cover",
+                  borderRadius: "2px",
+                }}
+              />
+              <span>{team}</span>
+            </div>
           );
         })}
       </div>

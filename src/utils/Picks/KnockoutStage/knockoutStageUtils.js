@@ -1,3 +1,4 @@
+// This defines where each match is layed out on the bracket
 export const generateBracketMap = (() => {
   const stages = [
     { stage: "R32", numMatches: 16, cols: [0, 8] },
@@ -38,13 +39,34 @@ export const generateBracketMap = (() => {
   return map;
 })();
 
+// Sets the teams to empty string in the list
+export const generateEmptyTeamsMap = () => {
+  const map = {};
+  Object.keys(generateBracketMap).forEach((matchId) => {
+    if (matchId === "CHAMPION") {
+      map[matchId] = [""];
+    } else {
+      map[matchId] = ["", ""];
+    }
+  });
+  map["3rdWinner"] = map["3rdWinner"] || [""];
+  return map;
+};
+
+// Creates an object that maps columns to the match
 export const convertTeamsToColumns = (teamsByMatchId) => {
-  const totalCols = Math.max(...Object.values(generateBracketMap).map((m) => m.colIndex)) + 1;
+  const totalCols =
+    Math.max(...Object.values(generateBracketMap).map((m) => m.colIndex)) + 1;
   const columns = Array.from({ length: totalCols }, () => []);
   const thirdPlaceWinner = teamsByMatchId["3rdWinner"];
   Object.entries(generateBracketMap).forEach(([matchId, meta]) => {
     const { colIndex, matchupIndex } = meta;
-    const teams = teamsByMatchId[matchId] || ["", ""];
+    const teams =
+      teamsByMatchId && teamsByMatchId[matchId]
+        ? teamsByMatchId[matchId]
+        : matchId === "CHAMPION"
+        ? [""]
+        : ["", ""];
     columns[colIndex][matchupIndex] = { matchId, teams };
   });
   columns.thirdPlaceWinner = thirdPlaceWinner;

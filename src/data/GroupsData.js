@@ -46,7 +46,7 @@ export const GroupsData = [
     },
     {
       group: "J",
-      teams: ["Belgium", "Poland", "Jordan", "Panama"],
+      teams: ["Belgium", "Egypt", "Jordan", "Panama"],
       colour: ""
     },
     {
