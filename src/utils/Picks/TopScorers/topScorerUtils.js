@@ -1,4 +1,4 @@
-import TeamsData from "../../../data/TeamsData.js"
+import TeamsData from "../../../data/TeamsData.js";
 
 export const generateInitialPlayerPicks = () => {
   const numPlayers = 3;

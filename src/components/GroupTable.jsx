@@ -28,7 +28,7 @@ const GroupTable = ({ group, groupIndex, moveTeam, draggable = false }) => (
               style={{ cursor: "default" }}
             >
               <img
-                src={`${import.meta.env.BASE_URL}flags/${team}.png`}
+                src={`${import.meta.env.BASE_URL}public/flags/${team}.png`}
                 alt={`${team} flag`}
                 className="me-3 mx-2"
                 style={{
