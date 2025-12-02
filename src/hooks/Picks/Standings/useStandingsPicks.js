@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils";
+import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils.js";
 
 const getLocalStorageKey = (uid) => `step2Picks_${uid}`;
 

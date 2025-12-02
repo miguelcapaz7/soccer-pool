@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
-import Button from "../../../components/Button";
-import Bracket from "../../../components/Picks/KnockoutStage/Bracket";
-import useKnockoutStagePicks from "../../../hooks/Picks/KnockoutStage/useKnockoutStagePicks";
+import { useAuth } from "../../../context/AuthContext.jsx";
+import Button from "../../../components/Button.jsx";
+import Bracket from "../../../components/Picks/KnockoutStage/Bracket.jsx";
+import useKnockoutStagePicks from "../../../hooks/Picks/KnockoutStage/useKnockoutStagePicks.js";
 import "../../../assets/styles/Bracket.css";
 
 const KnockoutStagePicks = () => {

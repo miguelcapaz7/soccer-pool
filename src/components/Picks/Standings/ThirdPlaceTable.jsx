@@ -1,4 +1,4 @@
-import DraggableTeam from "./DraggableTeam";
+import DraggableTeam from "./DraggableTeam.jsx";
 
 const ThirdPlaceTable = ({ teams, moveTeam }) => (
   <div className="card shadow-sm border-3">

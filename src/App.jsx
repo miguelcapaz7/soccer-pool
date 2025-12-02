@@ -7,19 +7,19 @@ import {
   Navigate,
 } from "react-router-dom";
 import './assets/styles/styles.scss';
-import CreateAccount from "./pages/Auth/CreateAccount";
-import Login from "./pages/Auth/Login";
-import Home from "./pages/Home";
-import Leaderboard from "./pages/Leaderboard";
-import Rules from "./pages/Rules";
-import GroupStagePicks from "./pages/Picks/GroupStage/GroupStagePicks";
-import StandingsPicks from "./pages/Picks/Standings/StandingsPicks";
-import KnockoutStagePicks from "./pages/Picks/KnockoutStage/KnockoutStagePicks";
-import TopScorerPicks from "./pages/Picks/TopScorers/TopScorerPicks";
-import ReviewPicks from "./pages/Picks/Review/ReviewPicks";
-import Navbar from "./components/Navbar";
-import Profile from "./pages/Profile";
-import { AuthProvider } from "./context/AuthContext";
+import CreateAccount from "./pages/Auth/CreateAccount.jsx";
+import Login from "./pages/Auth/Login.jsx";
+import Home from "./pages/Home.jsx";
+import Leaderboard from "./pages/Leaderboard.jsx";
+import Rules from "./pages/Rules.jsx";
+import GroupStagePicks from "./pages/Picks/GroupStage/GroupStagePicks.jsx";
+import StandingsPicks from "./pages/Picks/Standings/StandingsPicks.jsx";
+import KnockoutStagePicks from "./pages/Picks/KnockoutStage/KnockoutStagePicks.jsx";
+import TopScorerPicks from "./pages/Picks/TopScorers/TopScorerPicks.jsx";
+import ReviewPicks from "./pages/Picks/Review/ReviewPicks.jsx";
+import Navbar from "./components/Navbar.jsx";
+import Profile from "./pages/Profile.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 const Router = import.meta.env.MODE === 'production' ? HashRouter : BrowserRouter;
 

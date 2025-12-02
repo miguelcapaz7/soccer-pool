@@ -1,7 +1,7 @@
 import React from "react";
-import MainLayout from "../layouts/MainLayout";
-import useLeaderboard from "../hooks/useLeaderboard";
-import LeaderboardTable from "../components/LeaderboardTable";
+import MainLayout from "../layouts/MainLayout.jsx";
+import useLeaderboard from "../hooks/useLeaderboard.js";
+import LeaderboardTable from "../components/LeaderboardTable.jsx";
 
 const Leaderboard = () => {
   const { leaders, error } = useLeaderboard();

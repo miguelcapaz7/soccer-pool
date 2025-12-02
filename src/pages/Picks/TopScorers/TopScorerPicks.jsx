@@ -1,11 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../../components/Button";
-import PlayerPicker from "../../../components/Picks/TopScorers/PlayerPicker";
-import MainLayout from "../../../layouts/MainLayout";
-import { useAuth } from "../../../context/AuthContext";
-import useTopScorerPicks from "../../../hooks/Picks/TopScorers/useTopScorerPicks";
-import useTotalGoalsPrediction from "../../../hooks/Picks/TopScorers/useTotalGoalsPrediction";
+import Button from "../../../components/Button.jsx";
+import PlayerPicker from "../../../components/Picks/TopScorers/PlayerPicker.jsx";
+import { useAuth } from "../../../context/AuthContext.jsx";
+import useTopScorerPicks from "../../../hooks/Picks/TopScorers/useTopScorerPicks.js";
+import useTotalGoalsPrediction from "../../../hooks/Picks/TopScorers/useTotalGoalsPrediction.js";
 
 const TopScorerPicks = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { generateEmptyGroupStagePicks } from "../../../utils/Picks/GroupStage/groupStageUtils";
+import { generateEmptyGroupStagePicks } from "../../../utils/Picks/GroupStage/groupStageUtils.js";
 
 const getLocalStorageKey = (userId) => `step1Picks_${userId}`;
 

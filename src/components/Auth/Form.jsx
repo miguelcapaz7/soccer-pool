@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../Button";
-import useForm from "../../hooks/Auth/useForm";
+import Button from "../Button.jsx";
+import useForm from "../../hooks/Auth/useForm.js";
 
 const Form = ({ fields, onSubmit, buttonText, signUpLink, showDivider }) => {
   const { formData, handleChange, handleSubmit, error } = useForm(

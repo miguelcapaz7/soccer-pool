@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import AuthLayout from "../../layouts/AuthLayout";
-import Form from "../../components/Auth/Form";
-import { loginFields, loginUser } from "../../utils/Auth/authUtils";
+import AuthLayout from "../../layouts/AuthLayout.jsx";
+import Form from "../../components/Auth/Form.jsx";
+import { loginFields, loginUser } from "../../utils/Auth/authUtils.js";
 
 const Login = () => {
   const navigate = useNavigate();

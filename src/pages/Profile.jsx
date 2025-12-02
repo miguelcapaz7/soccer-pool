@@ -1,8 +1,8 @@
 import React from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import MainLayout from "../layouts/MainLayout";
+import Button from "../components/Button.jsx";
+import MainLayout from "../layouts/MainLayout.jsx";
 
 const Profile = () => {
   const { user } = useAuth();

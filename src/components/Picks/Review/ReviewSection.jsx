@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../../Button";
-import GroupTable from "../../GroupTable";
+import Button from "../../Button.jsx";
+import GroupTable from "../../GroupTable.jsx";
 
 const ReviewSection = ({ title, items, onEdit, step }) => {
   const renderContent = () => {

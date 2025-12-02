@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import AuthLayout from "../../layouts/AuthLayout";
-import Form from "../../components/Auth/Form";
-import { createAccountFields, createAccount } from "../../utils/Auth/authUtils";
+import AuthLayout from "../../layouts/AuthLayout.jsx";
+import Form from "../../components/Auth/Form.jsx";
+import { createAccountFields, createAccount } from "../../utils/Auth/authUtils.js";
 
 const CreateAccount = () => {
   const navigate = useNavigate();

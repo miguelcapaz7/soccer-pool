@@ -7,3 +7,4 @@ export default ({ mode }) => {
     base: mode === 'production' ? '/soccer-pool/' : '/',
   });
 };
+

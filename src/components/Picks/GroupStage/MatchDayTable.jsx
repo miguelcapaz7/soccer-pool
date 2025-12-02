@@ -1,7 +1,7 @@
 // components/MatchDayTable.js
 import React from "react";
-import { GroupsData } from "../../../data/GroupsData";
-import { getMatchId, getGroupStageMatchups } from "../../../utils/Picks/GroupStage/groupStageUtils";
+import { GroupsData } from "../../../data/GroupsData.js";
+import { getMatchId, getGroupStageMatchups } from "../../../utils/Picks/GroupStage/groupStageUtils.js";
 
 const MatchDayTable = ({ matchDay, groupStagePicks, handlePick }) => {
   const matchups = getGroupStageMatchups(matchDay)

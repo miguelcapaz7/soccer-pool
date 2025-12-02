@@ -1,4 +1,4 @@
-import { GroupsData } from "../../../data/GroupsData"; 
+import { GroupsData } from "../../../data/GroupsData.js"; 
 
 export const getMatchId = (matchDay, group, matchIndex) => {
   return `MD${matchDay}-G${group}-${matchIndex + 1}`;

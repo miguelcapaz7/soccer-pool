@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { GroupsData } from "../data/GroupsData";
-import MainLayout from "../layouts/MainLayout";
-import Button from "../components/Button";
-import GroupTable from "../components/GroupTable";
+import { GroupsData } from "../data/GroupsData.js";
+import MainLayout from "../layouts/MainLayout.jsx";
+import Button from "../components/Button.jsx";
+import GroupTable from "../components/GroupTable.jsx";
 
 const Home = () => {
   const navigate = useNavigate();

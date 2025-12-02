@@ -1,5 +1,5 @@
 import React from "react";
-import { columnHeaders } from "../utils/leaderboardUtils";
+import { columnHeaders } from "../utils/leaderboardUtils.js";
 
 const LeaderboardTable = ({ leaders }) => {
   const columns = Object.keys(columnHeaders);

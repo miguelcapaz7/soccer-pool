@@ -1,10 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
-import useGroupStagePicks from "../../../hooks/Picks/GroupStage/useGroupStagePicks";
-import Button from "../../../components/Button";
-import MatchDayTable from "../../../components/Picks/GroupStage/MatchDayTable";
-import MainLayout from "../../../layouts/MainLayout";
+import { useAuth } from "../../../context/AuthContext.jsx";
+import useGroupStagePicks from "../../../hooks/Picks/GroupStage/useGroupStagePicks.js";
+import Button from "../../../components/Button.jsx";
+import MatchDayTable from "../../../components/Picks/GroupStage/MatchDayTable.jsx";
 
 const GroupStagePicks = () => {
   const navigate = useNavigate();

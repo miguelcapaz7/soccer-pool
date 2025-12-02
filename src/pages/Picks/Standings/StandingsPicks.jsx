@@ -2,12 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useAuth } from "../../../context/AuthContext";
-import useStandingsPicks from "../../../hooks/Picks/Standings/useStandingsPicks";
-import Button from "../../../components/Button";
-import GroupTable from "../../../components/GroupTable";
-import ThirdPlaceTable from "../../../components/Picks/Standings/ThirdPlaceTable";
-import MainLayout from "../../../layouts/MainLayout";
+import { useAuth } from "../../../context/AuthContext.jsx";
+import useStandingsPicks from "../../../hooks/Picks/Standings/useStandingsPicks.js";
+import Button from "../../../components/Button.jsx";
+import GroupTable from "../../../components/GroupTable.jsx";
+import ThirdPlaceTable from "../../../components/Picks/Standings/ThirdPlaceTable.jsx";
 
 const StandingsPicks = () => {
   const navigate = useNavigate();

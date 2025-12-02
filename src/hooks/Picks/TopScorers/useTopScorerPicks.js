@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { generateInitialPlayerPicks } from "../../../utils/Picks/TopScorers/topScorerUtils";
+import { generateInitialPlayerPicks } from "../../../utils/Picks/TopScorers/topScorerUtils.js";
 
 const getLocalStorageKey = (userId) => `step4Picks_${userId}`;
 

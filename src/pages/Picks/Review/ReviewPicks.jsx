@@ -1,10 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
-import useReviewPicks from "../../../hooks/Picks/Review/useReviewPicks";
-import ReviewSection from "../../../components/Picks/Review/ReviewSection";
-import MainLayout from "../../../layouts/MainLayout";
-import Button from "../../../components/Button";
+import { useAuth } from "../../../context/AuthContext.jsx";
+import useReviewPicks from "../../../hooks/Picks/Review/useReviewPicks.js";
+import ReviewSection from "../../../components/Picks/Review/ReviewSection.jsx";
+import Button from "../../../components/Button.jsx";
 
 const ReviewPicks = () => {
   const { user } = useAuth();

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { saveToFirestore } from "../../../utils/Picks/firestoreUtils";
+import { saveToFirestore } from "../../../utils/Picks/firestoreUtils.js";
 
 const useReviewPicks = (user) => {
   const [data, setData] = useState({

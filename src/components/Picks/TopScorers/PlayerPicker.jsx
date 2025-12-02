@@ -1,4 +1,4 @@
-import { getPlayerPickerFields } from "../../../utils/Picks/TopScorers/topScorerUtils";
+import { getPlayerPickerFields } from "../../../utils/Picks/TopScorers/topScorerUtils.js";
 
 const PlayerPicker = ({ index, selection, onTeamChange, onPlayerChange }) => {
   const fields = getPlayerPickerFields(
