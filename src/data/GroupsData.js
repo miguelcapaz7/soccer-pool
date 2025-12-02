@@ -1,4 +1,4 @@
-export const GroupsData = [
+const GroupsData = [
     {
       group: "A",
       teams: ["USA", "Qatar", "Japan", "Morocco"],
@@ -60,3 +60,4 @@ export const GroupsData = [
       colour: ""
     }
   ];
+export default GroupsData;

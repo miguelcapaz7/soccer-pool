@@ -1,4 +1,4 @@
-export const TeamsData = [
+const TeamsData = [
     {
       team: "Portugal",
       players: [
@@ -90,3 +90,5 @@ export const TeamsData = [
       ]
     }
   ];
+
+export default TeamsData;
