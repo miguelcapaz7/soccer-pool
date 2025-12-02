@@ -40,19 +40,19 @@ const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
       style={{ cursor: isDragging ? "grabbing" : "grab", transition: "0.2s" }}
     >
       <img
-                src={`${import.meta.env.BASE_URL}public/flags/${team}.png`}
-                alt={`${team.name} flag`}
-                className="me-3 mx-2"
-                style={{
-                  width: "24px",
-                  height: "24px",
-                  objectFit: "cover",
-                  borderRadius: "2px",
-                }}
-              />
+        src={`${import.meta.env.BASE_URL}flags/${team}.png`}
+        alt={`${team.name} flag`}
+        className="me-3 mx-2"
+        style={{
+          width: "24px",
+          height: "24px",
+          objectFit: "cover",
+          borderRadius: "2px",
+        }}
+      />
       {team}
     </button>
   );
 };
 
-export default DraggableTeam
+export default DraggableTeam;
