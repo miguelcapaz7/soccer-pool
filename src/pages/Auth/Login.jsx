@@ -1,10 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../layouts/AuthLayout.jsx";
 import Form from "../../components/Auth/Form.jsx";
-import { loginFields, loginUser } from "../../utils/Auth/authUtils.js";
+import { loginUser } from "../../utils/Auth/authUtils.js";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const loginFields = [
+    { name: "email", type: "email", placeholder: "Email", required: true },
+    { name: "password", type: "password", placeholder: "Password", required: true, marginBottom: 4 },
+  ];
 
   const handleLogin = async (data) => {
     try {
@@ -21,19 +26,18 @@ const Login = () => {
         fields={loginFields}
         onSubmit={handleLogin}
         buttonText="Login"
-        signUpLink={
-          <span>
+        showDivider={true}
+        footer={
+          <>
             Don't have an account?{" "}
             <button
-              type="button"
-              className="btn btn-link p-0 text-decoration-none fw-bold"
+              className="btn btn-link p-0 fw-bold"
               onClick={() => navigate("/createAccount")}
             >
               Sign up
             </button>
-          </span>
+          </>
         }
-        showDivider={true}
       />
     </AuthLayout>
   );

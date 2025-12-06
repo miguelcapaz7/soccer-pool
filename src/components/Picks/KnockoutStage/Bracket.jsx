@@ -1,6 +1,6 @@
 import React from "react";
 
-const Bracket = React.memo(({ bracket, handleSelectTeam }) => {
+const Bracket = React.memo(({ bracket, handleSelectTeam, resetMatch }) => {
   const renderColumn = (colIndex) => (
     <div
       className="bracket-col d-flex flex-column align-items-center"
@@ -8,6 +8,14 @@ const Bracket = React.memo(({ bracket, handleSelectTeam }) => {
     >
       {bracket[colIndex]?.map(({ matchId, teams }, matchupIndex) => (
         <div key={matchId} className="bracket-match shadow-sm">
+          {teams.some(t => t) && !matchId.startsWith("R32") && matchId !== "CHAMPION" && (
+              <button
+                className="reset-btn"
+                onClick={() => resetMatch(matchId)}
+              >
+                ↩
+              </button>
+            )}
           {matchId === "CHAMPION" ? (
             <div className="champion-box">{teams[0]}</div>
           ) : (
@@ -21,9 +29,9 @@ const Bracket = React.memo(({ bracket, handleSelectTeam }) => {
               return (
                 <div
                   key={i}
-                  className={`team-row ${
-                    isThirdPlaceWinner ? "third-winner" : ""
-                  }`}
+                  className={`team-row 
+                    ${isThirdPlaceWinner ? "third-winner" : ""}
+                  `}
                   onClick={() =>
                     handleSelectTeam(matchId, colIndex, matchupIndex, i)
                   }

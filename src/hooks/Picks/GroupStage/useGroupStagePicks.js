@@ -1,44 +1,50 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { generateEmptyGroupStagePicks } from "../../../utils/Picks/GroupStage/groupStageUtils.js";
-
-const getLocalStorageKey = (userId) => `step1Picks_${userId}`;
 
 const useGroupStagePicks = (user) => {
   const [groupStagePicks, setGroupStagePicks] = useState(
-    generateEmptyGroupStagePicks()
+    useRef(generateEmptyGroupStagePicks()).current
   );
 
-  const handlePick = (matchId, value) => {
-    setGroupStagePicks((prev) => {
-      const updatedPick = { ...prev };
+  const localStorageKey = useMemo(
+    () => (user ? `step1Picks_${user.uid}` : null),
+    [user]
+  );
 
-      updatedPick[matchId] = {
-        ...updatedPick[matchId],
-        result: updatedPick[matchId].result === value ? "" : value,
+  const saveToLocalStorage = useCallback((updatedPick) => {
+    if (!user) return;
+    localStorage.setItem(localStorageKey, JSON.stringify(updatedPick));
+  }, [user]);
+
+  const handlePick = useCallback((matchId, value) => {
+    setGroupStagePicks((prev) => {
+      const updatedPick = { 
+        ...prev,
+        [matchId]: {
+          ...prev[matchId],
+          result: prev[matchId].result === value ? "" : value
+        }
       };
 
-      if (user) {
-        const localKey = getLocalStorageKey(user.uid);
-        localStorage.setItem(localKey, JSON.stringify(updatedPick));
-      }
+      saveToLocalStorage(updatedPick)
+
       return updatedPick;
     });
-  };
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
 
-    const localKey = getLocalStorageKey(user.uid);
-    const localData = localStorage.getItem(localKey);
+    try {
+      const savedData = localStorage.getItem(localStorageKey);
+      if (!savedData) return;
 
-    if (localData) {
-      try {
-        const parsed = JSON.parse(localData);
-        setGroupStagePicks((prev) => ({ ...prev, ...parsed }));
-      } catch (err) {
-        console.error("Error parsing local group stage picks:", err);
-      }
+      const parsed = JSON.parse(savedData);
+      setGroupStagePicks((prev) => ({ ...prev, ...parsed }));
+    } catch (err) {
+      console.error("Error parsing local group stage picks:", err);
     }
+
   }, [user]);
 
   return { groupStagePicks, handlePick };

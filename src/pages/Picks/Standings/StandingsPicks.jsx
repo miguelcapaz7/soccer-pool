@@ -10,19 +10,19 @@ import ThirdPlaceTable from "../../../components/Picks/Standings/ThirdPlaceTable
 
 const StandingsPicks = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { groups, thirdPlaceOrder, moveTeam, moveThirdPlaceTeam } =
     useStandingsPicks(user);
 
-  const handleNext = () => {
-    navigate("/knockoutStagePicks");
-    window.scrollTo(0, 0);
-  };
+  if (!profile) return null;
 
-  const handleBack = () => {
-    navigate("/groupStagePicks");
-    window.scrollTo(0, 0);
-  };
+  if (profile.picksSubmitted) {
+    return (
+      <div className="container text-center py-5 mt-5">
+        <h2>You have already submitted your picks.</h2>
+      </div>
+    )
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -39,7 +39,7 @@ const StandingsPicks = () => {
         {/* Groups Grid */}
         <div className="row g-4">
           {groups.map((group, index) => (
-            <div className="col-12 col-md-6 col-lg-4 col-xl-3" key={index}>
+            <div className="col-12 col-md-6 col-lg-4 col-xl-3" key={group.group}>
               <GroupTable
                 group={group}
                 groupIndex={index}
@@ -60,12 +60,11 @@ const StandingsPicks = () => {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="text-center mt-4">
-          <Button onClick={handleBack} color="dark" className="mx-2 px-4">
+          <Button onClick={() => navigate("/groupStagePicks")} color="dark" className="mx-2 px-4">
             Back
           </Button>
-          <Button onClick={handleNext} color="dark" className="mx-2 px-4">
+          <Button onClick={() => navigate("/knockoutStagePicks")} color="dark" className="mx-2 px-4">
             Next
           </Button>
         </div>

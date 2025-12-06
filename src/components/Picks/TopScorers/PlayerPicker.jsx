@@ -1,11 +1,12 @@
 import { getPlayerPickerFields } from "../../../utils/Picks/TopScorers/topScorerUtils.js";
 
-const PlayerPicker = ({ index, selection, onTeamChange, onPlayerChange }) => {
+const PlayerPicker = ({ index, pick, onTeamChange, onPlayerChange, takenPlayers }) => {
   const fields = getPlayerPickerFields(
-    selection,
+    pick,
     index,
     onTeamChange,
-    onPlayerChange
+    onPlayerChange,
+    takenPlayers
   );
 
   return (
@@ -22,8 +23,8 @@ const PlayerPicker = ({ index, selection, onTeamChange, onPlayerChange }) => {
           >
             <option value="">-- {field.label} --</option>
             {field.options.map((opt, i) => (
-              <option key={i} value={opt}>
-                {opt}
+              <option key={i} value={opt.value} disabled={opt.disabled}>
+                {opt.value}
               </option>
             ))}
           </select>

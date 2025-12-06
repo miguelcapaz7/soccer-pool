@@ -1,16 +1,55 @@
 import { useEffect, useState } from "react";
 import { saveToFirestore } from "../../../utils/Picks/firestoreUtils.js";
+import { updateDoc, doc } from "firebase/firestore";
+import { db } from "../../../firebase.js";
 
 const useReviewPicks = (user) => {
-  const [data, setData] = useState({
-    step1Picks: {},
-    step2Picks: {},
-    step3Picks: {},
-    step4Picks: [],
-    step5Picks: {},
-  });
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
+
+  const steps = {
+    step1Picks: {
+      stage: "Group Stage",
+      initialState: {},
+      validate: (val) =>
+        val &&
+        Object.keys(val).length > 0 &&
+        !Object.values(val).some(
+          (pick) => !pick.result || pick.result.trim() === ""
+        ),
+    },
+    step2Picks: {
+      stage: "Standings",
+      initialState: {},
+      validate: (val) => val && Object.keys(val).length > 0,
+    },
+    step3Picks: {
+      stage: "Knockout Stage",
+      initialState: {},
+      validate: (val) =>
+        val &&
+        Object.keys(val).length > 0 &&
+        !Object.values(val).some(
+          (pick) =>
+            !Array.isArray(pick) ||
+            pick.some((v) => typeof v !== "string" || v.trim() === "")
+        ),
+    },
+    step4Picks: {
+      stage: "Top Scorers",
+      initialState: [],
+      validate: (val) =>
+        Array.isArray(val) &&
+        val.length === 3 &&
+        !val.some((p) => !p.team || !p.player),
+    },
+    step5Picks: {
+      stage: "Total Goals Prediction",
+      initialState: {},
+      validate: (val) => val && !isNaN(val.totalGoals),
+    },
+  };
 
   const parseKey = (key) => {
     try {
@@ -27,6 +66,9 @@ const useReviewPicks = (user) => {
 
     try {
       await saveToFirestore("userPicks", data, user);
+      await updateDoc(doc(db, "users", user.uid), {
+        picksSubmitted: true,
+      });
       alert("Final picks submitted!");
     } catch (err) {
       alert("Error saving picks. Please try again.");
@@ -37,63 +79,18 @@ const useReviewPicks = (user) => {
     if (!user) return;
 
     const validationErrors = [];
+    const loadedData = {};
 
-    const step1Picks = parseKey(`step1Picks_${user.uid}`);
-    const step2Picks = parseKey(`step2Picks_${user.uid}`);
-    const step3Picks = parseKey(`step3Picks_${user.uid}`);
-    const step4Picks = parseKey(`step4Picks_${user.uid}`);
-    const step5Picks = parseKey(`step5Picks_${user.uid}`);
+    Object.entries(steps).forEach(([key, cfg]) => {
+      const localKey = `${key}_${user.uid}`;
+      const value = parseKey(localKey) ?? cfg.initialState;
 
-    if (
-      !step1Picks ||
-      Object.keys(step1Picks).length === 0 ||
-      Object.values(step1Picks).some(
-        (pick) => !pick.result || pick.result.trim() === ""
-      )
-    ) {
-      validationErrors.push("Group Stage picks are incomplete.");
-    }
+      loadedData[key] = value;
 
-    if (!step2Picks || Object.keys(step2Picks).length === 0) {
-      validationErrors.push("Standings picks are incomplete.");
-    }
-
-    if (
-      !step3Picks ||
-      Object.keys(step3Picks).length === 0 ||
-      Object.values(step3Picks).some(
-        (pick) =>
-          !Array.isArray(pick) ||
-          pick.some((v) => typeof v !== "string" || v.trim() === "")
-      )
-    ) {
-      validationErrors.push("Knockout bracket is incomplete.");
-    }
-
-    if (
-      !step4Picks ||
-      !Array.isArray(step4Picks) ||
-      step4Picks.length !== 3 ||
-      step4Picks.some((p) => !p.team || !p.player)
-    ) {
-      validationErrors.push("Top scorer picks are incomplete.");
-    }
-
-    if (
-      !step5Picks ||
-      Object.keys(step5Picks).length === 0 ||
-      isNaN(step5Picks?.totalGoals)
-    ) {
-      validationErrors.push("Goal prediction is invalid.");
-    }
-
-    setData({
-      step1Picks: step1Picks || {},
-      step2Picks: step2Picks || {},
-      step3Picks: step3Picks || {},
-      step4Picks: Array.isArray(step4Picks) ? step4Picks : [],
-      step5Picks: step5Picks || {},
+      if (!cfg.validate(value)) validationErrors.push(cfg.stage);
     });
+
+    setData(loadedData);
     setErrors(validationErrors);
     setLoading(false);
   }, [user]);

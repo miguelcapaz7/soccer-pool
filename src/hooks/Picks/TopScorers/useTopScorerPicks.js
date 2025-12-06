@@ -1,76 +1,72 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { generateInitialPlayerPicks } from "../../../utils/Picks/TopScorers/topScorerUtils.js";
 
-const getLocalStorageKey = (userId) => `step4Picks_${userId}`;
-
 const useTopScorerPicks = (user) => {
-  const [selections, setSelections] = useState(generateInitialPlayerPicks());
-  const [error, setError] = useState("");
+  const [topScorers, setTopScorers] = useState(generateInitialPlayerPicks());
+  const [topScorerError, setTopScorerError] = useState("");
 
-  const handleTeamChange = (index, value) => {
-    const updated = [...selections];
-    updated[index].team = value;
-    updated[index].player = "";
-    setSelections(updated);
-    setError("");
-  };
+  const localStorageKey = useMemo(
+    () => (user ? `step4Picks_${user.uid}` : null),
+    [user]
+  );
 
-  const handlePlayerChange = (index, value) => {
-    const updated = [...selections];
-    updated[index].player = value;
-    setSelections(updated);
-    validate(updated);
-    if (user) {
-      const localKey = getLocalStorageKey(user.uid);
-      localStorage.setItem(localKey, JSON.stringify(updated));
-    }
-  };
+  const saveToLocalStorage = useCallback((updated) => {
+    if (!user) return;
+    localStorage.setItem(localStorageKey, JSON.stringify(updated));
+  }, [user]);
 
-  const validate = (currentSelections = selections) => {
-    const incomplete = currentSelections.some(
-      (sel) => !sel.team || !sel.player
+  const takenPlayers = useMemo (() => {
+    return new Set(
+      topScorers
+        .map((p) => p.player)
+        .filter(Boolean)
     );
-    if (incomplete) {
-      setError("Please select both a team and a player for each pick!");
-      return false;
-    }
-    const playerNames = currentSelections
-      .map((sel) => sel.player)
-      .filter(Boolean);
-    const hasDuplicates = new Set(playerNames).size !== playerNames.length;
-    if (hasDuplicates) {
-      setError("You cannot pick the same player more than once!");
-      return false;
-    }
-    setError("");
-    return true;
-  };
+  }, [topScorers])
+
+  const handleTeamChange = useCallback((index, team) => {
+    setTopScorers((prev) => {
+      const updated = [...prev];
+      updated[index].team = team;
+      updated[index].player = "";
+      setTopScorerError("");
+      saveToLocalStorage(updated);
+      return updated;
+    });
+  }, [saveToLocalStorage]);
+
+  const handlePlayerChange = useCallback((index, player) => {
+    setTopScorers((prev) => {
+      const updated = [...prev];
+      updated[index].player = player;
+      saveToLocalStorage(updated);
+      return updated;
+    })
+  }, [saveToLocalStorage]);
 
   useEffect(() => {
     if (!user) return;
 
-    const localKey = getLocalStorageKey(user.uid);
-    const localData = localStorage.getItem(localKey);
+    try {
+      const savedData = localStorage.getItem(localStorageKey);
+      if (!savedData) return;
 
-    if (localData) {
-      try {
-        const parsed = JSON.parse(localData);
-        if (Array.isArray(parsed)) {
-          setSelections(parsed);
-          return;
-        }
-      } catch (err) {
-        console.error("Error loading Step 4 picks:", err);
-      } 
-    }
+      const parsed = JSON.parse(savedData);
+      if (Array.isArray(parsed)) {
+        setTopScorers(parsed);
+        return;
+      }
+    } catch (err) {
+      console.error("Error loading Step 4 picks:", err);
+    } 
+    
   }, [user]);
 
   return {
-    selections,
-    error,
+    topScorers,
+    topScorerError,
+    takenPlayers,
     handleTeamChange,
     handlePlayerChange,
-    validate,
   };
 };
 

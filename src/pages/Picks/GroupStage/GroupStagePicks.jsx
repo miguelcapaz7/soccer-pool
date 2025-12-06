@@ -7,7 +7,7 @@ import MatchDayTable from "../../../components/Picks/GroupStage/MatchDayTable.js
 
 const GroupStagePicks = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { groupStagePicks, handlePick } = useGroupStagePicks(user);
 
   const handleNext = () => {
@@ -15,6 +15,16 @@ const GroupStagePicks = () => {
     navigate("/standingsPicks");
     window.scrollTo(0, 0);
   };
+
+  if (!profile) return null;
+
+  if (profile.picksSubmitted) {
+    return (
+      <div className="container text-center py-5 mt-5">
+        <h2>You have already submitted your picks.</h2>
+      </div>
+    )
+  }
 
   return (
     <div className="container text-center py-5 mt-5">

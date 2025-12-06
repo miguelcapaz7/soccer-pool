@@ -1,10 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../layouts/AuthLayout.jsx";
 import Form from "../../components/Auth/Form.jsx";
-import { createAccountFields, createAccount } from "../../utils/Auth/authUtils.js";
+import { createAccount } from "../../utils/Auth/authUtils.js";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
+
+  const createAccountFields = [
+    { name: "firstName", type: "text", placeholder: "First Name", required: true },
+    { name: "lastName", type: "text", placeholder: "Last Name", required: true },
+    { name: "email", type: "email", placeholder: "Email", required: true },
+    { name: "password", type: "password", placeholder: "Password", required: true },
+    { name: "confirmPassword", type: "password", placeholder: "Confirm Password", required: true, marginBottom: 4 },
+  ];
 
   const handleCreateAccount = async (data) => {
     if (data.password !== data.confirmPassword) {
@@ -20,19 +28,18 @@ const CreateAccount = () => {
         fields={createAccountFields}
         onSubmit={handleCreateAccount}
         buttonText="Create Account"
-        signUpLink={
-          <span>
+        showDivider={false}
+        footer={
+          <>
             Already have an account?{" "}
             <button
-              type="button"
-              className="btn btn-link p-0 text-decoration-none fw-bold"
+              className="btn btn-link p-0 fw-bold"
               onClick={() => navigate("/login")}
             >
               Log in
             </button>
-          </span>
+          </>
         }
-        showDivider={false}
       />
     </AuthLayout>
   );

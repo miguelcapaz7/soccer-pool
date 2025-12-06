@@ -17,7 +17,8 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [role, setRole] = useState(null);
+  const [profile, setProfile] = useState(null);
+  
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,31 +29,33 @@ export const AuthProvider = ({ children }) => {
 
       if (currentUser) {
         try {
-          const usersDoc = await getDoc(doc(db, "users", currentUser.uid));
-          if (usersDoc.exists()) {
-            const data = usersDoc.data();
-            setRole(data.role || "User");
+          const usersDoc = doc(db, "users", currentUser.uid);
+          const snapshot = await getDoc(usersDoc);
+          if (snapshot.exists()) {
+            setProfile(snapshot.data());
           } else {
-            setRole("User");
+            setProfile(null);
           }
         } catch (err) {
-          console.error("Error fetching user role:", err);
-          setRole(null);
+          console.error("Error fetching user profile:", err);
+          setProfile(null);
         }
-      } else {
-        setRole(null);
-      }
+
+        return;
+      } 
+
+      setProfile(null);
 
       const publicRoutes = ["/login", "/createAccount"];
-      if (!currentUser && !publicRoutes.includes(location.pathname)) {
+      if (!publicRoutes.includes(location.pathname)) {
         navigate("/login");
       }
     });
 
     return () => unsubscribe();
-  }, [navigate, location.pathname]);
+  }, [navigate]);
 
-  const value = { user, isLoggedIn, role };
+  const value = { user, isLoggedIn, profile };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

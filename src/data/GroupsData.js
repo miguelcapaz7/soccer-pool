@@ -1,62 +1,62 @@
 const GroupsData = [
     {
       group: "A",
-      teams: ["USA", "Qatar", "Japan", "Morocco"],
+      teams: ["Mexico", "South Africa", "South Korea", "Denmark"],
       colour: ""
     },
     {
       group: "B",
-      teams: ["Mexico", "Curacao", "Norway", "South Korea"],
+      teams: ["Canada", "Italy", "Qatar", "Switzerland"],
       colour: ""
     },
     {
       group: "C",
-      teams: ["Canada", "New Zealand", "Senegal", "Uruguay"],
+      teams: ["Brazil", "Morocco", "Haiti", "Scotland"],
       colour: ""
     },
     {
       group: "D",
-      teams: ["Spain", "Tunisia", "Colombia", "Australia"],
+      teams: ["USA", "Paraguay", "Australia", "Turkey"],
       colour: ""
     },
     {
       group: "E",
-      teams: ["Argentina", "Italy", "Cote d'Ivoire", "Austria"],
+      teams: ["Germany", "Curacao", "Cote d'Ivoire", "Ecuador"],
       colour: ""
     },
     {
       group: "F",
-      teams: ["France", "Croatia", "Iran", "Ghana"],
+      teams: ["Netherlands", "Japan", "Ukraine", "Tunisia"],
       colour: ""
     },
     {
       group: "G",
-      teams: ["Brazil", "Denmark", "Turkey", "Ecuador"],
+      teams: ["Belgium", "Egypt", "Iran", "New Zealand"],
       colour: ""
     },
     {
       group: "H",
-      teams: ["England", "Switzerland", "Wales", "Algeria"],
+      teams: ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
       colour: ""
     },
     {
       group: "I",
-      teams: ["Portugal", "South Africa", "Scotland", "Uzbekistan"],
+      teams: ["France", "Senegal", "Iraq", "Norway"],
       colour: ""
     },
     {
       group: "J",
-      teams: ["Belgium", "Egypt", "Jordan", "Panama"],
+      teams: ["Argentina", "Algeria", "Austria", "Jordan"],
       colour: ""
     },
     {
       group: "K",
-      teams: ["Netherlands", "Saudi Arabia", "Haiti", "Ireland"],
+      teams: ["Portugal", "Jamaica", "Uzbekistan", "Colombia"],
       colour: ""
     },
     {
       group: "L",
-      teams: ["Germany", "Paraguay", "Slovakia", "Cape Verde"],
+      teams: ["England", "Croatia", "Ghana", "Panama"],
       colour: ""
     }
   ];

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/world-cup-2026-logo.jpg";
 
 const Navbar = () => {
-  const { user, isLoggedIn, role } = useAuth();
+  const { user, isLoggedIn, profile } = useAuth();
   const navigate = useNavigate();
   const navItems = ["Home", "Rules", "Leaderboard"];
 
@@ -20,7 +20,7 @@ const Navbar = () => {
   };
   
   const dropdownItems = [
-    ...(role === "Admin"
+    ...(profile?.role === "Admin"
       ? [{ label: "Admin", onClick: () => navigate("/admin") }]
       : []),
     { label: "Profile", onClick: () => navigate("/profile") },

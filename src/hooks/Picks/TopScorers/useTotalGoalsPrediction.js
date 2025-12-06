@@ -1,59 +1,58 @@
-import { useEffect, useState } from "react";
-
-const getLocalStorageKey = (userId) => `step5Picks_${userId}`;
+import { useEffect, useState, useMemo, useCallback } from "react";
 
 const useTotalGoalsPrediction = (user) => {
   const [goalPrediction, setGoalPrediction] = useState("");
-  const [error, setError] = useState("");
+  const [goalPredictionError, setGoalPredictionError] = useState("");
 
-  const handleGoalInput = (value) => {
+  const localStorageKey = useMemo(
+    () => (user ? `step5Picks_${user.uid}` : null),
+    [user]
+  );
+
+  const saveToLocalStorage = useCallback((value) => {
+    if (!user) return;
+    localStorage.setItem(localStorageKey, JSON.stringify({ totalGoals: value }));
+  }, [user, localStorageKey]);
+
+  const validate = (value) => {
     if (value === "") {
-      setGoalPrediction("");
-      setError("");
-      return;
+      setGoalPredictionError("");
+      return true;
     }
-    
-    if (!validate(value)) return;
-    setGoalPrediction(value);
 
-    if (user) {
-      const localKey = getLocalStorageKey(user.uid);
-      localStorage.setItem(localKey, JSON.stringify({ totalGoals: value }));
-    }
-  };
-
-  const validate = (goalsInput) => {
-    if (!/^\d+$/.test(goalsInput)) {
-      setError("Please enter a valid number");
+    if (!/^\d+$/.test(value)) {
+      setGoalPredictionError("Please enter a valid number");
       return false;
     }
 
-    setError("");
+    setGoalPredictionError("");
     return true;
   };
+  
+  const handleGoalInput = useCallback((value) => {
+    if (!validate(value)) return;
+    setGoalPrediction(value);
+    saveToLocalStorage(value)
+  }, [validate, saveToLocalStorage]);
 
   useEffect(() => {
     if (!user) return;
 
-    const localKey = getLocalStorageKey(user.uid);
-    const localData = localStorage.getItem(localKey);
-
-    if (localData) {
-      try {
-        const parsed = JSON.parse(localData);
-        if (parsed && typeof parsed.totalGoals === "string") {
-          setGoalPrediction(parsed.totalGoals);
-        }
-      } catch (err) {
-        console.error("Error loading total goals prediction:", err);
-      } 
-    }
-
-  }, [user]);
+    try {
+      const savedData = localStorage.getItem(localStorageKey);
+      if (!savedData) return;
+      const parsed = JSON.parse(savedData);
+      if (parsed && typeof parsed.totalGoals === "string") {
+        setGoalPrediction(parsed.totalGoals);
+      }
+    } catch (err) {
+      console.error("Error loading total goals prediction:", err);
+    } 
+  }, [user, localStorageKey]);
 
   return {
     goalPrediction,
-    error,
+    goalPredictionError,
     handleGoalInput,
     validate,
   };

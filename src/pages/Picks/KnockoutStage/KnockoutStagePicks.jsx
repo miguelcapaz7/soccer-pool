@@ -8,8 +8,8 @@ import "../../../assets/styles/Bracket.css";
 
 const KnockoutStagePicks = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { bracket, handleSelectTeam, loading, missingStep2 } = useKnockoutStagePicks(user);
+  const { user, profile } = useAuth();
+  const { bracket, handleSelectTeam, loading, missingStep2, resetMatch } = useKnockoutStagePicks(user);
 
   const stages = useMemo(
     () => ["Round of 32", "Round of 16", "Quarter Finals", "Semi Finals"],
@@ -41,6 +41,16 @@ const KnockoutStagePicks = () => {
     );
   }
 
+  if (!profile) return null;
+
+  if (profile.picksSubmitted) {
+    return (
+      <div className="container text-center py-5 mt-5">
+        <h2>You have already submitted your picks.</h2>
+      </div>
+    )
+  }
+
   return (
     <div className="page-container py-5 text-center mt-5">
       <div className="card shadow-sm p-4 mb-4 mx-auto">
@@ -66,7 +76,7 @@ const KnockoutStagePicks = () => {
           alt="World Cup Logo"
           className="bracket-logo"
         />
-        <Bracket bracket={bracket} handleSelectTeam={handleSelectTeam} />
+        <Bracket bracket={bracket} handleSelectTeam={handleSelectTeam} resetMatch={resetMatch} />
       </div>
       <Button onClick={handleBack} color="dark">
         Back

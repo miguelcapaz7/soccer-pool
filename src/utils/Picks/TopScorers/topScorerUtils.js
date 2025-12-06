@@ -6,27 +6,31 @@ export const generateInitialPlayerPicks = () => {
 };
 
 export const getPlayerPickerFields = (
-  selection,
+  pick,
   index,
   onTeamChange,
-  onPlayerChange
+  onPlayerChange,
+  takenPlayers
 ) => {
-  const selectedTeamData = TeamsData.find((t) => t.team === selection.team);
+  const pickedTeamData = TeamsData.find((t) => t.team === pick.team);
+  const playerOptions = pickedTeamData?.players || [];
 
   return [
     {
       label: "Select Team",
-      value: selection.team,
+      value: pick.team,
       onChange: (e) => onTeamChange(index, e.target.value),
-      options: TeamsData.map((t) => t.team),
-      disabled: false,
+      options: TeamsData.map((t) => ({ value: t.team, disabled: false })),
     },
     {
       label: "Select Player",
-      value: selection.player,
+      value: pick.player,
       onChange: (e) => onPlayerChange(index, e.target.value),
-      options: selectedTeamData?.players || [],
-      disabled: !selection.team,
+      options: playerOptions.map((player) => ({
+        value: player,
+        disabled: takenPlayers.has(player) && pick.player !== player
+      })),
+      disabled: !pick.team,
     },
   ];
 };

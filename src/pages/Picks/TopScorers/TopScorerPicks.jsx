@@ -8,11 +8,21 @@ import useTotalGoalsPrediction from "../../../hooks/Picks/TopScorers/useTotalGoa
 
 const TopScorerPicks = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { selections, topScorerError, handleTeamChange, handlePlayerChange } =
+  const { user, profile } = useAuth();
+  const { topScorers, topScorerError, handleTeamChange, handlePlayerChange, takenPlayers } =
     useTopScorerPicks(user);
   const { goalPrediction, goalPredictionError, handleGoalInput } =
     useTotalGoalsPrediction(user);
+
+  if (!profile) return null;
+
+  if (profile.picksSubmitted) {
+    return (
+      <div className="container text-center py-5 mt-5">
+        <h2>You have already submitted your picks.</h2>
+      </div>
+    )
+  }
 
   return (
     <div className="container text-center py-5 mt-5">
@@ -25,19 +35,23 @@ const TopScorerPicks = () => {
         </p>
       </div>
       <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
-        {selections.map((sel, i) => (
+        {topScorers.map((pick, i) => (
           <div className="col" key={i}>
             <div className="card p-3 shadow-sm">
               <PlayerPicker
                 key={i}
                 index={i}
-                selection={sel}
+                pick={pick}
                 onTeamChange={handleTeamChange}
                 onPlayerChange={handlePlayerChange}
+                takenPlayers={takenPlayers}
               />
             </div>
           </div>
         ))}
+        {topScorerError && (
+          <div className="text-danger mt-2">{topScorerError}</div>
+        )}
       </div>
       <div className="card shadow-sm p-4 mb-4 mx-auto">
         <h2 className="mb-3">

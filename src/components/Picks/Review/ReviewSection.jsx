@@ -69,9 +69,6 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
       );
     }
 
-    
-
-    
     if (step === 5) {
       const { totalGoals } = items;
       return (

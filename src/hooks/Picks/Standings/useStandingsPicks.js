@@ -1,28 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils.js";
 
-const getLocalStorageKey = (uid) => `step2Picks_${uid}`;
-
 const useStandingsPicks = (user) => {
-  const [standings, setStandings] = useState(generateInitialStandings());
-  const [thirdPlaceOrder, setThirdPlaceOrder] = useState([]);
+  const [standings, setStandings] = useState(
+    useRef(generateInitialStandings()).current
+  );
+  const [thirdPlaceOrder, setThirdPlaceOrder] = useState(
+    useRef(generateInitialStandings().map((g) => g.teams[2])).current
+  );
 
-  const moveTeam = (groupIndex, fromIndex, toIndex) => {
+  const localStorageKey = useMemo(
+    () => (user ? `step2Picks_${user.uid}` : null),
+    [user]
+  );
+
+  const saveToLocalStorage = useCallback((updatedStandings, updatedThirdPlace) => {
+    if (!user) return;
+    const data = {
+      standings: updatedStandings,
+      thirdPlaceOrder: updatedThirdPlace,
+    };
+    localStorage.setItem(localStorageKey, JSON.stringify(data));
+  }, [user]);
+
+  const moveTeam = useCallback((groupIndex, fromIndex, toIndex) => {
     setStandings((prev) => {
-      const updatedStandings = [...prev];
-      const group = updatedStandings[groupIndex];
-      const teamList = [...group.teams];
-      const [movedTeam] = teamList.splice(fromIndex, 1);
-      teamList.splice(toIndex, 0, movedTeam);
-      updatedStandings[groupIndex] = { ...group, teams: teamList };
+      const updatedStandings = prev.map((g) => ({ ...g, teams: [...g.teams] }));
+      const teams = updatedStandings[groupIndex].teams;
+      const [movedTeam] = teams.splice(fromIndex, 1);
+      teams.splice(toIndex, 0, movedTeam);
+      const updatedThirdPlace = updatedStandings.map((g) => g.teams[2]);
 
-      saveToLocalStorage(updatedStandings, thirdPlaceOrder);
+      setThirdPlaceOrder(updatedThirdPlace);
+      saveToLocalStorage(updatedStandings, updatedThirdPlace);
 
       return updatedStandings;
     });
-  };
+  }, [saveToLocalStorage]);
 
-  const moveThirdPlaceTeam = (fromIndex, toIndex) => {
+  const moveThirdPlaceTeam = useCallback((fromIndex, toIndex) => {
     setThirdPlaceOrder((prev) => {
       const updated = [...prev];
       const [movedTeam] = updated.splice(fromIndex, 1);
@@ -31,47 +47,27 @@ const useStandingsPicks = (user) => {
       saveToLocalStorage(standings, updated);
       return updated;
     });
-  };
-
-  const saveToLocalStorage = (updatedStandings, updatedThirdPlace) => {
-    if (user) {
-      const localKey = getLocalStorageKey(user.uid);
-      const data = {
-        standings: updatedStandings,
-        thirdPlaceOrder: updatedThirdPlace,
-      };
-      localStorage.setItem(localKey, JSON.stringify(data));
-    }
-  };
+  }, [standings, saveToLocalStorage]);
 
   useEffect(() => {
     if (!user) return;
 
-    const localKey = getLocalStorageKey(user.uid);
-    const localData = localStorage.getItem(localKey);
+    try {
+      const savedData = localStorage.getItem(localStorageKey);
+      if (!savedData) return;
 
-    if (localData) {
-      try {
-        const parsed = JSON.parse(localData);
-        if (Array.isArray(parsed.standings)) {
-          setStandings(parsed.standings);
-        }
-        if (Array.isArray(parsed.thirdPlaceOrder)) {
-          setThirdPlaceOrder(parsed.thirdPlaceOrder);
-        }
-      } catch (err) {
-        console.error("Error parsing local standings:", err);
+      const parsed = JSON.parse(savedData);
+      if (Array.isArray(parsed.standings)) {
+        setStandings(parsed.standings);
       }
-    } else {
-      const initialThirdPlace = standings.map((group) => group.teams[2]);
-      setThirdPlaceOrder(initialThirdPlace);
+      if (Array.isArray(parsed.thirdPlaceOrder)) {
+        setThirdPlaceOrder(parsed.thirdPlaceOrder);
+      }
+    } catch (err) {
+      console.error("Error parsing standings:", err);
     }
+ 
   }, [user]);
-
-  useEffect(() => {
-    const initialThirdPlace = standings.map((group) => group.teams[2]);
-    setThirdPlaceOrder(initialThirdPlace);
-  }, [standings]);
 
   return { groups: standings, thirdPlaceOrder, moveTeam, moveThirdPlaceTeam };
 };
