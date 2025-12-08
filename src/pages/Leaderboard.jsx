@@ -9,7 +9,16 @@ const Leaderboard = () => {
   return (
     <MainLayout title="Leaderboard">
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <LeaderboardTable leaders={leaders} />
+
+      {leaders.length === 0 ? (
+        <div className="card mt-3">
+          <div className="card-body text-center bg-light">
+            <p className="card-title mb-0 text-muted">No data available</p>
+          </div>
+        </div>
+      ) : (
+        <LeaderboardTable leaders={leaders} />
+      )}
     </MainLayout>
   );
 };

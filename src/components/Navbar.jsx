@@ -39,7 +39,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="Logo"
-            className="d-inline-block align-top"
+            className="d-inline-block align-top rounded"
             style={{ height: "35px", width: "auto" }}
           />
         </NavLink>

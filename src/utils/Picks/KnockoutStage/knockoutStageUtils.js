@@ -89,22 +89,22 @@ export const generateRoundOf32 = (step2Results) => {
   };
 
   return [
-    [getPlacing("A", 2), getPlacing("B", 2)],
     [getPlacing("E", 1), getThirdPlace(0)],
-    [getPlacing("F", 1), getPlacing("C", 2)],
-    [getPlacing("C", 1), getPlacing("F", 2)],
     [getPlacing("I", 1), getThirdPlace(1)],
+    [getPlacing("A", 2), getPlacing("B", 2)],
+    [getPlacing("F", 1), getPlacing("C", 2)],
+    [getPlacing("K", 2), getPlacing("L", 2)],
+    [getPlacing("H", 1), getPlacing("J", 2)],
+    [getPlacing("D", 1), getThirdPlace(4)],
+    [getPlacing("G", 1), getThirdPlace(5)],
+    [getPlacing("C", 1), getPlacing("F", 2)],
     [getPlacing("E", 2), getPlacing("I", 2)],
     [getPlacing("A", 1), getThirdPlace(2)],
     [getPlacing("L", 1), getThirdPlace(3)],
-    [getPlacing("D", 1), getThirdPlace(4)],
-    [getPlacing("G", 1), getThirdPlace(5)],
-    [getPlacing("K", 2), getPlacing("L", 2)],
-    [getPlacing("H", 1), getPlacing("J", 2)],
-    [getPlacing("B", 1), getThirdPlace(6)],
     [getPlacing("J", 1), getPlacing("H", 2)],
-    [getPlacing("K", 1), getThirdPlace(7)],
     [getPlacing("D", 2), getPlacing("G", 2)],
+    [getPlacing("B", 1), getThirdPlace(6)],
+    [getPlacing("K", 1), getThirdPlace(7)],
   ];
 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
 const useLeaderboard = () => {
@@ -8,24 +8,31 @@ const useLeaderboard = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "leaderboard"));
-        const data = querySnapshot.docs.map((doc) => ({
+    const q = query(
+      collection(db, "leaderboard"),
+      orderBy("total", "desc")
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const result = snapshot.docs.map((doc, index) => ({
           id: doc.id,
+          placing: index + 1,
           ...doc.data(),
         }));
-        data.sort((a, b) => a.placing - b.placing);
-        setLeaders(data);
-      } catch (err) {
+
+        setLeaders(result);
+        setLoading(false);
+      },
+      (err) => {
         console.error("Error fetching leaderboard:", err);
         setError("Failed to load leaderboard.");
-      } finally {
         setLoading(false);
       }
-    };
+    );
 
-    fetchLeaderboard();
+    return () => unsubscribe();
   }, []);
 
   return { leaders, loading, error };

@@ -19,6 +19,8 @@ import TopScorerPicks from "./pages/Picks/TopScorers/TopScorerPicks.jsx";
 import ReviewPicks from "./pages/Picks/Review/ReviewPicks.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Profile from "./pages/Profile.jsx";
+import Admin from "./pages/Admin/Admin.jsx";
+import ManageUsers from "./pages/Admin/Users/ManageUsers.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 const Router = import.meta.env.MODE === 'production' ? HashRouter : BrowserRouter;
@@ -42,6 +44,8 @@ function App() {
             <Route path="/knockoutStagePicks" element={<KnockoutStagePicks />} />
             <Route path="/topScorerPicks" element={<TopScorerPicks />} />
             <Route path="/reviewPicks" element={<ReviewPicks />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/manageUsers" element={<ManageUsers />}></Route>
           </Routes>
         </div>
       </AuthProvider>
