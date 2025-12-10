@@ -1,10 +1,9 @@
 .bracket-label-col {
-  width: 100%;
   margin: 0 8px;
   position: relative;
-  display: flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
 }
 
 .bracket-col {
@@ -45,6 +44,10 @@
 .team-row {
   padding: 8px;
   height: 41px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
   cursor: pointer;
   border-bottom: 1px solid #eee;
   transition: background 0.2s;
@@ -74,8 +77,8 @@
 }
 
 .page-container{
-    max-width: 1700px;
-    margin: 0 auto;
+  max-width: 1700px;
+  margin: 0 auto;
 }
 
 .bracket-logo {
@@ -103,4 +106,48 @@
   position: absolute;
   top: -5px;
   right: -5px;
+}
+
+.bracket-scroll-wrapper {
+  width: 100%;
+}
+
+.bracket-inner {
+  display: flex;
+  position: relative;
+}
+
+.bracket-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .bracket-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+
+  /* Force bracket to be wider than the phone so scrolling works */
+  .bracket-inner {
+    min-width: 1200px;   /* adjust depending on # of columns */
+  }
+
+  /* Optional: slightly tighter mobile spacing */
+  .bracket-col {
+    margin: 0 4px;
+  }
+
+  .bracket-match {
+    width: 90%;
+  }
+
+  .team-row {
+    padding: 6px;
+    height: 38px;
+    font-size: 0.85rem;
+  }
 }
