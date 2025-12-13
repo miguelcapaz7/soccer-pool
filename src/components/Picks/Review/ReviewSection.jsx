@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../../Button.jsx";
 import GroupTable from "../../GroupTable.jsx";
+import MatchDayTable from "../GroupStage/MatchDayTable.jsx";
 
 const ReviewSection = ({ title, items, onEdit, step }) => {
   const renderContent = () => {
@@ -11,36 +12,15 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
     if (step === 1) {
       return (
         <div className="row justify-content-between">
-          {[1, 2, 3].map((md) => {
-            const mdItems = items.filter((item) =>
-              item.matchId.startsWith(`MD${md}`)
-            );
-            return (
-              <div key={md} className="col-md-4">
-                <div className="d-flex flex-column gap-2">
-                  {mdItems.length > 0 ? (
-                    mdItems.map(({ team1, team2, result }, idx) => (
-                      <div
-                        key={idx}
-                        className={`border rounded p-1 ${
-                          result.trim() === ""
-                            ? "border-danger"
-                            : "border-secondary"
-                        }`}
-                      >
-                        <span>
-                          {team1} vs {team2}:{" "}
-                        </span>
-                        <span className="fw-bold">{result}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-muted">No picks</p>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+          {[1, 2, 3].map((md) => (
+            <div key={md} className="col-12 col-lg-4">
+              <MatchDayTable
+                matchDay={md}
+                groupStagePicks={items}
+                clickable={false}
+              />
+            </div>
+          ))}
         </div>
       );
     }
@@ -48,47 +28,57 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
     if (step === 2) {
       return (
         <div className="row g-4">
-          {items.standings.map((group, index) => (
-            <div key={index} className="col-12 col-md-6 col-lg-4 col-xl-3">
-              <GroupTable
-                group={{
-                  group: group.group,
-                  teams: group.topTwo,
-                }}
-                groupIndex={index}
-                draggable={false}
-              />
-            </div>
-          ))}
-
+          {items.standings.map((group, index) => {
+            const top2 = {
+              ...group,
+              teams: group.teams.slice(0, 2),
+            };
+            return (
+              <div key={index} className="col-12 col-md-6 col-lg-4 col-xl-3">
+                <GroupTable group={top2} groupIndex={index} draggable={false} />
+              </div>
+            );
+          })}
           <div className="col-12 mt-4">
             <h6 className="fw-bold">Third Place Teams:</h6>
-            <p>{(items.thirdPlaceOrder || []).join(", ")}</p>
+            <p>{(items.thirdPlaceOrder.slice(0,8) || []).join(", ")}</p>
           </div>
         </div>
       );
+    }
+
+    if (step === 3) {
+      return (
+        <ul className="list-group list-group-flush">
+          {Object.entries(items).map(([matchId, teams], idx) => (
+            <li key={idx} className="list-group-item">
+              {matchId}: {teams.join(" vs. ")}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    if (step === 4) {
+      if (Array.isArray(items)) {
+        return (
+          <ul className="list-group list-group-flush">
+            {items.map((item, idx) => (
+              <li key={idx} className="list-group-item">
+                {`${item.player} (${item.team})`}
+              </li>
+            ))}
+          </ul>
+        );
+      }
     }
 
     if (step === 5) {
       const { totalGoals } = items;
       return (
         <div>
-          <p>
-            Total Goals Prediction: {totalGoals}
-          </p>
+          <p>Total Goals Prediction: {totalGoals}</p>
         </div>
-      );
-    }
-
-    if (Array.isArray(items)) {
-      return (
-        <ul className="list-group list-group-flush">
-          {items.map((item, idx) => (
-            <li key={idx} className="list-group-item">
-              {typeof item === "string" ? item : JSON.stringify(item)}
-            </li>
-          ))}
-        </ul>
       );
     }
   };

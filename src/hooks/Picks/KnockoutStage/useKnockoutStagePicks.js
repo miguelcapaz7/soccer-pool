@@ -42,14 +42,17 @@ const useKnockoutStagePicks = (user) => {
     }
     try {
       const parsed = JSON.parse(savedStandings);
-      if (Array.isArray(parsed.standings) && Array.isArray(parsed.thirdPlaceOrder)) {
+      if (
+        Array.isArray(parsed.standings) &&
+        Array.isArray(parsed.thirdPlaceOrder)
+      ) {
         const groupTop2 = parsed.standings.map(({ group, teams }) => ({
           group,
           first: teams[0],
           second: teams[1],
         }));
         const thirdPlaceTop8 = parsed.thirdPlaceOrder.slice(0, 8);
-  
+
         setStep2Results({ groups: groupTop2, thirdPlace: thirdPlaceTop8 });
       }
     } catch (err) {
@@ -59,10 +62,10 @@ const useKnockoutStagePicks = (user) => {
     setLoading(false);
   }, [user]);
 
-    // Initialize bracket after Step 2 results load
+  // Initialize bracket after Step 2 results load
   useEffect(() => {
     if (!loading && !missingStep2 && step2Results) {
-      setTeamsByMatchId(prev =>
+      setTeamsByMatchId((prev) =>
         updateBracketWithR32(prev, roundOf32, validTeams)
       );
     }
@@ -77,10 +80,17 @@ const useKnockoutStagePicks = (user) => {
 
     try {
       const parsed = JSON.parse(savedData);
-      setTeamsByMatchId((prev) => ({
-        ...prev,
-        ...parsed,
-      }));
+      setTeamsByMatchId((prev) => {
+        const merged = { ...prev };
+
+        Object.entries(parsed).forEach(([matchId, teams]) => {
+          if (!matchId.startsWith("R32")) {
+            merged[matchId] = teams;
+          }
+        });
+        saveStep3(merged)
+        return merged;
+      });
     } catch (err) {
       console.error("Error parsing Step3 picks:", err);
     }
@@ -94,27 +104,28 @@ const useKnockoutStagePicks = (user) => {
     [localStorageKey]
   );
 
-  const resetMatch = useCallback(matchId => {
-    setTeamsByMatchId(prev => {
-      const updated = { ...prev };
+  const resetMatch = useCallback(
+    (matchId) => {
+      setTeamsByMatchId((prev) => {
+        const updated = { ...prev };
 
-      // Clear this match's picks
-      if (updated[matchId]) {
-        updated[matchId] = ["", ""];
-      }
+        // Clear this match's picks
+        updated[matchId] =
+          matchId === "CHAMPION" || matchId === "3rdWinner" ? [""] : ["", ""];
 
-      // Clear downstream matches (propagation)
-      Object.entries(generateBracketMap).forEach(([id, meta]) => {
-        if (meta.dependsOn?.includes(matchId)) {
-          updated[id] = ["", ""];
-        }
+        // Clear downstream matches (propagation)
+        Object.entries(generateBracketMap).forEach(([id, meta]) => {
+          if (meta.dependsOn?.includes(matchId)) {
+            updated[id] = ["", ""];
+          }
+        });
+
+        saveStep3(updated);
+        return updated;
       });
-
-      saveStep3(updated);
-      return updated;
-    });
-
-  }, [saveStep3]);
+    },
+    [saveStep3]
+  );
 
   // Handles team selection and propogate winners
   const handleSelectTeam = useCallback(

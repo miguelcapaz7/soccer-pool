@@ -47,7 +47,9 @@ const useReviewPicks = (user) => {
     step5Picks: {
       stage: "Total Goals Prediction",
       initialState: {},
-      validate: (val) => val && !isNaN(val.totalGoals),
+      validate: (val) => val && typeof val.totalGoals === "string" &&
+    val.totalGoals.trim() !== "" &&
+    !Number.isNaN(Number(val.totalGoals)),
     },
   };
 

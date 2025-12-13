@@ -115,5 +115,21 @@ export const updateBracketWithR32 = (prevTeams, r32, validTeams) => {
     const pair = r32[i - 1];
     updated[matchId] = pair.map((t) => (validTeams.has(t) ? t : ""));
   }
+
+  // Object.entries(generateBracketMap).forEach(([matchId, meta]) => {
+  //   if (!matchId.startsWith("R32")) {
+  //     const current = updated[matchId];
+
+  //     if (matchId === "CHAMPION" || matchId === "3rdWinner") {
+  //       updated[matchId] = validTeams.has(current?.[0]) ? [current[0]] : [""];
+  //     } else {
+  //       updated[matchId] = [
+  //         validTeams.has(current?.[0]) ? current[0] : "",
+  //         validTeams.has(current?.[1]) ? current[1] : "",
+  //       ];
+  //     }
+  //   }
+  // });
+
   return updated;
 };

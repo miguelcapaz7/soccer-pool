@@ -12,7 +12,7 @@ const PlayerPicker = ({ index, pick, onTeamChange, onPlayerChange, takenPlayers 
   return (
     <div className="col mb-4">
       {fields.map((field, idx) => (
-        <div key={idx}>
+        <div className="text-center" key={idx}>
           <label className="form-label fw-bold">{field.label}:</label>
           <select
             className="form-select mx-auto"

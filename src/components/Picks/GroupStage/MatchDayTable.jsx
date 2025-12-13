@@ -1,10 +1,18 @@
 // components/MatchDayTable.js
 import React from "react";
-import  GroupsData  from "../../../data/GroupsData.js";
-import { getMatchId, getGroupStageMatchups } from "../../../utils/Picks/GroupStage/groupStageUtils.js";
+import GroupsData from "../../../data/GroupsData.js";
+import {
+  getMatchId,
+  getGroupStageMatchups,
+} from "../../../utils/Picks/GroupStage/groupStageUtils.js";
 
-const MatchDayTable = ({ matchDay, groupStagePicks, handlePick }) => {
-  const matchups = getGroupStageMatchups(matchDay)
+const MatchDayTable = ({
+  matchDay,
+  groupStagePicks,
+  handlePick,
+  clickable = true,
+}) => {
+  const matchups = getGroupStageMatchups(matchDay);
 
   return (
     <div className="card shadow-sm h-100">
@@ -13,7 +21,7 @@ const MatchDayTable = ({ matchDay, groupStagePicks, handlePick }) => {
       </div>
 
       <div className="card-body p-0">
-        <table className="table table-sm table-hover mb-0">
+        <table className={`table table-sm ${clickable ? "table-hover" : ""} mb-0`}>
           <thead className="table-light">
             <tr>
               <th className="small-col text-center">Grp</th>
@@ -26,21 +34,32 @@ const MatchDayTable = ({ matchDay, groupStagePicks, handlePick }) => {
           <tbody>
             {GroupsData.map((groupData) =>
               matchups.map(([i, j], matchIndex) => {
-                const matchId = getMatchId(matchDay, groupData.group, matchIndex);
+                const matchId = getMatchId(
+                  matchDay,
+                  groupData.group,
+                  matchIndex
+                );
                 const { result } = groupStagePicks[matchId];
                 const options = [groupData.teams[i], "Tie", groupData.teams[j]];
 
                 return (
                   <tr key={matchId}>
                     <td className="text-center fw-bold">{groupData.group}</td>
-                    {options.map(option => (
+                    {options.map((option) => (
                       <td
                         key={option}
-                        className={`text-center clickable ${
+                        className={`text-center ${
                           result === option ? "table-primary" : ""
-                        }`}
-                        style={{ cursor: "pointer", minWidth: "70px" }}
-                        onClick={() => handlePick(matchId, option)}
+                        } ${clickable ? "clickable" : ""}`}
+                        style={{
+                          cursor: clickable ? "pointer" : "default",
+                          minWidth: "70px",
+                        }}
+                        onClick={() => {
+                          if (clickable) {
+                            handlePick(matchId, option);
+                          }
+                        }}
                       >
                         {option !== "Tie" ? option : "–"}
                       </td>

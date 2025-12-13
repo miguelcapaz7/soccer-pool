@@ -1,36 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext.jsx";
 import useReviewPicks from "../../../hooks/Picks/Review/useReviewPicks.js";
 import ReviewSection from "../../../components/Picks/Review/ReviewSection.jsx";
-import {
-  constructData,
-  steps,
-} from "../../../utils/Picks/Review/reviewUtils.js";
+import { useNavigate } from "react-router-dom";
+import { steps } from "../../../utils/Picks/Review/reviewUtils.js";
 import Button from "../../../components/Button.jsx";
 
-const ReviewPicks = () => {
-  const { user, profile } = useAuth();
-  const navigate = useNavigate();
+const ReviewPicks = ({ user }) => {
   const { data, loading, errors, handleSubmit } = useReviewPicks(user);
+  const navigate = useNavigate()
 
   if (loading) return <div className="text-center py-5">Loading...</div>;
 
-  if (!profile) return null;
-
-  if (profile.picksSubmitted) {
-    return (
-      <div className="container text-center py-5 mt-5">
-        <h2>You have already submitted your picks.</h2>
-      </div>
-    )
-  }
-
   return (
-    <div className="container py-5 mt-5">
-      <div className="card mb-3 shadow-sm p-4 text-center">
-        <h2>Review Picks</h2>
-      </div>
+    <>
       {errors.length > 0 && (
         <div className="alert alert-danger">
           <h5>Incomplete Picks:</h5>
@@ -42,8 +24,8 @@ const ReviewPicks = () => {
         </div>
       )}
 
-      {steps.map(({ step, title, route }) => {
-        const items = constructData[step](data);
+      {steps.map(({ step, title, route, getData }) => {
+        const items = getData(data);
 
         return (
           <ReviewSection
@@ -65,7 +47,7 @@ const ReviewPicks = () => {
           Submit Final Picks
         </Button>
       </div>
-    </div>
+    </>
   );
 };
 

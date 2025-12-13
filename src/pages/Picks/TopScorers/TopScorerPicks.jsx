@@ -1,59 +1,41 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "../../../components/Button.jsx";
 import PlayerPicker from "../../../components/Picks/TopScorers/PlayerPicker.jsx";
-import { useAuth } from "../../../context/AuthContext.jsx";
 import useTopScorerPicks from "../../../hooks/Picks/TopScorers/useTopScorerPicks.js";
 import useTotalGoalsPrediction from "../../../hooks/Picks/TopScorers/useTotalGoalsPrediction.js";
 
-const TopScorerPicks = () => {
-  const navigate = useNavigate();
-  const { user, profile } = useAuth();
-  const { topScorers, topScorerError, handleTeamChange, handlePlayerChange, takenPlayers } =
-    useTopScorerPicks(user);
+const TopScorerPicks = ({ user }) => {
+  const {
+    topScorers,
+    topScorerError,
+    handleTeamChange,
+    handlePlayerChange,
+    takenPlayers,
+  } = useTopScorerPicks(user);
   const { goalPrediction, goalPredictionError, handleGoalInput } =
     useTotalGoalsPrediction(user);
 
-  if (!profile) return null;
-
-  if (profile.picksSubmitted) {
-    return (
-      <div className="container text-center py-5 mt-5">
-        <h2>You have already submitted your picks.</h2>
-      </div>
-    )
-  }
-
   return (
-    <div className="container text-center py-5 mt-5">
-      <div className="card shadow-sm p-4 mb-4 mx-auto">
-        <h2 className="mb-3">
-          STEP 4 - Choose 3 players from any team in the tournament
-        </h2>
-        <p className="text-muted mb-0">
-          3 pts will be awarded for each goal that player scores.
-        </p>
-      </div>
-      <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
-        {topScorers.map((pick, i) => (
-          <div className="col" key={i}>
-            <div className="card p-3 shadow-sm">
-              <PlayerPicker
-                key={i}
-                index={i}
-                pick={pick}
-                onTeamChange={handleTeamChange}
-                onPlayerChange={handlePlayerChange}
-                takenPlayers={takenPlayers}
-              />
-            </div>
+    <>
+    <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
+      {topScorers.map((pick, i) => (
+        <div className="col" key={i}>
+          <div className="card p-3 shadow-sm">
+            <PlayerPicker
+              key={i}
+              index={i}
+              pick={pick}
+              onTeamChange={handleTeamChange}
+              onPlayerChange={handlePlayerChange}
+              takenPlayers={takenPlayers}
+            />
           </div>
-        ))}
-        {topScorerError && (
-          <div className="text-danger mt-2">{topScorerError}</div>
-        )}
-      </div>
-      <div className="card shadow-sm p-4 mb-4 mx-auto">
+        </div>
+      ))}
+      {topScorerError && (
+        <div className="text-danger mt-2">{topScorerError}</div>
+      )}
+    </div>
+    <div className="card text-center shadow-sm p-4 mb-4 mx-auto">
         <h2 className="mb-3">
           STEP 5 - Predict the total amount of goals scored in the tournament
         </h2>
@@ -79,15 +61,7 @@ const TopScorerPicks = () => {
           <div className="text-danger mt-2">{goalPredictionError}</div>
         )}
       </div>
-      <div className="text-center mt-4">
-        <Button onClick={() => navigate("/knockoutStagePicks")} color="dark">
-          Back
-        </Button>
-        <Button onClick={() => navigate("/reviewPicks")} color="dark">
-          Next
-        </Button>
-      </div>
-    </div>
+      </>
   );
 };
 

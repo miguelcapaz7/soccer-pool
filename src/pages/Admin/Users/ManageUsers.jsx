@@ -66,7 +66,7 @@ const ManageUsers = () => {
                     {`${u.firstName || ""} ${u.lastName || ""}` || "User"}
                   </td>
                   <td>{u.email || "N/A"}</td>
-                  <td>{u.isSubmitted ? "Yes" : "No"}</td>
+                  <td>{u.picksSubmitted ? "Yes" : "No"}</td>
                   <td>
                     <Button
                       size="sm"

@@ -12,15 +12,12 @@ import Login from "./pages/Auth/Login.jsx";
 import Home from "./pages/Home.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
 import Rules from "./pages/Rules.jsx";
-import GroupStagePicks from "./pages/Picks/GroupStage/GroupStagePicks.jsx";
-import StandingsPicks from "./pages/Picks/Standings/StandingsPicks.jsx";
-import KnockoutStagePicks from "./pages/Picks/KnockoutStage/KnockoutStagePicks.jsx";
-import TopScorerPicks from "./pages/Picks/TopScorers/TopScorerPicks.jsx";
-import ReviewPicks from "./pages/Picks/Review/ReviewPicks.jsx";
+import Picks from "./pages/Picks/Picks.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Profile from "./pages/Profile.jsx";
 import Admin from "./pages/Admin/Admin.jsx";
 import ManageUsers from "./pages/Admin/Users/ManageUsers.jsx";
+import MarkPools from "./pages/Admin/MarkPools/MarkPools.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 const Router = import.meta.env.MODE === 'production' ? HashRouter : BrowserRouter;
@@ -39,12 +36,9 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/rules" element={<Rules />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/groupStagePicks" element={<GroupStagePicks />} />
-            <Route path="/standingsPicks" element={<StandingsPicks />} />
-            <Route path="/knockoutStagePicks" element={<KnockoutStagePicks />} />
-            <Route path="/topScorerPicks" element={<TopScorerPicks />} />
-            <Route path="/reviewPicks" element={<ReviewPicks />} />
+            <Route path="/picks/:step" element={<Picks />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/markPools" element={<MarkPools />} />
             <Route path="/admin/manageUsers" element={<ManageUsers />}></Route>
           </Routes>
         </div>

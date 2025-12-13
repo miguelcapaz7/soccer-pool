@@ -23,6 +23,7 @@ export const generateEmptyGroupStagePicks = () => {
       matchups.forEach(([i, j], matchIndex) => {
         const matchId = getMatchId(day, groupData.group, matchIndex);
         emptyPicks[matchId] = {
+          group: groupData.group,
           teams: [groupData.teams[i], groupData.teams[j]],
           result: ""
         };
