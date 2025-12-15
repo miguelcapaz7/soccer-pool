@@ -4,6 +4,7 @@ import { auth } from "../firebase";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
+import Collapse from "bootstrap/js/dist/collapse";
 import logo from "../assets/images/world-cup-2026-logo.jpg";
 
 const Navbar = () => {
@@ -18,7 +19,7 @@ const Navbar = () => {
       console.error("Error signing out: ", error);
     }
   };
-  
+
   const dropdownItems = [
     ...(profile?.role === "Admin"
       ? [{ label: "Admin", onClick: () => navigate("/admin") }]
@@ -28,6 +29,18 @@ const Navbar = () => {
     { label: "Logout", onClick: handleLogout },
   ];
 
+  const handleNavLinkClick = () => {
+    const collapseElement = document.getElementById("navbarSupportedContent");
+    if (collapseElement) {
+      const bsCollapse =
+        Collapse.getInstance(collapseElement) ||
+        new Collapse(collapseElement, {
+          toggle: false,
+        });
+      bsCollapse.hide();
+    }
+  };
+
   if (!isLoggedIn) {
     return null;
   }
@@ -35,7 +48,11 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
       <div className="container-fluid">
-        <NavLink className="navbar-brand d-flex align-items-center" to="/home">
+        <NavLink
+          className="navbar-brand d-flex align-items-center"
+          to="/home"
+          onClick={handleNavLinkClick}
+        >
           <img
             src={logo}
             alt="Logo"
@@ -61,6 +78,7 @@ const Navbar = () => {
                 <NavLink
                   className="nav-link mx-3 text-white"
                   to={`/${item.toLowerCase()}`}
+                  onClick={handleNavLinkClick}
                 >
                   {item}
                 </NavLink>
@@ -84,7 +102,13 @@ const Navbar = () => {
                     </li>
                   ) : (
                     <li key={idx}>
-                      <button className="dropdown-item" onClick={item.onClick}>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          handleNavLinkClick();
+                          item.onClick();
+                        }}
+                      >
                         {item.label}
                       </button>
                     </li>

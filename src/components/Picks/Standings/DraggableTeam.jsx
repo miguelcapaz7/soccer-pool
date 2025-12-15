@@ -34,7 +34,7 @@ const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
     <button
       type="button"
       ref={(node) => drag(drop(node))}
-      className={`list-group-item list-group-item-action border d-flex p-2 ${
+      className={`list-group-item list-group-item-action d-flex p-2 ${
         isActive ? "bg-dark text-white" : ""
       }`}
       style={{ cursor: isDragging ? "grabbing" : "grab", transition: "0.2s" }}

@@ -1,7 +1,7 @@
 import DraggableTeam from "./DraggableTeam.jsx";
 
 const ThirdPlaceTable = ({ teams, moveTeam }) => (
-  <div className="card shadow-sm border-3">
+  <div className="card shadow-sm">
     <div className="card-body text-center">
       <h4 className="card-title mb-3">Best 3rd-Place Ranking</h4>
 
