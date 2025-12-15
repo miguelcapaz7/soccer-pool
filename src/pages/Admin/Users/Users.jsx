@@ -2,10 +2,10 @@ import React from "react";
 import { useAuth } from "../../../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../../../layouts/MainLayout.jsx";
-import useManageUsers from "../../../hooks/Admin/Users/useManageUsers.js";
+import useManageUsers from "../../../hooks/Admin/Users/useUsers.js";
 import Button from "../../../components/Button.jsx";
 
-const ManageUsers = () => {
+const Users = () => {
   const { user, profile } = useAuth();
   const { users, loading, error } = useManageUsers();
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const ManageUsers = () => {
   };
 
   return (
-    <MainLayout title="Manage Users">
+    <MainLayout title="Users">
       <div className="container mt-4">
         {loading && <p>Loading users...</p>}
         {error && <p className="text-danger">{error}</p>}
@@ -94,4 +94,4 @@ const ManageUsers = () => {
   );
 };
 
-export default ManageUsers;
+export default Users;

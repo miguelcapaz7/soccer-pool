@@ -35,7 +35,7 @@ const MarkPools = () => {
             // onClick={() => navigate(menu.path)}
           >
             <div className="p-4 border rounded-3 shadow-sm bg-light h-100 d-flex flex-column align-items-center justify-content-center text-center">
-              <h5 className="mt-3">{step}</h5>
+              <h5 className="mt-3">Step {step}</h5>
             </div>
           </div>
         ))}

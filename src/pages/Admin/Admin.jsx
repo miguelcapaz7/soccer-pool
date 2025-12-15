@@ -9,7 +9,7 @@ const Admin = () => {
 
   const menus = [
     { title: "Mark Pools", path: "/admin/markPools", icon: "📝" },
-    { title: "Manage Users", path: "/admin/manageUsers", icon: "👥" },
+    { title: "Users", path: "/admin/users", icon: "👥" },
   ];
 
   if (!user || !profile) {

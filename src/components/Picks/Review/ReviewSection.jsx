@@ -2,6 +2,8 @@ import React from "react";
 import Button from "../../Button.jsx";
 import GroupTable from "../../GroupTable.jsx";
 import MatchDayTable from "../GroupStage/MatchDayTable.jsx";
+import Bracket from "../KnockoutStage/Bracket.jsx";
+import { convertTeamsToColumns } from "../../../utils/Picks/KnockoutStage/knockoutStageUtils.js";
 
 const ReviewSection = ({ title, items, onEdit, step }) => {
   const renderContent = () => {
@@ -41,21 +43,21 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
           })}
           <div className="col-12 mt-4">
             <h6 className="fw-bold">Third Place Teams:</h6>
-            <p>{(items.thirdPlaceOrder.slice(0,8) || []).join(", ")}</p>
+            <p>{(items.thirdPlaceOrder.slice(0, 8) || []).join(", ")}</p>
           </div>
         </div>
       );
     }
 
     if (step === 3) {
+      const bracketFromSaved = convertTeamsToColumns(items);
       return (
-        <ul className="list-group list-group-flush">
-          {Object.entries(items).map(([matchId, teams], idx) => (
-            <li key={idx} className="list-group-item">
-              {matchId}: {teams.join(" vs. ")}
-            </li>
-          ))}
-        </ul>
+        <div className="bracket-scroll-wrapper">
+          <Bracket
+            bracket={bracketFromSaved}
+            readOnly={true}
+          />
+        </div>
       );
     }
 

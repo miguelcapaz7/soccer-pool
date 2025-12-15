@@ -16,7 +16,7 @@ import Picks from "./pages/Picks/Picks.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Profile from "./pages/Profile.jsx";
 import Admin from "./pages/Admin/Admin.jsx";
-import ManageUsers from "./pages/Admin/Users/ManageUsers.jsx";
+import Users from "./pages/Admin/Users/Users.jsx";
 import MarkPools from "./pages/Admin/MarkPools/MarkPools.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
@@ -39,7 +39,7 @@ function App() {
             <Route path="/picks/:step" element={<Picks />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/markPools" element={<MarkPools />} />
-            <Route path="/admin/manageUsers" element={<ManageUsers />}></Route>
+            <Route path="/admin/users" element={<Users />}></Route>
           </Routes>
         </div>
       </AuthProvider>
