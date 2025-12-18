@@ -4,12 +4,13 @@ import ReviewSection from "../../../components/Picks/Review/ReviewSection.jsx";
 import { useNavigate } from "react-router-dom";
 import { steps } from "../../../utils/Picks/Review/reviewUtils.js";
 import Button from "../../../components/Button.jsx";
+import LoadingSpinner from "../../../components/LoadingSpinner.jsx";
 
 const ReviewPicks = ({ user }) => {
   const { data, loading, errors, handleSubmit } = useReviewPicks(user);
   const navigate = useNavigate()
 
-  if (loading) return <div className="text-center py-5">Loading...</div>;
+  if (loading) return <LoadingSpinner />;
 
   return (
     <>

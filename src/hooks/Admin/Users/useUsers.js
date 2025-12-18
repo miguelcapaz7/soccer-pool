@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase";
 
-const useManageUsers = () => {
+const useUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -39,4 +39,4 @@ const useManageUsers = () => {
   return { users, loading, error };
 };
 
-export default useManageUsers;
+export default useUsers;

@@ -4,6 +4,7 @@ import Bracket from "../../../components/Picks/KnockoutStage/Bracket.jsx";
 import useKnockoutStagePicks from "../../../hooks/Picks/KnockoutStage/useKnockoutStagePicks.js";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/styles/Bracket.css";
+import LoadingSpinner from "../../../components/LoadingSpinner.jsx";
 
 const KnockoutStagePicks = ({ user }) => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const KnockoutStagePicks = ({ user }) => {
     useKnockoutStagePicks(user);
 
   if (loading) {
-    return <div className="text-center py-5 mt-5">Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (missingStep2) {

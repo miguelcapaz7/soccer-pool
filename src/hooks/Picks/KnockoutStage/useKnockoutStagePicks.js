@@ -88,7 +88,7 @@ const useKnockoutStagePicks = (user) => {
             merged[matchId] = teams;
           }
         });
-        saveStep3(merged)
+        saveStep3(merged);
         return merged;
       });
     } catch (err) {
@@ -99,7 +99,10 @@ const useKnockoutStagePicks = (user) => {
   const saveStep3 = useCallback(
     (data) => {
       if (!localStorageKey) return;
-      localStorage.setItem(localStorageKey, JSON.stringify(data));
+      localStorage.setItem(
+        localStorageKey,
+        JSON.stringify(data)
+      );
     },
     [localStorageKey]
   );
@@ -119,7 +122,6 @@ const useKnockoutStagePicks = (user) => {
             updated[id] = ["", ""];
           }
         });
-
         saveStep3(updated);
         return updated;
       });

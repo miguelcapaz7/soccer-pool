@@ -8,6 +8,14 @@ const MarkPools = () => {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
 
+  const menus = [
+    { title: "Step 1 - Group Stage", path: "/groupStagePicks" },
+    { title: "Step 2 - Standings", path: "/standings" },
+    { title: "Step 3 - Knockout Stage", path: "/knockoutStagePicks" },
+    { title: "Step 4 - Top Scorers", path: "/topScorerPicks" },
+    { title: "Step 5 - Total Goals Prediction", path: "/totalGoalsPrediction" },
+  ];
+
   if (!user || !profile) {
     return null;
   }
@@ -27,19 +35,19 @@ const MarkPools = () => {
       <div className="container mt-4">
         Select the stage to mark
         <div className="row g-4 mt-3 ">
-        {[1, 2, 3, 4, 5].map((step, index) => (
-          <div
-            key={index+1}
-            className="col-12 col-sm-6 col-md-4 col-lg-3 "
-            style={{ cursor: "pointer" }}
-            // onClick={() => navigate(menu.path)}
-          >
-            <div className="p-4 border rounded-3 shadow-sm bg-light h-100 d-flex flex-column align-items-center justify-content-center text-center">
-              <h5 className="mt-3">Step {step}</h5>
+          {menus.map((step, index) => (
+            <div
+              key={index + 1}
+              className="col-12 col-sm-6 col-md-4 col-lg-3 "
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(`/admin/markPools${step.path}`)}
+            >
+              <div className="p-4 border rounded-3 shadow-sm bg-light h-100 d-flex flex-column align-items-center justify-content-center text-center">
+                <h5 className="mt-3">{step.title}</h5>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
       </div>
     </MainLayout>
   );

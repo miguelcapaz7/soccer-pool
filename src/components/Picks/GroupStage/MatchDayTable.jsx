@@ -1,4 +1,3 @@
-// components/MatchDayTable.js
 import React from "react";
 import GroupsData from "../../../data/GroupsData.js";
 import {
@@ -24,7 +23,7 @@ const MatchDayTable = ({
         <table className={`table table-sm ${clickable ? "table-hover" : ""} mb-0`}>
           <thead className="table-light">
             <tr>
-              <th className="small-col text-center">Grp</th>
+              <th className="text-center small-col">Grp</th>
               <th className="text-center small-col">Team 1</th>
               <th className="text-center small-col">Tie</th>
               <th className="text-center small-col">Team 2</th>
@@ -39,7 +38,7 @@ const MatchDayTable = ({
                   groupData.group,
                   matchIndex
                 );
-                const { result } = groupStagePicks[matchId];
+                const result = groupStagePicks[matchId]?.result ?? null;
                 const options = [groupData.teams[i], "Tie", groupData.teams[j]];
 
                 return (

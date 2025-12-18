@@ -2,12 +2,13 @@ import React from "react";
 import { useAuth } from "../../../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../../../layouts/MainLayout.jsx";
-import useManageUsers from "../../../hooks/Admin/Users/useUsers.js";
+import useUsers from "../../../hooks/Admin/Users/useUsers.js";
 import Button from "../../../components/Button.jsx";
+import LoadingSpinner from "../../../components/LoadingSpinner.jsx";
 
 const Users = () => {
   const { user, profile } = useAuth();
-  const { users, loading, error } = useManageUsers();
+  const { users, loading, error } = useUsers();
   const navigate = useNavigate();
 
   if (!user || !profile) {
@@ -42,7 +43,7 @@ const Users = () => {
   return (
     <MainLayout title="Users">
       <div className="container mt-4">
-        {loading && <p>Loading users...</p>}
+        {loading && <LoadingSpinner />}
         {error && <p className="text-danger">{error}</p>}
 
         {!loading && users.length === 0 && (
@@ -60,32 +61,42 @@ const Users = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((u, index) => (
-                <tr key={u.id}>
-                  <td>
-                    {`${u.firstName || ""} ${u.lastName || ""}` || "User"}
-                  </td>
-                  <td>{u.email || "N/A"}</td>
-                  <td>{u.picksSubmitted ? "Yes" : "No"}</td>
-                  <td>
-                    <Button
-                      size="sm"
-                      variant="primary"
-                      className="me-2"
-                      onClick={() => handleViewPool(u.id)}
-                    >
-                      View Pool
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="danger"
-                      onClick={() => handleDeleteUser(u.id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+              {[...users]
+                .sort((a, b) =>
+                  (a.firstName || "").localeCompare(
+                    b.firstName || "",
+                    undefined,
+                    {
+                      sensitivity: "base",
+                    }
+                  )
+                )
+                .map((u, index) => (
+                  <tr key={u.id}>
+                    <td>
+                      {`${u.firstName || ""} ${u.lastName || ""}` || "User"}
+                    </td>
+                    <td>{u.email || "N/A"}</td>
+                    <td>{u.picksSubmitted ? "Yes" : "No"}</td>
+                    <td>
+                      <Button
+                        size="sm"
+                        variant="primary"
+                        className="me-2"
+                        onClick={() => handleViewPool(u.id)}
+                      >
+                        View Pool
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => handleDeleteUser(u.id)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

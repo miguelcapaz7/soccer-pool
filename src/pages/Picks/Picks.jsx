@@ -29,6 +29,7 @@ const PICK_STEPS = {
     subtitle: "Click a team to advance them.",
     previous: "standingsPicks",
     next: "topScorerPicks",
+    wider: true,
   },
   topScorerPicks: {
     component: TopScorerPicks,
@@ -54,6 +55,10 @@ const Picks = () => {
   const stepData = PICK_STEPS[step];
   const StepComponent = stepData.component;
 
+  const containerClass = stepData.wider
+    ? "page-container"
+    : "container";
+
   window.scroll(0, 0);
 
   if (!profile) return null;
@@ -66,7 +71,7 @@ const Picks = () => {
     );
   }
   return (
-    <div className="container py-5 mt-5">
+    <div className={`${containerClass} py-5 mt-5`}>
       <div className="card text-center mb-3 shadow-sm p-4">
         <h2 className="mb-3">{stepData.title}</h2>
         <p className="text-muted mb-0">{stepData.subtitle}</p>

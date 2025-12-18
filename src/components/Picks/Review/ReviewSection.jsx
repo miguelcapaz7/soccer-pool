@@ -89,9 +89,11 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
     <div className="card mb-3">
       <div className="card-header fw-bold d-flex justify-content-between align-items-center">
         {title}
-        <Button color="secondary" onClick={onEdit}>
+        {onEdit && (
+          <Button color="secondary" onClick={onEdit}>
           Edit
         </Button>
+        )}
       </div>
       <div className="card-body">{renderContent()}</div>
     </div>
