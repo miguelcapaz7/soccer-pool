@@ -99,10 +99,7 @@ const useKnockoutStagePicks = (user) => {
   const saveStep3 = useCallback(
     (data) => {
       if (!localStorageKey) return;
-      localStorage.setItem(
-        localStorageKey,
-        JSON.stringify(data)
-      );
+      localStorage.setItem(localStorageKey, JSON.stringify(data));
     },
     [localStorageKey]
   );

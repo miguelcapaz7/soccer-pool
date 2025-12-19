@@ -43,7 +43,11 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
           })}
           <div className="col-12 mt-4">
             <h6 className="fw-bold">Third Place Teams:</h6>
-            <p>{(items.thirdPlaceOrder.slice(0, 8) || []).join(", ")}</p>
+            <p>
+              {(items.thirdPlaceOrder.slice(0, 8) || [])
+                .map((t) => `${t.team}`)
+                .join(", ")}
+            </p>
           </div>
         </div>
       );
@@ -53,10 +57,7 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
       const bracketFromSaved = convertTeamsToColumns(items);
       return (
         <div className="bracket-scroll-wrapper">
-          <Bracket
-            bracket={bracketFromSaved}
-            readOnly={true}
-          />
+          <Bracket bracket={bracketFromSaved} readOnly={true} />
         </div>
       );
     }
@@ -91,8 +92,8 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
         {title}
         {onEdit && (
           <Button color="secondary" onClick={onEdit}>
-          Edit
-        </Button>
+            Edit
+          </Button>
         )}
       </div>
       <div className="card-body">{renderContent()}</div>

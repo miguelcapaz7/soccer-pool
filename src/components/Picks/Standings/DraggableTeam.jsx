@@ -41,7 +41,7 @@ const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
     >
       <img
         src={`${import.meta.env.BASE_URL}flags/${team}.png`}
-        alt={`${team.name} flag`}
+        alt={`${team} flag`}
         className="me-3 mx-2"
         style={{
           width: "24px",

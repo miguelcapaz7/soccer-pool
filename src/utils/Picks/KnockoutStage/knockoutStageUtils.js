@@ -1,4 +1,5 @@
-// This defines where each match is layed out on the bracket
+import ANNEX_C from "../../../data/thirdPlaceCombos.json";
+
 export const generateBracketMap = (() => {
   const stages = [
     { stage: "R32", numMatches: 16, cols: [0, 8] },
@@ -77,34 +78,50 @@ export const convertTeamsToColumns = (teamsByMatchId) => {
 export const generateRoundOf32 = (step2Results) => {
   if (!step2Results || !Array.isArray(step2Results.groups)) return [];
   const { groups, thirdPlace } = step2Results;
+
   const getPlacing = (groupLetter, placing) => {
     const group = groups.find((g) => g.group === groupLetter);
     if (!group) return "";
     if (placing === 1) return group.first;
     if (placing === 2) return group.second;
-    return ""; // third place handled separately
   };
-  const getThirdPlace = (index) => {
-    return thirdPlace && thirdPlace[index] ? thirdPlace[index] : "";
-  };
+  const thirdPlaceGroups = thirdPlace.map((t) => t.group).sort();
+  const annexKey = thirdPlaceGroups.join("");
+
+  const mapping = ANNEX_C[annexKey];
+  if (!mapping) {
+    console.error("Missing Annex C mapping for:", annexKey);
+    return [];
+  }
+
+  // Map group -> team name
+  const thirdPlaceByGroup = Object.fromEntries(
+    thirdPlace.map((t) => [t.group, t.team])
+  );
+
+  // Resolve actual third-place teams for winners
+  const third = (winnerGroup) => thirdPlaceByGroup[mapping[winnerGroup]] || "";
 
   return [
-    [getPlacing("E", 1), getThirdPlace(0)],
-    [getPlacing("I", 1), getThirdPlace(1)],
+    [getPlacing("E", 1), third("E")],
+    [getPlacing("I", 1), third("I")],
     [getPlacing("A", 2), getPlacing("B", 2)],
     [getPlacing("F", 1), getPlacing("C", 2)],
+
     [getPlacing("K", 2), getPlacing("L", 2)],
     [getPlacing("H", 1), getPlacing("J", 2)],
-    [getPlacing("D", 1), getThirdPlace(4)],
-    [getPlacing("G", 1), getThirdPlace(5)],
+    [getPlacing("D", 1), third("D")],
+    [getPlacing("G", 1), third("G")],
+
     [getPlacing("C", 1), getPlacing("F", 2)],
     [getPlacing("E", 2), getPlacing("I", 2)],
-    [getPlacing("A", 1), getThirdPlace(2)],
-    [getPlacing("L", 1), getThirdPlace(3)],
+    [getPlacing("A", 1), third("A")],
+    [getPlacing("L", 1), third("L")],
+
     [getPlacing("J", 1), getPlacing("H", 2)],
     [getPlacing("D", 2), getPlacing("G", 2)],
-    [getPlacing("B", 1), getThirdPlace(6)],
-    [getPlacing("K", 1), getThirdPlace(7)],
+    [getPlacing("B", 1), third("B")],
+    [getPlacing("K", 1), third("K")],
   ];
 };
 

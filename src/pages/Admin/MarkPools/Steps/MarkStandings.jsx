@@ -10,28 +10,33 @@ const MarkStandings = () => {
     useRef(generateInitialStandings()).current
   );
   const [thirdPlaceOrder, setThirdPlaceOrder] = useState(
-    useRef(generateInitialStandings().map((g) => g.teams[2])).current
+    useRef(
+      generateInitialStandings().map((g) => ({
+        group: g.group,
+        team: g.teams[2],
+      }))
+    ).current
   );
 
-  const moveTeam = useCallback(
-    (groupIndex, fromIndex, toIndex) => {
-      setStandings((prev) => {
-        const updatedStandings = prev.map((g) => ({
-          ...g,
-          teams: [...g.teams],
+  const moveTeam = useCallback((groupIndex, fromIndex, toIndex) => {
+    setStandings((prev) => {
+      const updatedStandings = prev.map((g) => ({
+        ...g,
+        teams: [...g.teams],
+      }));
+      const teams = updatedStandings[groupIndex].teams;
+      const [movedTeam] = teams.splice(fromIndex, 1);
+      teams.splice(toIndex, 0, movedTeam);
+      const updatedThirdPlace = updatedStandings.map((g) => ({
+          group: g.group,
+          team: g.teams[2],
         }));
-        const teams = updatedStandings[groupIndex].teams;
-        const [movedTeam] = teams.splice(fromIndex, 1);
-        teams.splice(toIndex, 0, movedTeam);
-        const updatedThirdPlace = updatedStandings.map((g) => g.teams[2]);
 
-        setThirdPlaceOrder(updatedThirdPlace);
+      setThirdPlaceOrder(updatedThirdPlace);
 
-        return updatedStandings;
-      });
-    },
-    []
-  );
+      return updatedStandings;
+    });
+  }, []);
 
   const moveThirdPlaceTeam = useCallback(
     (fromIndex, toIndex) => {
@@ -51,7 +56,10 @@ const MarkStandings = () => {
       {/* Groups Grid */}
       <div className="row g-4">
         {standings.map((group, index) => (
-          <div className="col-12 col-md-6 col-lg-4 col-xl-3" key={standings.group}>
+          <div
+            className="col-12 col-md-6 col-lg-4 col-xl-3"
+            key={group.group}
+          >
             <GroupTable
               group={group}
               groupIndex={index}

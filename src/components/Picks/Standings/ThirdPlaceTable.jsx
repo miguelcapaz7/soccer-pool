@@ -6,10 +6,10 @@ const ThirdPlaceTable = ({ teams, moveTeam }) => (
       <h4 className="card-title mb-3">Best 3rd-Place Ranking</h4>
 
       <div className="list-group">
-        {teams.map((team, index) => (
+        {teams.map((teamObj, index) => (
           <DraggableTeam
-            key={team.id || index}
-            team={team}
+            key={index}
+            team={teamObj.team}
             index={index}
             groupIndex={null}
             moveTeam={(fromIndex, toIndex) => moveTeam(fromIndex, toIndex)}
