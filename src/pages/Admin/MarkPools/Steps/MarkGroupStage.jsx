@@ -10,22 +10,35 @@ const MarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
     useRef(generateEmptyGroupStagePicks()).current
   );
   const [loading, setLoading] = useState(true);
-
   const isDirtyRef = useRef(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const ref = doc(db, "master", "pool");
 
-    const unsub = onSnapshot(ref, (snap) => {
-      if (!snap.exists()) return;
+    const unsubscribe = onSnapshot(
+      ref,
+      (snapshot) => {
+        if (!snapshot.exists()) {
+          setLoading(false);
+          return;
+        }
 
-      if (!isDirtyRef.current) {
-        setGroupStagePicks(snap.data().step1Picks ?? {});
+        // Only hydrate from DB if user has not started editing
+        if (!isDirtyRef.current) {
+          setGroupStagePicks(snapshot.data().step1Picks ?? {});
+        }
+
+        setLoading(false);
+      },
+      (err) => {
+        console.error("Error loading master picks:", err);
+        setError("Failed to load master picks.");
+        setLoading(false);
       }
-      setLoading(false)
-    });
+    );
 
-    return unsub;
+    return () => unsubscribe();
   }, []);
 
   const handlePick = (matchId, option) => {
@@ -48,7 +61,7 @@ const MarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
   useEffect(() => {
     registerSave(async () => {
       const ref = doc(db, "master", "pool");
-      await setDoc(ref, { groupStagePicks }, { merge: true });
+      await setDoc(ref, { step1Picks: groupStagePicks }, { merge: true });
       isDirtyRef.current = false;
     });
   }, [groupStagePicks, registerSave]);

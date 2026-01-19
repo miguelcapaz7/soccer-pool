@@ -36,7 +36,7 @@ const MarkPoolsStep = () => {
   const config = PICK_STEPS[step];
 
   const saveHandlerRef = useRef(null);
-  const dirtyRef = useRef(false);
+  const [isDirty, setIsDirty] = useState(false);
 
   const [saving, setSaving] = useState(false);
 
@@ -65,7 +65,7 @@ const MarkPoolsStep = () => {
 
     setSaving(true);
     await saveHandlerRef.current();
-    dirtyRef.current = false;
+    setIsDirty(false);
     setSaving(false);
   };
 
@@ -77,7 +77,7 @@ const MarkPoolsStep = () => {
         <button
           className="btn btn-primary"
           onClick={handleSave}
-          disabled={saving || !dirtyRef.current}
+          disabled={saving || !isDirty}
         >
           {saving ? "Saving..." : "Update Master Picks"}
         </button>
@@ -85,7 +85,7 @@ const MarkPoolsStep = () => {
 
       <StepComponent
         registerSave={(fn) => (saveHandlerRef.current = fn)}
-        markDirty={() => (dirtyRef.current = true)}
+        markDirty={() => setIsDirty(true)}
         isSaving={saving}
       />
     </div>

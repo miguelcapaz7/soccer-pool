@@ -113,6 +113,10 @@ const useKnockoutStagePicks = (user) => {
         updated[matchId] =
           matchId === "CHAMPION" || matchId === "3rdWinner" ? [""] : ["", ""];
 
+        if (matchId === "3P" || matchId.startsWith("SF")) {
+          updated["3rdWinner"] = [""];
+        }
+
         // Clear downstream matches (propagation)
         Object.entries(generateBracketMap).forEach(([id, meta]) => {
           if (meta.dependsOn?.includes(matchId)) {
