@@ -1,6 +1,6 @@
 import { DndProvider } from "react-dnd";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../../firebase";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import GroupTable from "../../../../components/GroupTable";

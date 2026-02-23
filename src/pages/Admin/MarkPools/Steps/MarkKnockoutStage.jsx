@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../../firebase";
-import Bracket from "../../../../components/Picks/KnockoutStage/Bracket"
+import Bracket from "../../../../components/Picks/KnockoutStage/Bracket";
 import LoadingSpinner from "../../../../components/LoadingSpinner";
 import {
   generateBracketMap,
@@ -18,10 +18,22 @@ const MarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
 
   const isDirtyRef = useRef(false);
 
-  useEffect(() => {
-    const ref = doc(db, "master", "step2");
+  // ⭐ stable refs
+  const step2Ref = useMemo(() => doc(db, "master", "step2"), []);
+  const step3Ref = useMemo(() => doc(db, "master", "step3"), []);
 
-    const unsub = onSnapshot(ref, (snap) => {
+  // ⭐ precompute bracket lookup map (huge optimization)
+  const nextMatchLookup = useMemo(() => {
+    const map = {};
+    Object.entries(generateBracketMap).forEach(([id, meta]) => {
+      map[`${meta.colIndex}-${meta.matchupIndex}`] = id;
+    });
+    return map;
+  }, []);
+
+  // ⭐ step2 listener
+  useEffect(() => {
+    const unsub = onSnapshot(step2Ref, (snap) => {
       if (!snap.exists()) {
         setLoading(false);
         return;
@@ -42,28 +54,27 @@ const MarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
     });
 
     return unsub;
-  }, []);
+  }, [step2Ref]);
 
   const roundOf32 = useMemo(
     () => (step2Results ? generateRoundOf32(step2Results) : []),
-    [step2Results],
+    [step2Results]
   );
 
   const validTeams = useMemo(
     () => new Set(roundOf32.flat().filter(Boolean)),
-    [roundOf32],
+    [roundOf32]
   );
 
+  // ⭐ step3 listener
   useEffect(() => {
     if (!step2Results) return;
 
-    const ref = doc(db, "master", "step3");
-
-    const unsub = onSnapshot(ref, (snap) => {
+    const unsub = onSnapshot(step3Ref, (snap) => {
       const base = updateBracketWithR32(
         generateEmptyTeamsMap(),
         roundOf32,
-        validTeams,
+        validTeams
       );
 
       if (!snap.exists()) {
@@ -77,8 +88,9 @@ const MarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
     });
 
     return unsub;
-  }, [step2Results, roundOf32, validTeams]);
+  }, [step3Ref, step2Results, roundOf32, validTeams]);
 
+  // ⭐ reset optimized
   const resetMatch = useCallback(
     (matchId) => {
       if (isSaving) return;
@@ -101,28 +113,29 @@ const MarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
         return updated;
       });
     },
-    [markDirty, isSaving],
+    [markDirty, isSaving]
   );
 
+  // ⭐ select optimized (no stale closure)
   const handleSelectTeam = useCallback(
     (matchId, colIndex, matchupIndex, teamIndex) => {
       if (isSaving) return;
 
-      const teamName = teamsByMatchId[matchId]?.[teamIndex];
-      if (!teamName) return;
-
-      isDirtyRef.current = true;
-      markDirty();
-
-      const totalCols = 9;
-      const midPoint = Math.floor(totalCols / 2);
-      const isLeftSide = colIndex < midPoint;
-      const nextCol = isLeftSide ? colIndex + 1 : colIndex - 1;
-      const nextMatchup = Math.floor(matchupIndex / 2);
-      const nextSlot = matchupIndex % 2 === 0 ? 0 : 1;
-
       setTeamsByMatchId((prev) => {
+        const teamName = prev[matchId]?.[teamIndex];
+        if (!teamName) return prev;
+
+        isDirtyRef.current = true;
+        markDirty();
+
         const updated = { ...prev };
+
+        const totalCols = 9;
+        const midPoint = Math.floor(totalCols / 2);
+        const isLeftSide = colIndex < midPoint;
+        const nextCol = isLeftSide ? colIndex + 1 : colIndex - 1;
+        const nextMatchup = Math.floor(matchupIndex / 2);
+        const nextSlot = matchupIndex % 2 === 0 ? 0 : 1;
 
         if (matchId === "F") {
           updated["CHAMPION"] = [teamName];
@@ -149,13 +162,8 @@ const MarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
           return updated;
         }
 
-        const nextMatch = Object.entries(generateBracketMap).find(
-          ([, meta]) =>
-            meta.colIndex === nextCol && meta.matchupIndex === nextMatchup,
-        );
-
-        if (nextMatch) {
-          const [nextMatchId] = nextMatch;
+        const nextMatchId = nextMatchLookup[`${nextCol}-${nextMatchup}`];
+        if (nextMatchId) {
           updated[nextMatchId] = updated[nextMatchId] || ["", ""];
           updated[nextMatchId][nextSlot] = teamName;
         }
@@ -163,22 +171,22 @@ const MarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
         return updated;
       });
     },
-    [teamsByMatchId, markDirty, isSaving],
+    [markDirty, isSaving, nextMatchLookup]
   );
 
+  // ⭐ stable save handler
+  const saveHandler = useCallback(async () => {
+    await setDoc(step3Ref, { step3Picks: teamsByMatchId }, { merge: true });
+    isDirtyRef.current = false;
+  }, [teamsByMatchId, step3Ref]);
+
   useEffect(() => {
-    registerSave(async () => {
-      const ref = doc(db, "master", "step3");
-
-      await setDoc(ref, { step3Picks: teamsByMatchId }, { merge: true });
-
-      isDirtyRef.current = false;
-    });
-  }, [teamsByMatchId, registerSave]);
+    registerSave(saveHandler);
+  }, [registerSave, saveHandler]);
 
   const bracketColumns = useMemo(
     () => convertTeamsToColumns(teamsByMatchId),
-    [teamsByMatchId],
+    [teamsByMatchId]
   );
 
   if (loading) return <LoadingSpinner />;

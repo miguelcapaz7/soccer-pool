@@ -9,8 +9,9 @@ const MarkTotalGoalsPrediction = ({ registerSave, markDirty, isSaving }) => {
   const [loading, setLoading] = useState(true);
 
   const isDirtyRef = useRef(false);
+  const lastSnapshotRef = useRef(null);
 
-  // ⭐ load from firestore
+  // ⭐ realtime optimized listener
   useEffect(() => {
     const ref = doc(db, "master", "step5");
 
@@ -20,9 +21,19 @@ const MarkTotalGoalsPrediction = ({ registerSave, markDirty, isSaving }) => {
         return;
       }
 
+      const step5 = snap.data().step5Picks ?? {};
+      const value = String(step5.totalGoals ?? "");
+
+      // ⭐ snapshot diff guard
+      if (value === lastSnapshotRef.current) {
+        setLoading(false);
+        return;
+      }
+
+      lastSnapshotRef.current = value;
+
       if (!isDirtyRef.current) {
-        const step5 = snap.data().step5Picks ?? {};
-        setGoalPrediction(step5.totalGoals ?? "");
+        setGoalPrediction(value);
       }
 
       setLoading(false);
@@ -31,7 +42,7 @@ const MarkTotalGoalsPrediction = ({ registerSave, markDirty, isSaving }) => {
     return unsub;
   }, []);
 
-  // ⭐ input handler with validation
+  // ⭐ input handler
   const handleGoalInput = (value) => {
     if (isSaving) return;
 
@@ -47,21 +58,26 @@ const MarkTotalGoalsPrediction = ({ registerSave, markDirty, isSaving }) => {
     markDirty();
   };
 
-  // ⭐ save
+  // ⭐ optimized save
   useEffect(() => {
     registerSave(async () => {
-      const ref = doc(db, "master", "step5");
+      if (!isDirtyRef.current) return;
+
+      const numeric = Number(goalPrediction || 0);
+
+      // ⭐ skip write if identical to snapshot
+      if (numeric === Number(lastSnapshotRef.current ?? 0)) {
+        isDirtyRef.current = false;
+        return;
+      }
 
       await setDoc(
-        ref,
-        {
-          step5Picks: {
-            totalGoals: Number(goalPrediction || 0),
-          },
-        },
+        doc(db, "master", "step5"),
+        { step5Picks: { totalGoals: numeric } },
         { merge: true }
       );
 
+      lastSnapshotRef.current = String(numeric);
       isDirtyRef.current = false;
     });
   }, [goalPrediction, registerSave]);

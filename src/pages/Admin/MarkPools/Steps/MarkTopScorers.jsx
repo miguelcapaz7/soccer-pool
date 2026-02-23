@@ -1,30 +1,60 @@
-import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore";
+import { useState, useRef, useEffect } from "react";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../../../../firebase";
 import LoadingSpinner from "../../../../components/LoadingSpinner";
 
 const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sortedView, setSortedView] = useState(false);
+
   const isDirtyRef = useRef(false);
+  const lastSnapshotRef = useRef(null);
+  const aggregatedOnceRef = useRef(false);
 
   useEffect(() => {
-    const loadPlayers = async () => {
-      try {
+    const ref = doc(db, "master", "step4");
+
+    const unsub = onSnapshot(ref, async (snap) => {
+      const data = snap.exists() ? snap.data().step4Picks ?? [] : [];
+
+      // ⭐ snapshot diff guard
+      if (JSON.stringify(data) === JSON.stringify(lastSnapshotRef.current)) {
+        setLoading(false);
+        return;
+      }
+
+      lastSnapshotRef.current = data;
+
+      // ⭐ if master already has players → just hydrate
+      if (data.length > 0 && !isDirtyRef.current) {
+        setPlayers(data);
+        setLoading(false);
+        return;
+      }
+
+      // ⭐ aggregate user picks ONLY once when master empty
+      if (!aggregatedOnceRef.current && data.length === 0) {
+        aggregatedOnceRef.current = true;
+
         const picksSnap = await getDocs(collection(db, "userPicks"));
         const playerMap = new Map();
 
         picksSnap.forEach((docSnap) => {
-          const data = docSnap.data();
-          const picks = data.step4Picks || [];
+          const picks = docSnap.data().step4Picks || [];
 
           picks.forEach((p) => {
-            const playerName = typeof p === "string" ? p : p.player;
+            const name = typeof p === "string" ? p : p.player;
 
-            if (!playerMap.has(playerName)) {
-              playerMap.set(playerName, {
-                player: playerName,
+            if (!playerMap.has(name)) {
+              playerMap.set(name, {
+                player: name,
                 goals: 0,
                 team: p.team ?? "",
               });
@@ -32,33 +62,13 @@ const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
           });
         });
 
-        const masterSnap = await getDoc(doc(db, "master", "step4"));
-
-        if (masterSnap.exists()) {
-          const masterPlayers = masterSnap.data().step4Picks || [];
-
-          masterPlayers.forEach((p) => {
-            if (playerMap.has(p.player)) {
-              playerMap.get(p.player).goals = p.goals;
-            } else {
-              playerMap.set(p.player, p);
-            }
-          });
-        }
-
-        const sorted = [...playerMap.values()].sort(
-          (a, b) => b.goals - a.goals
-        );
-
-        setPlayers(sorted);
-      } catch (err) {
-        console.error("Error loading players:", err);
+        setPlayers([...playerMap.values()]);
       }
 
       setLoading(false);
-    };
+    });
 
-    loadPlayers();
+    return unsub;
   }, []);
 
   const increment = (player) => {
@@ -68,7 +78,7 @@ const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
     markDirty();
 
     setPlayers((prev) =>
-      prev.map((p) => (p.player === player ? { ...p, goals: p.goals + 1 } : p)),
+      prev.map((p) => (p.player === player ? { ...p, goals: p.goals + 1 } : p))
     );
   };
 
@@ -80,32 +90,29 @@ const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
 
     setPlayers((prev) =>
       prev.map((p) =>
-        p.player === player ? { ...p, goals: Math.max(0, p.goals - 1) } : p,
-      ),
+        p.player === player ? { ...p, goals: Math.max(0, p.goals - 1) } : p
+      )
     );
   };
 
   useEffect(() => {
     registerSave(async () => {
+      if (!isDirtyRef.current) return;
+
       const sorted = [...players].sort((a, b) => b.goals - a.goals);
 
       await setDoc(
         doc(db, "master", "step4"),
         { step4Picks: sorted },
-        { merge: true },
+        { merge: true }
       );
 
       setPlayers(sorted);
-      setSortedView(true);
       isDirtyRef.current = false;
     });
   }, [players, registerSave]);
 
   if (loading) return <LoadingSpinner />;
-
-  const displayPlayers = sortedView
-    ? players
-    : players; // keeps editing stable; sorted only after save above
 
   return (
     <div className="table-responsive">
@@ -119,12 +126,10 @@ const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
         </thead>
 
         <tbody>
-          {displayPlayers.map((p) => (
+          {players.map((p) => (
             <tr key={p.player}>
               <td>{p.player}</td>
-
               <td className="text-center fw-bold">{p.goals}</td>
-
               <td className="text-center">
                 <button
                   className="btn btn-sm btn-danger me-2"
