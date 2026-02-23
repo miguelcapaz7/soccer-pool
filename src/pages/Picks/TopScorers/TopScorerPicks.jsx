@@ -16,26 +16,26 @@ const TopScorerPicks = ({ user }) => {
 
   return (
     <>
-    <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
-      {topScorers.map((pick, i) => (
-        <div className="col" key={i}>
-          <div className="card p-3 shadow-sm">
-            <PlayerPicker
-              key={i}
-              index={i}
-              pick={pick}
-              onTeamChange={handleTeamChange}
-              onPlayerChange={handlePlayerChange}
-              takenPlayers={takenPlayers}
-            />
+      <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        {topScorers.map((pick, i) => (
+          <div className="col" key={i}>
+            <div className="card p-3 shadow-sm">
+              <PlayerPicker
+                key={i}
+                index={i}
+                pick={pick}
+                onTeamChange={handleTeamChange}
+                onPlayerChange={handlePlayerChange}
+                takenPlayers={takenPlayers}
+              />
+            </div>
           </div>
-        </div>
-      ))}
-      {topScorerError && (
-        <div className="text-danger mt-2">{topScorerError}</div>
-      )}
-    </div>
-    <div className="card text-center shadow-sm p-4 mb-4 mx-auto">
+        ))}
+        {topScorerError && (
+          <div className="text-danger mt-2">{topScorerError}</div>
+        )}
+      </div>
+      <div className="card text-center shadow-sm p-4 mb-4 mx-auto">
         <h2 className="mb-3">
           STEP 5 - Predict the total amount of goals scored in the tournament
         </h2>
@@ -61,7 +61,7 @@ const TopScorerPicks = ({ user }) => {
           <div className="text-danger mt-2">{goalPredictionError}</div>
         )}
       </div>
-      </>
+    </>
   );
 };
 

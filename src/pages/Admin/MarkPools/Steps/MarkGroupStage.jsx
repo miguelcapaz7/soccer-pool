@@ -1,20 +1,27 @@
 import MatchDayTable from "../../../../components/Picks/GroupStage/MatchDayTable";
-import { useEffect, useState, useRef } from "react";
-import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { doc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../../firebase";
 import { generateEmptyGroupStagePicks } from "../../../../utils/Picks/GroupStage/groupStageUtils";
 import LoadingSpinner from "../../../../components/LoadingSpinner";
 
 const MarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
   const [groupStagePicks, setGroupStagePicks] = useState(
-    useRef(generateEmptyGroupStagePicks()).current
+    useRef(generateEmptyGroupStagePicks()).current,
   );
   const [loading, setLoading] = useState(true);
   const isDirtyRef = useRef(false);
+  const dirtyMatchesRef = useRef(new Set());
+  const picksRef = useRef(groupStagePicks);
+
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const ref = doc(db, "master", "pool");
+    picksRef.current = groupStagePicks;
+  }, [groupStagePicks]);
+
+  useEffect(() => {
+    const ref = doc(db, "master", "step1");
 
     const unsubscribe = onSnapshot(
       ref,
@@ -23,10 +30,11 @@ const MarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
           setLoading(false);
           return;
         }
+        const data = snapshot.data().step1Picks ?? {};
 
-        // Only hydrate from DB if user has not started editing
         if (!isDirtyRef.current) {
-          setGroupStagePicks(snapshot.data().step1Picks ?? {});
+          setGroupStagePicks(data);
+          picksRef.current = data;
         }
 
         setLoading(false);
@@ -35,33 +43,53 @@ const MarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
         console.error("Error loading master picks:", err);
         setError("Failed to load master picks.");
         setLoading(false);
-      }
+      },
     );
 
     return () => unsubscribe();
   }, []);
 
-  const handlePick = (matchId, option) => {
+  const handlePick = useCallback((matchId, option) => {
     if (isSaving) return;
 
     isDirtyRef.current = true;
     markDirty();
+
     setGroupStagePicks((prev) => {
       const currentResult = prev[matchId]?.result ?? "";
+      const newResult = currentResult === option ? "" : option;
+
+      dirtyMatchesRef.current.add(matchId);
 
       return {
         ...prev,
-        [matchId]: {
-          result: currentResult === option ? "" : option,
-        },
+        [matchId]: { result: newResult },
       };
     });
-  };
+  }, [isSaving, markDirty]);
 
   useEffect(() => {
     registerSave(async () => {
-      const ref = doc(db, "master", "pool");
-      await setDoc(ref, { step1Picks: groupStagePicks }, { merge: true });
+      const ref = doc(db, "master", "step1");
+
+      const updates = {};
+      dirtyMatchesRef.current.forEach((matchId) => {
+        updates[`step1Picks.${matchId}`] = groupStagePicks[matchId];
+      });
+
+      if (Object.keys(updates).length === 0) return;
+
+      try {
+        await updateDoc(ref, updates);
+      } catch (err) {
+        if (err.code === "not-found") {
+          await setDoc(ref, { step1Picks: groupStagePicks });
+        } else {
+          throw err;
+        }
+      }
+
+      dirtyMatchesRef.current.clear();
       isDirtyRef.current = false;
     });
   }, [groupStagePicks, registerSave]);
