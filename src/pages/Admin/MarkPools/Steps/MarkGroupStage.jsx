@@ -109,25 +109,7 @@ const MarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
       // ⭐ 2. CALCULATE LEADERBOARD (NO CLOUD FUNCTIONS)
       const masterPicks = picksRef.current;
 
-      // ⭐ read both collections in parallel
-      const [userPicksSnap, usersSnap] = await Promise.all([
-        getDocs(collection(db, "userPicks")),
-        getDocs(collection(db, "users")),
-      ]);
-
-      // ⭐ build uid → name map
-      const nameMap = new Map();
-
-      usersSnap.forEach((u) => {
-        const data = u.data();
-
-        const first = data.firstName ?? "";
-        const last = data.lastName ?? "";
-
-        const fullName = `${first} ${last}`.trim() || "Unknown";
-
-        nameMap.set(u.id, fullName);
-      });
+      const userPicksSnap = await getDocs(collection(db, "userPicks"));
 
       const batch = writeBatch(db);
 
@@ -136,8 +118,6 @@ const MarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
         const data = userDoc.data();
 
         const userStep1 = data.step1Picks || {};
-        const name = nameMap.get(userId) || "Unknown";
-        const champion = data?.step3Picks?.CHAMPION?.[0] || "";
 
         let pts = 0;
 
@@ -147,16 +127,9 @@ const MarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
           }
         });
 
-        const lbRef = doc(db, "leaderboard", userId);
-
         batch.set(
-          lbRef,
-          {
-            name,
-            step1pts: pts,
-            total: pts,
-            winner: champion,
-          },
+          doc(db, "leaderboard", userId),
+          { step1pts: pts },
           { merge: true },
         );
       });

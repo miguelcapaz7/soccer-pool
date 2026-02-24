@@ -1,6 +1,6 @@
 import { DndProvider } from "react-dnd";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { doc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, getDocs, onSnapshot, collection, writeBatch } from "firebase/firestore";
 import { db } from "../../../../firebase";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import GroupTable from "../../../../components/GroupTable";
@@ -91,18 +91,54 @@ const MarkStandings = ({ registerSave, markDirty, isSaving }) => {
 
   useEffect(() => {
     registerSave(async () => {
+      if (!isDirtyRef.current) return;
+
       const ref = doc(db, "master", "step2");
 
+      // ⭐ 1 save master
       await setDoc(
         ref,
         {
-          step2Picks: {
-            standings,
-            thirdPlaceOrder,
-          },
+          step2Picks: { standings, thirdPlaceOrder },
         },
         { merge: true },
       );
+
+      // ⭐ 2 read user picks
+      const userSnap = await getDocs(collection(db, "userPicks"));
+
+      const batch = writeBatch(db);
+
+      userSnap.forEach((userDoc) => {
+        const uid = userDoc.id;
+        const userStandings = userDoc.data()?.step2Picks?.standings ?? [];
+
+        let step2pts = 0;
+
+        standings.forEach((masterGroup) => {
+          const userGroup = userStandings.find(
+            (g) => g.group === masterGroup.group,
+          );
+
+          if (!userGroup) return;
+
+          const masterTop2 = masterGroup.teams.slice(0, 2);
+          const userTop2 = userGroup.teams.slice(0, 2);
+
+          // ⭐ team in top2
+          userTop2.forEach((team) => {
+            if (masterTop2.includes(team)) step2pts += 2;
+          });
+
+          // ⭐ correct position bonus
+          if (userGroup.teams[0] === masterGroup.teams[0]) step2pts += 2;
+          if (userGroup.teams[1] === masterGroup.teams[1]) step2pts += 2;
+        });
+
+        batch.set(doc(db, "leaderboard", uid), { step2pts }, { merge: true });
+      });
+
+      await batch.commit();
 
       isDirtyRef.current = false;
     });

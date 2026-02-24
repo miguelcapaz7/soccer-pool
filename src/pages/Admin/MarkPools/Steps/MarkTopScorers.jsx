@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import {
   doc,
-  getDoc,
   setDoc,
   onSnapshot,
   collection,
   getDocs,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "../../../../firebase";
 import LoadingSpinner from "../../../../components/LoadingSpinner";
@@ -22,7 +22,7 @@ const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
     const ref = doc(db, "master", "step4");
 
     const unsub = onSnapshot(ref, async (snap) => {
-      const data = snap.exists() ? snap.data().step4Picks ?? [] : [];
+      const data = snap.exists() ? (snap.data().step4Picks ?? []) : [];
 
       // ⭐ snapshot diff guard
       if (JSON.stringify(data) === JSON.stringify(lastSnapshotRef.current)) {
@@ -78,7 +78,7 @@ const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
     markDirty();
 
     setPlayers((prev) =>
-      prev.map((p) => (p.player === player ? { ...p, goals: p.goals + 1 } : p))
+      prev.map((p) => (p.player === player ? { ...p, goals: p.goals + 1 } : p)),
     );
   };
 
@@ -90,8 +90,8 @@ const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
 
     setPlayers((prev) =>
       prev.map((p) =>
-        p.player === player ? { ...p, goals: Math.max(0, p.goals - 1) } : p
-      )
+        p.player === player ? { ...p, goals: Math.max(0, p.goals - 1) } : p,
+      ),
     );
   };
 
@@ -101,11 +101,38 @@ const MarkTopScorers = ({ registerSave, markDirty, isSaving }) => {
 
       const sorted = [...players].sort((a, b) => b.goals - a.goals);
 
+      // ⭐ 1 save master
       await setDoc(
         doc(db, "master", "step4"),
         { step4Picks: sorted },
-        { merge: true }
+        { merge: true },
       );
+
+      // ⭐ 2 build goal map
+      const goalMap = new Map();
+      sorted.forEach((p) => goalMap.set(p.player, p.goals));
+
+      // ⭐ 3 read user picks ONLY
+      const picksSnap = await getDocs(collection(db, "userPicks"));
+
+      const batch = writeBatch(db);
+
+      picksSnap.forEach((docSnap) => {
+        const uid = docSnap.id;
+        const picks = docSnap.data().step4Picks || [];
+
+        let step4pts = 0;
+
+        picks.forEach((p) => {
+          const playerName = typeof p === "string" ? p : p.player;
+          const goals = goalMap.get(playerName) || 0;
+          step4pts += goals * 3;
+        });
+
+        batch.set(doc(db, "leaderboard", uid), { step4pts }, { merge: true });
+      });
+
+      await batch.commit();
 
       setPlayers(sorted);
       isDirtyRef.current = false;
