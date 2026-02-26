@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
 const useLeaderboard = () => {
@@ -10,55 +10,37 @@ const useLeaderboard = () => {
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "leaderboard"),
-      async (lbSnap) => {
+      (snap) => {
         try {
-          // ⭐ parallel fetch supporting collections
-          const [usersSnap, picksSnap] = await Promise.all([
-            getDocs(collection(db, "users")),
-            getDocs(collection(db, "userPicks")),
-          ]);
+          if (snap.empty) {
+            setLeaders([]);
+            setLoading(false);
+            return;
+          }
 
-          const userMap = new Map();
-          usersSnap.forEach((u) => {
-            const d = u.data();
-            const name =
-              `${d.firstName ?? ""} ${d.lastName ?? ""}`.trim() || "Unknown";
-            userMap.set(u.id, name);
-          });
+          const rows = snap.docs.map((doc) => {
+            const d = doc.data();
 
-          const picksMap = new Map();
-          picksSnap.forEach((p) => picksMap.set(p.id, p.data()));
+            const step1pts = d.step1pts || 0;
+            const step2pts = d.step2pts || 0;
+            const step3pts = d.step3pts || 0;
+            const step4pts = d.step4pts || 0;
 
-          // ⭐ build leaderboard rows
-          const rows = lbSnap.docs.map((doc) => {
-            const uid = doc.id;
-            const lb = doc.data();
-            const picks = picksMap.get(uid) || {};
-
-            const winner = picks?.step3Picks?.CHAMPION?.[0] || "";
-
-            const step1pts = lb.step1pts || 0;
-            const step2pts = lb.step2pts || 0;
-            const step3pts = lb.step3pts || 0;
-            const step4pts = lb.step4pts || 0;
-
-            const total = step1pts + step2pts + step3pts + step4pts
+            const total = step1pts + step2pts + step3pts + step4pts;
 
             return {
-              id: uid,
-              name: userMap.get(uid) || "Unknown",
+              id: doc.id,
+              name: d.name || "Unknown",
+              winner: d.champion || "",
               step1pts,
               step2pts,
               step3pts,
               step4pts,
               total,
-              winner,
             };
           });
 
-          // ⭐ sort client side
           rows.sort((a, b) => b.total - a.total);
-
           const ranked = rows.map((r, i) => ({ ...r, placing: i + 1 }));
 
           setLeaders(ranked);
