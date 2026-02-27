@@ -15,13 +15,13 @@ const useNavbar = () => {
       await signOut(auth);
     } catch (error) {
       console.error("Error signing out: ", error);
-    }
+    } 
   };
 
   const dropdownItems = buildDropdownItems(
     profile?.role,
     navigate,
-    handleLogout
+    handleLogout,
   );
 
   const handleNavLinkClick = () => {

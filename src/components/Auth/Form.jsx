@@ -1,12 +1,15 @@
 import React from "react";
 import Button from "../Button.jsx";
 import useForm from "../../hooks/Auth/useForm.js";
+import LoadingSpinner from "../LoadingSpinner.jsx"
 
 const Form = ({ fields, onSubmit, buttonText, footer, showDivider }) => {
   const { formData, handleChange, handleSubmit, error, isSubmitting } = useForm(
     fields.reduce((obj, f) => ({ ...obj, [f.name]: "" }), {}),
     onSubmit
   );
+
+  if (isSubmitting) return <LoadingSpinner />;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -29,7 +32,7 @@ const Form = ({ fields, onSubmit, buttonText, footer, showDivider }) => {
       <Button type="submit" color="dark" disabled={isSubmitting} style={{ width: "100%" }}>
         {buttonText}
       </Button>
-     
+
       {showDivider && (
         <div className="d-flex align-items-center my-5">
           <hr className="flex-grow-1" />
