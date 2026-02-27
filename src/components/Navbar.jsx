@@ -1,46 +1,10 @@
-import React from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
-import Collapse from "bootstrap/js/dist/collapse";
+import useNavbar from "../hooks/useNavbar";
 import logo from "../assets/images/world-cup-2026-logo.jpg";
 
 const Navbar = () => {
-  const { user, isLoggedIn, profile } = useAuth();
-  const navigate = useNavigate();
-  const navItems = ["Home", "Rules", "Leaderboard"];
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Error signing out: ", error);
-    }
-  };
-
-  const dropdownItems = [
-    ...(profile?.role === "Admin"
-      ? [{ label: "Admin", onClick: () => navigate("/admin") }]
-      : []),
-    { label: "Profile", onClick: () => navigate("/profile") },
-    { label: "Your Picks", onClick: () => navigate("/yourPicks") },
-    { type: "divider" },
-    { label: "Logout", onClick: handleLogout },
-  ];
-
-  const handleNavLinkClick = () => {
-    const collapseElement = document.getElementById("navbarSupportedContent");
-    if (collapseElement) {
-      const bsCollapse =
-        Collapse.getInstance(collapseElement) ||
-        new Collapse(collapseElement, {
-          toggle: false,
-        });
-      bsCollapse.hide();
-    }
-  };
+  const { user, isLoggedIn, navItems, dropdownItems, handleNavLinkClick } =
+    useNavbar();
 
   if (!isLoggedIn) {
     return null;
@@ -113,7 +77,7 @@ const Navbar = () => {
                         {item.label}
                       </button>
                     </li>
-                  )
+                  ),
                 )}
               </ul>
             </li>
