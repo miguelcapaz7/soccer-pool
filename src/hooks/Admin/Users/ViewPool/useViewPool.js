@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../../../context/AuthContext";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../../firebase";
 
-const useViewPool = (userId) => {
+const useViewPool = () => {
+  const { user, profile } = useAuth();
+  const { userId } = useParams();
   const [picks, setPicks] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -43,7 +47,7 @@ const useViewPool = (userId) => {
     }
   }, [userId]);
 
-  return { picks, loading, error };
+  return { user, profile, picks, loading, error };
 };
 
 export default useViewPool;

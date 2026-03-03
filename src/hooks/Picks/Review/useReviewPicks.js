@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { saveToFirestore } from "../../../utils/Picks/firestoreUtils.js";
 import { updateDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../../firebase.js";
@@ -7,6 +8,7 @@ const useReviewPicks = (user) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
+  const navigate = useNavigate();
 
   const steps = {
     step1Picks: {
@@ -124,7 +126,7 @@ const useReviewPicks = (user) => {
     setLoading(false);
   }, [user]);
 
-  return { data, loading, errors, handleSubmit };
+  return { data, loading, errors, handleSubmit, navigate };
 };
 
 export default useReviewPicks;

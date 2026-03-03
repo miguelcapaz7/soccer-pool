@@ -1,19 +1,13 @@
-import React from "react";
-import { useAuth } from "../context/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
+import useProfile from "../hooks/useProfile.js";
 import Button from "../components/Button.jsx";
 import MainLayout from "../layouts/MainLayout.jsx";
 
 const Profile = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const { user, navigate } = useProfile();
 
   if (!user) {
     return null;
   }
-
-  const displayName = user.displayName || "";
-  const email = user.email || "";
 
   return (
     <MainLayout title="My Profile">
@@ -21,11 +15,11 @@ const Profile = () => {
         <h5 className="mb-3">User Information</h5>
         <div className="mb-3">
           <strong>Name:</strong>
-          <p className="mb-0">{displayName}</p>
+          <p className="mb-0">{user.displayName || ""}</p>
         </div>
         <div className="mb-3">
           <strong>Email:</strong>
-          <p className="mb-0">{email}</p>
+          <p className="mb-0">{user.email || ""}</p>
         </div>
 
         <Button color="dark" onClick={() => navigate("/home")}>

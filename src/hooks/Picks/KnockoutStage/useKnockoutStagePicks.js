@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   generateBracketMap,
   generateEmptyTeamsMap,
@@ -12,6 +13,7 @@ const useKnockoutStagePicks = (user) => {
   const [loading, setLoading] = useState(true);
   const [teamsByMatchId, setTeamsByMatchId] = useState(generateEmptyTeamsMap());
   const [missingStep2, setMissingStep2] = useState(false);
+  const navigate = useNavigate();
 
   const localStorageKey = useMemo(
     () => (user ? `step3Picks_${user.uid}` : null),
@@ -205,6 +207,7 @@ const useKnockoutStagePicks = (user) => {
     resetMatch,
     loading,
     missingStep2,
+    navigate,
   };
 };
 

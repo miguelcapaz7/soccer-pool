@@ -1,20 +1,8 @@
-import React from "react";
-import { useAuth } from "../../../context/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
+import useMarkPools from "../../../hooks/Admin/MarkPools/useMarkPools.js";
 import MainLayout from "../../../layouts/MainLayout.jsx";
-import Button from "../../../components/Button.jsx";
 
 const MarkPools = () => {
-  const { user, profile } = useAuth();
-  const navigate = useNavigate();
-
-  const menus = [
-    { title: "Step 1 - Group Stage", path: "/groupStagePicks" },
-    { title: "Step 2 - Standings", path: "/standings" },
-    { title: "Step 3 - Knockout Stage", path: "/knockoutStagePicks" },
-    { title: "Step 4 - Top Scorers", path: "/topScorerPicks" },
-    { title: "Step 5 - Total Goals Prediction", path: "/totalGoalsPrediction" },
-  ];
+  const { user, profile, navigate, menus } = useMarkPools();
 
   if (!user || !profile) {
     return null;

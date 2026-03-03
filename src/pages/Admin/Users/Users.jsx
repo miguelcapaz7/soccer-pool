@@ -1,15 +1,19 @@
 import React from "react";
-import { useAuth } from "../../../context/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
 import MainLayout from "../../../layouts/MainLayout.jsx";
 import useUsers from "../../../hooks/Admin/Users/useUsers.js";
 import Button from "../../../components/Button.jsx";
 import LoadingSpinner from "../../../components/LoadingSpinner.jsx";
 
 const Users = () => {
-  const { user, profile } = useAuth();
-  const { users, loading, error } = useUsers();
-  const navigate = useNavigate();
+  const {
+    user,
+    profile,
+    users,
+    loading,
+    error,
+    handleViewPool,
+    handleDeleteUser,
+  } = useUsers();
 
   if (!user || !profile) {
     return null;
@@ -24,21 +28,6 @@ const Users = () => {
       </div>
     );
   }
-
-  const handleViewPool = (userId) => {
-    navigate(`/admin/viewPool/${userId}`);
-  };
-
-  const handleDeleteUser = async (userId) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
-    try {
-      await deleteDoc(doc(db, "users", userId));
-      alert("User deleted successfully");
-    } catch (err) {
-      console.error("Error deleting user:", err);
-      alert("Failed to delete user");
-    }
-  };
 
   return (
     <MainLayout title="Users">
@@ -68,8 +57,8 @@ const Users = () => {
                     undefined,
                     {
                       sensitivity: "base",
-                    }
-                  )
+                    },
+                  ),
                 )
                 .map((u, index) => (
                   <tr key={u.id}>
@@ -80,15 +69,14 @@ const Users = () => {
                     <td>{u.picksSubmitted ? "Yes" : "No"}</td>
                     <td>
                       <Button
-                        size="sm"
-                        variant="primary"
+                        color="success"
                         className="me-2"
                         onClick={() => handleViewPool(u.id)}
                       >
                         View Pool
                       </Button>
                       <Button
-                        size="sm"
+                        color="danger"
                         variant="danger"
                         onClick={() => handleDeleteUser(u.id)}
                       >

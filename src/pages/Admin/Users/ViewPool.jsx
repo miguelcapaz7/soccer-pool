@@ -1,14 +1,10 @@
-import { useParams, Navigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
 import useViewPool from "../../../hooks/Admin/Users/ViewPool/useViewPool";
 import MainLayout from "../../../layouts/MainLayout";
 import ReviewSection from "../../../components/Picks/Review/ReviewSection";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const ViewPool = () => {
-  const { user, profile } = useAuth();
-  const { userId } = useParams();
-  const { picks, loading, error } = useViewPool(userId);
+  const { user, profile, picks, loading, error } = useViewPool();
 
   const steps = [
     { key: "step1Picks", title: "Step 1", step: 1 },
