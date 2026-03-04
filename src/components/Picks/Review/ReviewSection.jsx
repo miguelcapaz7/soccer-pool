@@ -20,6 +20,7 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
                 matchDay={md}
                 groupStagePicks={items}
                 clickable={false}
+                review={true}
               />
             </div>
           ))}

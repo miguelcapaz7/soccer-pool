@@ -10,6 +10,7 @@ const MatchDayTable = ({
   groupStagePicks,
   handlePick,
   clickable = true,
+  review = false
 }) => {
   const matchups = getGroupStageMatchups(matchDay);
 
@@ -40,9 +41,10 @@ const MatchDayTable = ({
                 );
                 const result = groupStagePicks[matchId]?.result ?? null;
                 const options = [groupData.teams[i], "Tie", groupData.teams[j]];
+                const needsAttention = review && (result === "");
 
                 return (
-                  <tr key={matchId}>
+                  <tr key={matchId} className={needsAttention ? "table-danger" : ""}>
                     <td className="text-center fw-bold">{groupData.group}</td>
                     {options.map((option) => (
                       <td
