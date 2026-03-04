@@ -1,21 +1,10 @@
-import { useAuth } from "../context/AuthContext.jsx";
-import useViewPool from "../hooks/Admin/Users/ViewPool/useViewPool.js";
+import useYourPicks from "../hooks/useYourPicks.js";
 import MainLayout from "../layouts/MainLayout.jsx";
 import ReviewSection from "../components/Picks/Review/ReviewSection.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 const YourPicks = () => {
-  const { user } = useAuth();
-  const userId = user?.uid;
-  const { picks, loading, error } = useViewPool(userId);
-
-  const steps = [
-    { key: "step1Picks", title: "Step 1", step: 1 },
-    { key: "step2Picks", title: "Step 2", step: 2 },
-    { key: "step3Picks", title: "Step 3", step: 3 },
-    { key: "step4Picks", title: "Step 4", step: 4 },
-    { key: "step5Picks", title: "Step 5", step: 5 },
-  ];
+  const { user, picks, loading, error, steps } = useYourPicks();
 
   if (!user) return null;
 
