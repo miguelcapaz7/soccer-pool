@@ -5,13 +5,12 @@ import MainLayout from "../layouts/MainLayout.jsx";
 const Profile = () => {
   const { user, navigate } = useProfile();
 
-  if (!user) {
-    return null;
-  }
-
   return (
     <MainLayout title="My Profile">
-      <div className="p-4 border rounded-3 shadow-sm bg-light" style={{ maxWidth: "400px", margin: "0 auto" }}>
+      <div
+        className="p-4 border rounded-3 shadow-sm bg-light"
+        style={{ maxWidth: "400px", margin: "0 auto" }}
+      >
         <h5 className="mb-3">User Information</h5>
         <div className="mb-3">
           <strong>Name:</strong>

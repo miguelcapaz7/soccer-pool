@@ -2,21 +2,7 @@ import useMarkPools from "../../../hooks/Admin/MarkPools/useMarkPools.js";
 import MainLayout from "../../../layouts/MainLayout.jsx";
 
 const MarkPools = () => {
-  const { user, profile, navigate, menus } = useMarkPools();
-
-  if (!user || !profile) {
-    return null;
-  }
-
-  if (profile.role !== "Admin") {
-    return (
-      <div className="container py-5 mt-5">
-        <h5 className="text-center mt-4">
-          You do not have permission to view this page
-        </h5>
-      </div>
-    );
-  }
+  const { navigate, menus } = useMarkPools();
 
   return (
     <MainLayout title="Mark Pools">

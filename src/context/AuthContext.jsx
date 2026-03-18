@@ -1,7 +1,12 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+} from "react";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 const AuthContext = createContext(null);
@@ -16,46 +21,37 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profile, setProfile] = useState(null);
-  
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      setIsLoggedIn(!!currentUser);
 
       if (currentUser) {
         try {
           const usersDoc = doc(db, "users", currentUser.uid);
           const snapshot = await getDoc(usersDoc);
-          if (snapshot.exists()) {
-            setProfile(snapshot.data());
-          } else {
-            setProfile(null);
-          }
+          setProfile(snapshot.exists() ? snapshot.data() : null);
         } catch (err) {
           console.error("Error fetching user profile:", err);
           setProfile(null);
         }
-
-        return;
-      } 
-
-      setProfile(null);
-
-      const publicRoutes = ["/login", "/createAccount"];
-      if (!publicRoutes.includes(location.pathname)) {
-        navigate("/login");
+      } else {
+        setProfile(null);
       }
+
+      setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, []);
 
-  const value = { user, isLoggedIn, profile };
+  const value = useMemo(() => ({ 
+    user, 
+    profile, 
+    loading 
+  }), [user, profile, loading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

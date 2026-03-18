@@ -1,4 +1,3 @@
-import React from "react";
 import MainLayout from "../../../layouts/MainLayout.jsx";
 import useUsers from "../../../hooks/Admin/Users/useUsers.js";
 import Button from "../../../components/Button.jsx";
@@ -6,28 +5,12 @@ import LoadingSpinner from "../../../components/LoadingSpinner.jsx";
 
 const Users = () => {
   const {
-    user,
-    profile,
     users,
     loading,
     error,
     handleViewPool,
     handleDeleteUser,
   } = useUsers();
-
-  if (!user || !profile) {
-    return null;
-  }
-
-  if (profile.role !== "Admin") {
-    return (
-      <div className="container py-5 mt-5">
-        <h5 className="text-center mt-4">
-          You do not have permission to view this page
-        </h5>
-      </div>
-    );
-  }
 
   return (
     <MainLayout title="Users">

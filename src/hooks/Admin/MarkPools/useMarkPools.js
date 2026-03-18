@@ -1,8 +1,6 @@
-import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const useMarkPools = () => {
-  const { user, profile } = useAuth();
   const navigate = useNavigate();
 
   const menus = [
@@ -13,7 +11,7 @@ const useMarkPools = () => {
     { title: "Step 5 - Total Goals Prediction", path: "/totalGoalsPrediction" },
   ];
 
-  return { user, profile, navigate, menus }
+  return { navigate, menus }
 };
 
 export default useMarkPools;

@@ -3,8 +3,6 @@ import useMarkPoolsStep from "../../../hooks/Admin/MarkPools/useMarkPoolsStep";
 
 const MarkPoolsStep = () => {
   const {
-    user,
-    profile,
     config,
     saveHandlerRef,
     isDirty,
@@ -13,20 +11,6 @@ const MarkPoolsStep = () => {
     StepComponent,
     handleSave,
   } = useMarkPoolsStep();
-
-  if (!user || !profile) {
-    return null;
-  }
-
-  if (profile.role !== "Admin") {
-    return (
-      <div className="container py-5 mt-5">
-        <h5 className="text-center mt-4">
-          You do not have permission to view this page
-        </h5>
-      </div>
-    );
-  }
 
   if (!config) {
     return <Navigate to="/admin/markPools" replace />;

@@ -4,9 +4,7 @@ import ReviewSection from "../components/Picks/Review/ReviewSection.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 const YourPicks = () => {
-  const { user, picks, loading, error, steps } = useYourPicks();
-
-  if (!user) return null;
+  const { picks, loading, error, steps } = useYourPicks();
 
   return (
     <MainLayout title="Your Picks">

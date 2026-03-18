@@ -8,7 +8,6 @@ import MarkTopScorers from "../../../pages/Admin/MarkPools/Steps/MarkTopScorers"
 import MarkTotalGoalsPrediction from "../../../pages/Admin/MarkPools/Steps/MarkTotalGoalsPrediction";
 
 const useMarkPoolsStep = () => {
-  const { user, profile } = useAuth();
   const pickSteps = {
     groupStagePicks: {
       title: "Step 1 – Group Stage",
@@ -50,8 +49,6 @@ const useMarkPoolsStep = () => {
   };
 
   return {
-    user,
-    profile,
     config,
     saveHandlerRef,
     isDirty,

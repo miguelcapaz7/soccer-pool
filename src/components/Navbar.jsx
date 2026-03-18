@@ -3,12 +3,8 @@ import useNavbar from "../hooks/useNavbar";
 import logo from "../assets/images/world-cup-2026-logo.jpg";
 
 const Navbar = () => {
-  const { user, isLoggedIn, navItems, dropdownItems, handleNavLinkClick } =
+  const { displayName, navItems, dropdownItems, handleNavLinkClick } =
     useNavbar();
-
-  if (!isLoggedIn) {
-    return null;
-  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
@@ -57,7 +53,7 @@ const Navbar = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                {user.displayName}
+                {displayName}
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
                 {dropdownItems.map((item, idx) =>

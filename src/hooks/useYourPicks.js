@@ -54,7 +54,7 @@ const useYourPicks = () => {
     }
   }, [userId]);
 
-  return { user, picks, loading, error, steps };
+  return { picks, loading, error, steps };
 };
 
 export default useYourPicks;

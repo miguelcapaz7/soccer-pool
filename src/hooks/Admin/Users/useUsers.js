@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../../context/AuthContext";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 
 const useUsers = () => {
-  const { user, profile } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -55,7 +53,7 @@ const useUsers = () => {
     }
   };
 
-  return { user, profile, users, loading, error, handleViewPool, handleDeleteUser };
+  return { users, loading, error, handleViewPool, handleDeleteUser };
 };
 
 export default useUsers;

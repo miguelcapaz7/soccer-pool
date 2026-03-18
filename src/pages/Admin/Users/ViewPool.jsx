@@ -4,7 +4,7 @@ import ReviewSection from "../../../components/Picks/Review/ReviewSection";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const ViewPool = () => {
-  const { user, profile, picks, loading, error } = useViewPool();
+  const { picks, loading, error } = useViewPool();
 
   const steps = [
     { key: "step1Picks", title: "Step 1", step: 1 },
@@ -13,16 +13,6 @@ const ViewPool = () => {
     { key: "step4Picks", title: "Step 4", step: 4 },
     { key: "step5Picks", title: "Step 5", step: 5 },
   ];
-
-  if (!user || !profile) return null;
-  if (profile.role !== "Admin")
-    return (
-      <div className="container py-5 mt-5">
-        <h5 className="text-center mt-4">
-          You do not have permission to view this page
-        </h5>
-      </div>
-    );
 
   return (
     <MainLayout title="View User Pool">

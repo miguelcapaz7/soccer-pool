@@ -6,9 +6,10 @@ import { buildDropdownItems } from "../utils/navbarUtils";
 import Collapse from "bootstrap/js/dist/collapse";
 
 const useNavbar = () => {
-  const { user, isLoggedIn, profile } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const navItems = ["Home", "Rules", "Leaderboard"];
+  const displayName = user.displayName
 
   const handleLogout = async () => {
     try {
@@ -37,8 +38,7 @@ const useNavbar = () => {
   };
 
   return {
-    user,
-    isLoggedIn,
+    displayName,
     navItems,
     dropdownItems,
     handleNavLinkClick,
