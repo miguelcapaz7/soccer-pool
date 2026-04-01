@@ -1,12 +1,12 @@
 const GroupsData = [
     {
       group: "A",
-      teams: ["Mexico", "South Africa", "South Korea", "Denmark"],
+      teams: ["Mexico", "South Africa", "South Korea", "Czechia"],
       colour: ""
     },
     {
       group: "B",
-      teams: ["Canada", "Italy", "Qatar", "Switzerland"],
+      teams: ["Canada", "Bosnia-Herzegovina", "Qatar", "Switzerland"],
       colour: ""
     },
     {
@@ -26,7 +26,7 @@ const GroupsData = [
     },
     {
       group: "F",
-      teams: ["Netherlands", "Japan", "Ukraine", "Tunisia"],
+      teams: ["Netherlands", "Japan", "Sweden", "Tunisia"],
       colour: ""
     },
     {
@@ -51,7 +51,7 @@ const GroupsData = [
     },
     {
       group: "K",
-      teams: ["Portugal", "Jamaica", "Uzbekistan", "Colombia"],
+      teams: ["Portugal", "Congo DR", "Uzbekistan", "Colombia"],
       colour: ""
     },
     {

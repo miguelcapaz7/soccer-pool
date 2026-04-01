@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-import { useAuth } from "../../../context/AuthContext";
 import MarkGroupStage from "../../../pages/Admin/MarkPools/Steps/MarkGroupStage";
 import MarkStandings from "../../../pages/Admin/MarkPools/Steps/MarkStandings";
 import MarkKnockoutStage from "../../../pages/Admin/MarkPools/Steps/MarkKnockoutStage";

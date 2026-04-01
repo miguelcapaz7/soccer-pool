@@ -7,6 +7,17 @@ const useLeaderboard = () => {
   const [leaders, setLeaders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const columnHeaders = {
+    placing: "#",
+    name: "Name",
+    step1pts: "Step 1",
+    step2pts: "Step 2",
+    step3pts: "Step 3",
+    step4pts: "Step 4",
+    total: "Total",
+    winner: "Winner",
+  };
+  const columns = Object.keys(columnHeaders);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -32,7 +43,7 @@ const useLeaderboard = () => {
     return () => unsubscribe();
   }, []);
 
-  return { leaders, loading, error };
+  return { leaders, loading, error, columnHeaders, columns };
 };
 
 export default useLeaderboard;

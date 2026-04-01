@@ -1,11 +1,10 @@
-import React from "react";
 import MainLayout from "../layouts/MainLayout.jsx";
 import useLeaderboard from "../hooks/useLeaderboard.js";
 import LeaderboardTable from "../components/LeaderboardTable.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 const Leaderboard = () => {
-  const { leaders, loading, error } = useLeaderboard();
+  const { leaders, loading, error, columnHeaders, columns } = useLeaderboard();
 
   return (
     <MainLayout title="Leaderboard">
@@ -20,7 +19,7 @@ const Leaderboard = () => {
           </div>
         </div>
       ) : (
-        <LeaderboardTable leaders={leaders} />
+        <LeaderboardTable leaders={leaders} columnHeaders={columnHeaders} columns={columns} />
       )}
     </MainLayout>
   );

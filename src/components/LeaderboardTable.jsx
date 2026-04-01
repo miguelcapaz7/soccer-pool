@@ -1,18 +1,6 @@
 import React from "react";
 
-const LeaderboardTable = ({ leaders }) => {
-  const columnHeaders = {
-    placing: "#",
-    name: "Name",
-    step1pts: "Step 1",
-    step2pts: "Step 2",
-    step3pts: "Step 3",
-    step4pts: "Step 4",
-    total: "Total",
-    winner: "Winner",
-  };
-  const columns = Object.keys(columnHeaders);
-
+const LeaderboardTable = ({ leaders, columnHeaders, columns }) => {
   return (
     <table className="table table-bordered mb-2 text-center">
       <thead className="table-light">
