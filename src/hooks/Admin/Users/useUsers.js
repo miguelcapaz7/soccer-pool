@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const useUsers = () => {
           console.error("Error fetching users:", err);
           setError("Failed to load users.");
           setLoading(false);
-        }
+        },
       );
 
       return () => unsubscribe();
@@ -45,7 +45,11 @@ const useUsers = () => {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await deleteDoc(doc(db, "users", userId));
+      await Promise.all([
+        deleteDoc(doc(db, "users", userId)),
+        deleteDoc(doc(db, "userPicks", userId)),
+        deleteDoc(doc(db, "leaderboard", userId)),
+      ]);
       alert("User deleted successfully");
     } catch (err) {
       console.error("Error deleting user:", err);

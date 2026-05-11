@@ -1,22 +1,23 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils.js";
+import { generateEmptyTeamsMap } from "../../../utils/Picks/KnockoutStage/knockoutStageUtils.js";
 
 const useStandingsPicks = (user) => {
   const [standings, setStandings] = useState(
-    useRef(generateInitialStandings()).current
+    useRef(generateInitialStandings()).current,
   );
   const [thirdPlaceOrder, setThirdPlaceOrder] = useState(
     useRef(
       generateInitialStandings().map((g) => ({
         group: g.group,
         team: g.teams[2],
-      }))
-    ).current
+      })),
+    ).current,
   );
 
   const localStorageKey = useMemo(
     () => (user ? `step2Picks_${user.uid}` : null),
-    [user]
+    [user],
   );
 
   const saveToLocalStorage = useCallback(
@@ -28,7 +29,7 @@ const useStandingsPicks = (user) => {
       };
       localStorage.setItem(localStorageKey, JSON.stringify(data));
     },
-    [user]
+    [user],
   );
 
   const moveTeam = useCallback(
@@ -48,11 +49,12 @@ const useStandingsPicks = (user) => {
 
         setThirdPlaceOrder(updatedThirdPlace);
         saveToLocalStorage(updatedStandings, updatedThirdPlace);
+        clearKnockoutStage();
 
         return updatedStandings;
       });
     },
-    [saveToLocalStorage]
+    [saveToLocalStorage],
   );
 
   const moveThirdPlaceTeam = useCallback(
@@ -63,11 +65,22 @@ const useStandingsPicks = (user) => {
         updated.splice(toIndex, 0, movedTeam);
 
         saveToLocalStorage(standings, updated);
+        clearKnockoutStage();
         return updated;
       });
     },
-    [standings, saveToLocalStorage]
+    [standings, saveToLocalStorage],
   );
+
+  const clearKnockoutStage = useCallback(() => {
+    if (!user) return;
+
+    const step3Key = `step3Picks_${user.uid}`;
+
+    const emptyBracket = generateEmptyTeamsMap();
+
+    localStorage.setItem(step3Key, JSON.stringify(emptyBracket));
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;

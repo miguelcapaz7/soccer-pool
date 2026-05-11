@@ -14,15 +14,28 @@ const GroupTable = ({ group, groupIndex, moveTeam, draggable = false }) => (
         {group.teams.map((team, index) => {
           const key = team.id || `${groupIndex}-${index}`;
           return draggable ? (
-            <DraggableTeam
-              key={key}
-              team={team}
-              index={index}
-              groupIndex={groupIndex}
-              moveTeam={(fromIndex, toIndex) =>
-                moveTeam(groupIndex, fromIndex, toIndex)
-              }
-            />
+            <div key={key} className="d-flex align-items-center">
+              {/* ⭐ placing number */}
+              <div
+                className="fw-bold me-2"
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                {index + 1}
+              </div>
+
+              <div className="flex-grow-1">
+                <DraggableTeam
+                  team={team}
+                  index={index}
+                  groupIndex={groupIndex}
+                  moveTeam={(fromIndex, toIndex) =>
+                    moveTeam(groupIndex, fromIndex, toIndex)
+                  }
+                />
+              </div>
+            </div>
           ) : (
             <div
               key={key}

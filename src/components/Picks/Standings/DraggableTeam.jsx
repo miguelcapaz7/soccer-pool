@@ -12,7 +12,7 @@ const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
     <button
       type="button"
       ref={(node) => drag(drop(node))}
-      className={`list-group-item list-group-item-action d-flex p-2 ${
+      className={`list-group-item list-group-item-action d-flex p-2 border-0 ${
         isActive ? "bg-dark text-white" : ""
       }`}
       style={{ cursor: isDragging ? "grabbing" : "grab", transition: "0.2s" }}
@@ -28,7 +28,26 @@ const DraggableTeam = ({ team, index, groupIndex, moveTeam }) => {
           borderRadius: "2px",
         }}
       />
-      {team}
+      <span className="flex-grow-1 text-start">{team}</span>
+      <div className="d-flex flex-column justify-content-center align-items-center ms-2">
+        <div
+          style={{
+            width: "14px",
+            height: "2px",
+            backgroundColor: "currentColor",
+            marginBottom: "3px",
+            opacity: 0.7,
+          }}
+        />
+        <div
+          style={{
+            width: "14px",
+            height: "2px",
+            backgroundColor: "currentColor",
+            opacity: 0.7,
+          }}
+        />
+      </div>
     </button>
   );
 };
