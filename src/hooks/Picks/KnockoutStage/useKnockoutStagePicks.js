@@ -17,17 +17,17 @@ const useKnockoutStagePicks = (user) => {
 
   const localStorageKey = useMemo(
     () => (user ? `step3Picks_${user.uid}` : null),
-    [user]
+    [user],
   );
 
   // Generate Round of 32 teams from Step2 results
   const roundOf32 = useMemo(
     () => generateRoundOf32(step2Results),
-    [step2Results]
+    [step2Results],
   );
   const validTeams = useMemo(
     () => new Set(roundOf32.flat().filter(Boolean)),
-    [roundOf32]
+    [roundOf32],
   );
 
   // Load Step 2 results from local storage
@@ -44,19 +44,31 @@ const useKnockoutStagePicks = (user) => {
     }
     try {
       const parsed = JSON.parse(savedStandings);
-      if (
-        Array.isArray(parsed.standings) &&
-        Array.isArray(parsed.thirdPlaceOrder)
-      ) {
-        const groupTop2 = parsed.standings.map(({ group, teams }) => ({
-          group,
-          first: teams[0],
-          second: teams[1],
-        }));
-        const thirdPlaceTop8 = parsed.thirdPlaceOrder.slice(0, 8);
+      const hasValidStandings = Array.isArray(parsed.standings);
+      const hasValidThirdPlace = Array.isArray(parsed.thirdPlaceOrder);
+      const hasEightThirdPlaceTeams =
+        hasValidThirdPlace && parsed.thirdPlaceOrder.length === 8;
 
-        setStep2Results({ groups: groupTop2, thirdPlace: thirdPlaceTop8 });
+      if (
+        !hasValidStandings ||
+        !hasValidThirdPlace ||
+        !hasEightThirdPlaceTeams
+      ) {
+        setMissingStep2(true);
+        setLoading(false);
+        return;
       }
+
+      const groupTop2 = parsed.standings.map(({ group, teams }) => ({
+        group,
+        first: teams[0],
+        second: teams[1],
+      }));
+
+      setStep2Results({
+        groups: groupTop2,
+        thirdPlace: parsed.thirdPlaceOrder,
+      });
     } catch (err) {
       console.error("Error parsing Step 2 picks from localStorage:", err);
     }
@@ -68,7 +80,7 @@ const useKnockoutStagePicks = (user) => {
   useEffect(() => {
     if (!loading && !missingStep2 && step2Results) {
       setTeamsByMatchId((prev) =>
-        updateBracketWithR32(prev, roundOf32, validTeams)
+        updateBracketWithR32(prev, roundOf32, validTeams),
       );
     }
   }, [loading, missingStep2, step2Results, roundOf32, validTeams]);
@@ -103,34 +115,26 @@ const useKnockoutStagePicks = (user) => {
       if (!localStorageKey) return;
       localStorage.setItem(localStorageKey, JSON.stringify(data));
     },
-    [localStorageKey]
+    [localStorageKey],
   );
 
-  const resetMatch = useCallback(
-    (matchId) => {
-      setTeamsByMatchId((prev) => {
-        const updated = { ...prev };
+  const resetBracket = useCallback(() => {
+    setTeamsByMatchId((prev) => {
+      const updated = { ...prev };
 
-        // Clear this match's picks
-        updated[matchId] =
-          matchId === "CHAMPION" || matchId === "3rdWinner" ? [""] : ["", ""];
-
-        if (matchId === "3P" || matchId.startsWith("SF")) {
-          updated["3rdWinner"] = [""];
+      Object.keys(updated).forEach((matchId) => {
+        // ⭐ keep only Round of 32 intact
+        if (!matchId.startsWith("R32")) {
+          updated[matchId] =
+            matchId === "CHAMPION" || matchId === "3rdWinner" ? [""] : ["", ""];
         }
-
-        // Clear downstream matches (propagation)
-        Object.entries(generateBracketMap).forEach(([id, meta]) => {
-          if (meta.dependsOn?.includes(matchId)) {
-            updated[id] = ["", ""];
-          }
-        });
-        saveStep3(updated);
-        return updated;
       });
-    },
-    [saveStep3]
-  );
+
+      saveStep3(updated);
+
+      return updated;
+    });
+  }, [saveStep3]);
 
   // Handles team selection and propogate winners
   const handleSelectTeam = useCallback(
@@ -180,7 +184,7 @@ const useKnockoutStagePicks = (user) => {
         // Find next match in bracket map
         const nextMatch = Object.entries(generateBracketMap).find(
           ([, meta]) =>
-            meta.colIndex === nextCol && meta.matchupIndex === nextMatchup
+            meta.colIndex === nextCol && meta.matchupIndex === nextMatchup,
         );
 
         if (nextMatch) {
@@ -192,19 +196,19 @@ const useKnockoutStagePicks = (user) => {
         return updated;
       });
     },
-    [teamsByMatchId, saveStep3]
+    [teamsByMatchId, saveStep3],
   );
 
   // Convert team state to bracket columns for rendering
   const bracketColumns = useMemo(
     () => convertTeamsToColumns(teamsByMatchId),
-    [teamsByMatchId]
+    [teamsByMatchId],
   );
 
   return {
     bracket: bracketColumns,
     handleSelectTeam,
-    resetMatch,
+    resetBracket,
     loading,
     missingStep2,
     navigate,

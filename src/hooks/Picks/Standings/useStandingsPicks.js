@@ -6,13 +6,15 @@ const useStandingsPicks = (user) => {
   const [standings, setStandings] = useState(
     useRef(generateInitialStandings()).current,
   );
-  const [thirdPlaceOrder, setThirdPlaceOrder] = useState(
-    useRef(
-      generateInitialStandings().map((g) => ({
+
+  const [thirdPlaceOrder, setThirdPlaceOrder] = useState([]);
+  const thirdPlaceTeams = useMemo(
+    () =>
+      standings.map((g) => ({
         group: g.group,
         team: g.teams[2],
       })),
-    ).current,
+    [standings],
   );
 
   const localStorageKey = useMemo(
@@ -32,6 +34,16 @@ const useStandingsPicks = (user) => {
     [user],
   );
 
+  const clearKnockoutStage = useCallback(() => {
+    if (!user) return;
+
+    const step3Key = `step3Picks_${user.uid}`;
+
+    const emptyBracket = generateEmptyTeamsMap();
+
+    localStorage.setItem(step3Key, JSON.stringify(emptyBracket));
+  }, [user]);
+
   const moveTeam = useCallback(
     (groupIndex, fromIndex, toIndex) => {
       setStandings((prev) => {
@@ -42,45 +54,55 @@ const useStandingsPicks = (user) => {
         const teams = updatedStandings[groupIndex].teams;
         const [movedTeam] = teams.splice(fromIndex, 1);
         teams.splice(toIndex, 0, movedTeam);
-        const updatedThirdPlace = updatedStandings.map((g) => ({
+
+        const availableThirdPlaceTeams = updatedStandings.map((g) => ({
           group: g.group,
           team: g.teams[2],
         }));
 
-        setThirdPlaceOrder(updatedThirdPlace);
-        saveToLocalStorage(updatedStandings, updatedThirdPlace);
+        // ⭐ remove selections that no longer exist
+        const updatedSelections = thirdPlaceOrder.filter((selection) =>
+          availableThirdPlaceTeams.some(
+            (t) => t.group === selection.group && t.team === selection.team,
+          ),
+        );
+
+        setThirdPlaceOrder(updatedSelections);
+
+        saveToLocalStorage(updatedStandings, updatedSelections);
         clearKnockoutStage();
 
         return updatedStandings;
       });
     },
-    [saveToLocalStorage],
+    [thirdPlaceOrder, saveToLocalStorage, clearKnockoutStage],
   );
 
-  const moveThirdPlaceTeam = useCallback(
-    (fromIndex, toIndex) => {
+  const toggleThirdPlaceTeam = useCallback(
+    (teamObj) => {
       setThirdPlaceOrder((prev) => {
-        const updated = [...prev];
-        const [movedTeam] = updated.splice(fromIndex, 1);
-        updated.splice(toIndex, 0, movedTeam);
+        const exists = prev.some((t) => t.team === teamObj.team);
+
+        let updated;
+
+        if (exists) {
+          updated = prev.filter((t) => t.team !== teamObj.team);
+        } else {
+          if (prev.length >= 8) {
+            return prev;
+          }
+
+          updated = [...prev, teamObj];
+        }
 
         saveToLocalStorage(standings, updated);
         clearKnockoutStage();
+
         return updated;
       });
     },
-    [standings, saveToLocalStorage],
+    [standings, saveToLocalStorage, clearKnockoutStage],
   );
-
-  const clearKnockoutStage = useCallback(() => {
-    if (!user) return;
-
-    const step3Key = `step3Picks_${user.uid}`;
-
-    const emptyBracket = generateEmptyTeamsMap();
-
-    localStorage.setItem(step3Key, JSON.stringify(emptyBracket));
-  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -101,7 +123,13 @@ const useStandingsPicks = (user) => {
     }
   }, [user]);
 
-  return { groups: standings, thirdPlaceOrder, moveTeam, moveThirdPlaceTeam };
+  return {
+    groups: standings,
+    thirdPlaceTeams,
+    selectedThirdPlaceTeams: thirdPlaceOrder,
+    moveTeam,
+    toggleThirdPlaceTeam,
+  };
 };
 
 export default useStandingsPicks;

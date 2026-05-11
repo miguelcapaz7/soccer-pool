@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import {
   doc,
   onSnapshot,
@@ -8,19 +8,20 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils"
+import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils";
 
 const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
   const [standings, setStandings] = useState(
     useRef(generateInitialStandings()).current,
   );
-  const [thirdPlaceOrder, setThirdPlaceOrder] = useState(
-    useRef(
-      generateInitialStandings().map((g) => ({
+  const [thirdPlaceOrder, setThirdPlaceOrder] = useState([]);
+  const thirdPlaceTeams = useMemo(
+    () =>
+      standings.map((g) => ({
         group: g.group,
         team: g.teams[2],
       })),
-    ).current,
+    [standings],
   );
 
   const [loading, setLoading] = useState(true);
@@ -40,29 +41,48 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
         const teams = updatedStandings[groupIndex].teams;
         const [movedTeam] = teams.splice(fromIndex, 1);
         teams.splice(toIndex, 0, movedTeam);
-        const updatedThirdPlace = updatedStandings.map((g) => ({
+
+        const availableThirdPlaceTeams = updatedStandings.map((g) => ({
           group: g.group,
           team: g.teams[2],
         }));
 
-        setThirdPlaceOrder(updatedThirdPlace);
+        // ⭐ remove selections that no longer exist
+        const updatedSelections = thirdPlaceOrder.filter((selection) =>
+          availableThirdPlaceTeams.some(
+            (t) => t.group === selection.group && t.team === selection.team,
+          ),
+        );
+
+        setThirdPlaceOrder(updatedSelections);
 
         return updatedStandings;
       });
     },
-    [markDirty, isSaving],
+    [thirdPlaceOrder, markDirty, isSaving],
   );
 
-  const moveThirdPlaceTeam = useCallback(
-    (fromIndex, toIndex) => {
+  const toggleThirdPlaceTeam = useCallback(
+    (teamObj) => {
       if (isSaving) return;
 
       isDirtyRef.current = true;
       markDirty();
       setThirdPlaceOrder((prev) => {
-        const updated = [...prev];
-        const [movedTeam] = updated.splice(fromIndex, 1);
-        updated.splice(toIndex, 0, movedTeam);
+        const exists = prev.some((t) => t.team === teamObj.team);
+
+        let updated;
+
+        if (exists) {
+          updated = prev.filter((t) => t.team !== teamObj.team);
+        } else {
+          if (prev.length >= 8) {
+            return prev;
+          }
+
+          updated = [...prev, teamObj];
+        }
+
 
         return updated;
       });
@@ -149,9 +169,10 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
 
   return {
     standings,
-    thirdPlaceOrder,
+    thirdPlaceTeams,
+    selectedThirdPlaceTeams: thirdPlaceOrder,
     moveTeam,
-    moveThirdPlaceTeam,
+    toggleThirdPlaceTeam,
     loading,
   };
 };

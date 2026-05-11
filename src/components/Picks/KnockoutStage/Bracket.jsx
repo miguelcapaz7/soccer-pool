@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import logo from "../../../assets/images/world-cup-2026-logo.jpg";
 
 const Bracket = React.memo(
-  ({ bracket, handleSelectTeam, resetMatch, readOnly = false }) => {
+  ({ bracket, handleSelectTeam, resetBracket, readOnly = false }) => {
     const stages = useMemo(
       () => ["Round of 32", "Round of 16", "Quarter Finals", "Semi Finals"],
       []
@@ -35,17 +35,6 @@ const Bracket = React.memo(
               >
                 {bracket[colIndex]?.map(({ matchId, teams }, matchupIndex) => (
                   <div key={matchId} className="bracket-match shadow-sm">
-                    {!readOnly &&
-                      teams.some((t) => t) &&
-                      !matchId.startsWith("R32") && (
-                        <button
-                          className="reset-btn"
-                          onClick={() => resetMatch(matchId)}
-                        >
-                          ↩
-                        </button>
-                      )}
-
                     {/* Champion */}
                     {matchId === "CHAMPION" ? (
                       <div className="champion-box">{teams[0]}</div>

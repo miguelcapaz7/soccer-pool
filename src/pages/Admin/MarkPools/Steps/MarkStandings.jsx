@@ -8,9 +8,10 @@ import LoadingSpinner from "../../../../components/LoadingSpinner";
 const MarkStandings = ({ registerSave, markDirty, isSaving }) => {
   const {
     standings,
-    thirdPlaceOrder,
+    thirdPlaceTeams,
+    selectedThirdPlaceTeams,
     moveTeam,
-    moveThirdPlaceTeam,
+    toggleThirdPlaceTeam,
     loading,
   } = useMarkStandings({ registerSave, markDirty, isSaving });
 
@@ -39,8 +40,9 @@ const MarkStandings = ({ registerSave, markDirty, isSaving }) => {
       <div className="row justify-content-center mt-5">
         <div className="col-12 col-md-8 col-lg-6">
           <ThirdPlaceTable
-            teams={thirdPlaceOrder}
-            moveTeam={moveThirdPlaceTeam}
+            teams={thirdPlaceTeams}
+            selectedTeams={selectedThirdPlaceTeams}
+            toggleTeam={toggleThirdPlaceTeam}
           />
         </div>
       </div>

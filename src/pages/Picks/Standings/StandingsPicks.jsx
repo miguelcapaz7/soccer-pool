@@ -6,7 +6,7 @@ import GroupTable from "../../../components/GroupTable.jsx";
 import ThirdPlaceTable from "../../../components/Picks/Standings/ThirdPlaceTable.jsx";
 
 const StandingsPicks = ({ user }) => {
-  const { groups, thirdPlaceOrder, moveTeam, moveThirdPlaceTeam } =
+  const { groups, thirdPlaceTeams, selectedThirdPlaceTeams, moveTeam, toggleThirdPlaceTeam } =
     useStandingsPicks(user);
 
   return (
@@ -28,8 +28,9 @@ const StandingsPicks = ({ user }) => {
       <div className="row justify-content-center mt-5">
         <div className="col-12 col-md-8 col-lg-6">
           <ThirdPlaceTable
-            teams={thirdPlaceOrder}
-            moveTeam={moveThirdPlaceTeam}
+            teams={thirdPlaceTeams}
+            selectedTeams={selectedThirdPlaceTeams}
+            toggleTeam={toggleThirdPlaceTeam}
           />
         </div>
       </div>

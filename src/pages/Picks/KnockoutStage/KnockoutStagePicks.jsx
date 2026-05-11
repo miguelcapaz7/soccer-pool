@@ -11,7 +11,7 @@ const KnockoutStagePicks = ({ user }) => {
     handleSelectTeam,
     loading,
     missingStep2,
-    resetMatch,
+    resetBracket,
     navigate,
   } = useKnockoutStagePicks(user);
 
@@ -33,13 +33,20 @@ const KnockoutStagePicks = ({ user }) => {
   }
 
   return (
+   <>
     <div className="bracket-scroll-wrapper">
       <Bracket
         bracket={bracket}
         handleSelectTeam={handleSelectTeam}
-        resetMatch={resetMatch}
+        resetBracket={resetBracket}
       />
     </div>
+    <div className="text-center">
+          <Button color="dark" className="" onClick={resetBracket}>
+          Reset Bracket
+        </Button>
+    </div>
+</>
   );
 };
 
