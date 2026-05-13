@@ -6,7 +6,7 @@ const GroupsData = [
     },
     {
       group: "B",
-      teams: ["Canada", "Bosnia-Herzegovina", "Qatar", "Switzerland"],
+      teams: ["Canada", "Bosnia", "Qatar", "Switzerland"],
       colour: ""
     },
     {

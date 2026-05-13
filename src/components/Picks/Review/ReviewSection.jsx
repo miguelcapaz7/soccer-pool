@@ -64,20 +64,6 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
     }
 
     if (step === 4) {
-      if (Array.isArray(items)) {
-        return (
-          <ul className="list-group list-group-flush">
-            {items.map((item, idx) => (
-              <li key={idx} className="list-group-item">
-                {`${item.player} (${item.team})`}
-              </li>
-            ))}
-          </ul>
-        );
-      }
-    }
-
-    if (step === 5) {
       const { totalGoals } = items;
       return (
         <div>

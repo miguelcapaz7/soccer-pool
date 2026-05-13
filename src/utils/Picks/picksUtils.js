@@ -1,39 +1,41 @@
 import GroupStagePicks from "../../pages/Picks/GroupStage/GroupStagePicks";
 import StandingsPicks from "../../pages/Picks/Standings/StandingsPicks";
 import KnockoutStagePicks from "../../pages/Picks/KnockoutStage/KnockoutStagePicks";
-import TopScorerPicks from "../../pages/Picks/TopScorers/TopScorerPicks";
+import TotalGoalsPrediction from "../../pages/Picks/TotalGoalsPrediction/TotalGoalsPrediction";
 import ReviewPicks from "../../pages/Picks/Review/ReviewPicks";
 
 export const getPickSteps = () => {
   const pickSteps = {
     groupStagePicks: {
       component: GroupStagePicks,
-      title: "STEP 1 - Predict the Winners of Each Match",
-      subtitle: "2 points for every correct prediction.",
+      title: "STEP 1 - Group Stage",
+      subtitle: "Predict the result of each group stage match by selecting the team or tie. 2 points for every correct prediction.",
       previous: null,
       next: "standingsPicks",
     },
     standingsPicks: {
       component: StandingsPicks,
-      title: "STEP 2 — Group Stage Predictions",
+      title: "STEP 2 - Standings",
       subtitle:
-        "Drag & drop to rank the top 2 in each group. 2 points for each correct team, +2 bonus if the order is exact.",
+        "Drag & drop the teams within each table to predict the final group stage standings. 2 points for each correct team, +2 bonus if the order is exact.",
       previous: "groupStagePicks",
       next: "knockoutStagePicks",
     },
     knockoutStagePicks: {
       component: KnockoutStagePicks,
       title:
-        "STEP 3 - Complete the bracket with your predictions for the knockout stages",
-      subtitle: "Click a team to advance them.",
+        "STEP 3 - Knockout Stage",
+      subtitle: "Complete the bracket with your predictions for the knockout stages",
       previous: "standingsPicks",
-      next: "topScorerPicks",
+      next: "totalGoalsPrediction",
       wider: true,
     },
-    topScorerPicks: {
-      component: TopScorerPicks,
-      title: "STEP 4 - Choose 3 players from any team in the tournament",
-      subtitle: "3 pts will be awarded for each goal that player scores.",
+    totalGoalsPrediction: {
+      component: TotalGoalsPrediction,
+      title: "STEP 4 - Total Goals",
+      subtitle: "For tie breaker purpose only, predict the total amount of goals that \
+          will be scored in the tournament (excluding shootout goals). Closest \
+          without going over wins.",
       previous: "knockoutStagePicks",
       next: "reviewPicks",
     },
@@ -41,7 +43,7 @@ export const getPickSteps = () => {
       component: ReviewPicks,
       title: "Review Picks",
       subtitle: "Please review all your picks.",
-      previous: "topScorerPicks",
+      previous: "totalGoalsPrediction",
       next: null,
     },
   };

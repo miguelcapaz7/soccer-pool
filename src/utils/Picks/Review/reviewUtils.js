@@ -19,14 +19,8 @@ export const steps = [
   },
   {
     step: 4,
-    title: "Step 4: Top Scorer Picks",
-    route: "/picks/topScorerPicks",
+    title: "Step 4: Goal Prediction",
+    route: "/picks/totalGoalsPrediction",
     getData: (data) => data.step4Picks,
-  },
-  {
-    step: 5,
-    title: "Step 5: Goal Prediction",
-    route: "/picks/topScorerPicks",
-    getData: (data) => data.step5Picks,
   },
 ];

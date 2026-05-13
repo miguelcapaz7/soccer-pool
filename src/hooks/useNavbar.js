@@ -8,7 +8,7 @@ import Collapse from "bootstrap/js/dist/collapse";
 const useNavbar = () => {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
-  const navItems = ["Home", "Rules", "Leaderboard"];
+  const navItems = ["Home", "Rules", "Leaderboard", "View Your Picks"];
   const displayName = user.displayName
 
   const handleLogout = async () => {

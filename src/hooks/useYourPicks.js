@@ -15,7 +15,6 @@ const useYourPicks = () => {
     { key: "step2Picks", title: "Step 2", step: 2 },
     { key: "step3Picks", title: "Step 3", step: 3 },
     { key: "step4Picks", title: "Step 4", step: 4 },
-    { key: "step5Picks", title: "Step 5", step: 5 },
   ];
 
   useEffect(() => {

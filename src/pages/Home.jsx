@@ -9,7 +9,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <MainLayout title="Welcome to the World Cup 2026 soccer pool!">
+    <MainLayout title="FIFA World Cup 2026 Soccer Pool">
       <div className="row g-4">
         {GroupsData.map((group, index) => (
           <div className="col-12 col-md-6 col-lg-4 col-xl-3" key={index}>

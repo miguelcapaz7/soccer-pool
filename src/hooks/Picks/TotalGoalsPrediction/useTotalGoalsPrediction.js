@@ -5,7 +5,7 @@ const useTotalGoalsPrediction = (user) => {
   const [goalPredictionError, setGoalPredictionError] = useState("");
 
   const localStorageKey = useMemo(
-    () => (user ? `step5Picks_${user.uid}` : null),
+    () => (user ? `step4Picks_${user.uid}` : null),
     [user]
   );
 

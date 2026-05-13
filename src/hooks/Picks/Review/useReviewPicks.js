@@ -39,14 +39,6 @@ const useReviewPicks = (user) => {
         ),
     },
     step4Picks: {
-      stage: "Top Scorers",
-      initialState: [],
-      validate: (val) =>
-        Array.isArray(val) &&
-        val.length === 3 &&
-        !val.some((p) => !p.team || !p.player),
-    },
-    step5Picks: {
       stage: "Total Goals Prediction",
       initialState: {},
       validate: (val) => val && typeof val.totalGoals === "string" &&
@@ -92,7 +84,6 @@ const useReviewPicks = (user) => {
         step1pts: 0,
         step2pts: 0,
         step3pts: 0,
-        step4pts: 0,
         total: 0,
         champion,
       },

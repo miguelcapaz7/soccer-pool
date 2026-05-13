@@ -34,7 +34,18 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            {navItems.map((item, index) => (
+            {navItems.map((item, index) => 
+              item === "View Your Picks" ? (
+                <li className="nav-item" key={index}>
+                <NavLink
+                  className="nav-link mx-3 text-white bg-primary rounded"
+                  to="/yourPicks"
+                  onClick={handleNavLinkClick}
+                >
+                  {item}
+                </NavLink>
+              </li>
+              ) : (
               <li className="nav-item" key={index}>
                 <NavLink
                   className="nav-link mx-3 text-white"

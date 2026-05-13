@@ -51,6 +51,7 @@
   border-bottom: 1px solid #eee;
   transition: background 0.2s;
   user-select: none;
+  font-size: 95%;
 }
 .team-row:hover {
   background: #f8f9ff;
@@ -64,7 +65,6 @@
 /* Champion styling */
 .champion-box {
   background: linear-gradient(to bottom, #fff9d6, #ffe98a);
-  padding: 15px;
   height: 41px;
   display: flex;
   justify-content: center;
@@ -72,7 +72,7 @@
   font-weight: bold;
   border: 2px solid #d4b100;
   border-radius: 10px;
-  font-size: 1.1rem;
+  font-size: 95%;
 }
 
 .page-container{

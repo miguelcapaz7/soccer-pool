@@ -44,19 +44,12 @@ const RulesData = [
         teams who will advance out of this round. 32 points available. For
         the final, contestants will be awarded 10 points for each
         correct team selected to make the final and 15 points for correctly
-        selecting the winner of Euro 2024. 35 points available.`
-  },
-    {
-    title: "Step 4",
-    content: `Choose 3 players from any team in the tournament except
-        Kylian Mbappe. 3 points will be awarded for each goal that the
-        player scores. Penalty shootout goals and own goals do not
-        count. Unlimited points. Kylian Mbappe from France is excluded.`
+        selecting the winner of World Cup 2026. 35 points available.`
   },
   {
-    title: "Step 5",
-    content: `Guess the total number of goals that will be scored at Euro
-        2024. This excludes penalty shootout goals. This will be
+    title: "Step 4",
+    content: `Guess the total number of goals that will be scored at the World
+        Cup 2026. This excludes penalty shootout goals. This will be
         used only in case of a tie in points between contestants and can
         apply to a tie for either 1st, 2nd, 3rd, 4th or 5th places.
         The contestant with the guess that is closest to the number of goals

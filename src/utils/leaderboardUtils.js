@@ -7,9 +7,8 @@ export const getRankedLeaders = (snap) => {
     const step1pts = d.step1pts || 0;
     const step2pts = d.step2pts || 0;
     const step3pts = d.step3pts || 0;
-    const step4pts = d.step4pts || 0;
 
-    const total = step1pts + step2pts + step3pts + step4pts;
+    const total = step1pts + step2pts + step3pts
 
     return {
       id: doc.id,
@@ -18,7 +17,6 @@ export const getRankedLeaders = (snap) => {
       step1pts,
       step2pts,
       step3pts,
-      step4pts,
       total,
     };
   });

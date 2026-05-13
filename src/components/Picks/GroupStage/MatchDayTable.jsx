@@ -25,9 +25,9 @@ const MatchDayTable = ({
           <thead className="table-light">
             <tr>
               <th className="text-center small-col">Grp</th>
-              <th className="text-center small-col">Team 1</th>
+              <th className="text-center small-col">Home</th>
               <th className="text-center small-col">Tie</th>
-              <th className="text-center small-col">Team 2</th>
+              <th className="text-center small-col">Away</th>
             </tr>
           </thead>
 

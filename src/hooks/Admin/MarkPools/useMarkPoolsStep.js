@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import MarkGroupStage from "../../../pages/Admin/MarkPools/Steps/MarkGroupStage";
 import MarkStandings from "../../../pages/Admin/MarkPools/Steps/MarkStandings";
 import MarkKnockoutStage from "../../../pages/Admin/MarkPools/Steps/MarkKnockoutStage";
-import MarkTopScorers from "../../../pages/Admin/MarkPools/Steps/MarkTopScorers";
 import MarkTotalGoalsPrediction from "../../../pages/Admin/MarkPools/Steps/MarkTotalGoalsPrediction";
 
 const useMarkPoolsStep = () => {
@@ -20,12 +19,8 @@ const useMarkPoolsStep = () => {
       title: "Step 3 – Knockout Stage",
       component: MarkKnockoutStage,
     },
-    topScorerPicks: {
-      title: "Step 4 – Top Scorer",
-      component: MarkTopScorers,
-    },
     totalGoalsPrediction: {
-      title: "Step 5 – Total Goals",
+      title: "Step 4 – Total Goals",
       component: MarkTotalGoalsPrediction,
     },
   };
