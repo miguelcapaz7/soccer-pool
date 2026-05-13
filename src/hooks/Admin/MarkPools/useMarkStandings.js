@@ -83,7 +83,6 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
           updated = [...prev, teamObj];
         }
 
-
         return updated;
       });
     },
@@ -127,6 +126,8 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
         { merge: true },
       );
 
+      const advancingThirdPlaceTeams = thirdPlaceOrder.map((t) => t.team);
+
       // ⭐ 2 read user picks
       const userSnap = await getDocs(collection(db, "userPicks"));
 
@@ -134,7 +135,15 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
 
       userSnap.forEach((userDoc) => {
         const uid = userDoc.id;
-        const userStandings = userDoc.data()?.step2Picks?.standings ?? [];
+
+        const userStep2 = userDoc.data()?.step2Picks ?? {};
+
+        const userStandings = userStep2.standings ?? [];
+        const userThirdPlaceOrder = userStep2.thirdPlaceOrder ?? [];
+
+        const userAdvancingThirdPlaceTeams = userThirdPlaceOrder.map(
+          (t) => t.team,
+        );
 
         let step2pts = 0;
 
@@ -145,17 +154,44 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
 
           if (!userGroup) return;
 
-          const masterTop2 = masterGroup.teams.slice(0, 2);
-          const userTop2 = userGroup.teams.slice(0, 2);
+          // ⭐ MASTER advancing teams
+          const masterAdvancingTeams = [
+            masterGroup.teams[0],
+            masterGroup.teams[1],
+          ];
 
-          // ⭐ team in top2
-          userTop2.forEach((team) => {
-            if (masterTop2.includes(team)) step2pts += 2;
+          if (advancingThirdPlaceTeams.includes(masterGroup.teams[2])) {
+            masterAdvancingTeams.push(masterGroup.teams[2]);
+          }
+
+          // ⭐ USER advancing teams
+          const userAdvancingTeams = [userGroup.teams[0], userGroup.teams[1]];
+
+          if (userAdvancingThirdPlaceTeams.includes(userGroup.teams[2])) {
+            userAdvancingTeams.push(userGroup.teams[2]);
+          }
+
+          // ⭐ score all advancing picks
+          userGroup.teams.slice(0, 3).forEach((team, index) => {
+            // advancing correctly
+            if (
+              userAdvancingTeams.includes(team) &&
+              masterAdvancingTeams.includes(team)
+            ) {
+              step2pts += 2;
+              console.log(`${team} correctly advances +2 pts. Total: ${step2pts}`)
+            }
+
+            // exact standing bonus
+            if (
+              team === masterGroup.teams[index] &&
+              masterAdvancingTeams.includes(team) &&
+              userAdvancingTeams.includes(team)
+            ) {
+              step2pts += 2;
+              console.log(`${team} correct standing bonus +2 pts. Total: ${step2pts}`)
+            }
           });
-
-          // ⭐ correct position bonus
-          if (userGroup.teams[0] === masterGroup.teams[0]) step2pts += 2;
-          if (userGroup.teams[1] === masterGroup.teams[1]) step2pts += 2;
         });
 
         batch.set(doc(db, "leaderboard", uid), { step2pts }, { merge: true });

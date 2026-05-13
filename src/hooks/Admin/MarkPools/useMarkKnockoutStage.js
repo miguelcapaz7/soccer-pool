@@ -190,6 +190,8 @@ const useMarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
     const masterSF = extractRoundTeams(teamsByMatchId, "SF");
     const masterF = new Set(teamsByMatchId["F"]?.filter(Boolean) || []);
     const masterChampion = teamsByMatchId["CHAMPION"]?.[0];
+    const master3P = new Set(teamsByMatchId["3P"]?.filter(Boolean) || []);
+    const master3rdWinner = teamsByMatchId["3rdWinner"]?.[0];
 
     const userSnap = await getDocs(collection(db, "userPicks"));
     const batch = writeBatch(db);
@@ -203,6 +205,8 @@ const useMarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
       const userSF = extractRoundTeams(userPicks, "SF");
       const userF = new Set(userPicks["F"]?.filter(Boolean) || []);
       const userChampion = userPicks["CHAMPION"]?.[0];
+      const user3P = new Set(userPicks["3P"]?.filter(Boolean) || []);
+      const user3rdWinner = userPicks["3rdWinner"]?.[0];
 
       let step3pts = 0;
 
@@ -210,8 +214,10 @@ const useMarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
       masterQF.forEach((t) => userQF.has(t) && (step3pts += 4));
       masterSF.forEach((t) => userSF.has(t) && (step3pts += 8));
       masterF.forEach((t) => userF.has(t) && (step3pts += 10));
+      master3P.forEach((t) => user3P.has(t) && (step3pts += 10));
 
       if (masterChampion && masterChampion === userChampion) step3pts += 15;
+      if (master3rdWinner && master3rdWinner === user3rdWinner) step3pts += 12;
 
       batch.set(doc(db, "leaderboard", uid), { step3pts }, { merge: true });
     });

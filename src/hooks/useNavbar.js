@@ -9,14 +9,14 @@ const useNavbar = () => {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const navItems = ["Home", "Rules", "Leaderboard", "View Your Picks"];
-  const displayName = user.displayName
+  const displayName = user.displayName;
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
     } catch (error) {
       console.error("Error signing out: ", error);
-    } 
+    }
   };
 
   const dropdownItems = buildDropdownItems(
@@ -27,7 +27,7 @@ const useNavbar = () => {
 
   const handleNavLinkClick = () => {
     const collapseElement = document.getElementById("navbarSupportedContent");
-    if (collapseElement) {
+    if (collapseElement && collapseElement.classList.contains("show")) {
       const bsCollapse =
         Collapse.getInstance(collapseElement) ||
         new Collapse(collapseElement, {
@@ -37,11 +37,28 @@ const useNavbar = () => {
     }
   };
 
+  const handleToggle = () => {
+    const collapseElement = document.getElementById("navbarSupportedContent");
+
+    if (!collapseElement) return;
+
+    const bsCollapse =
+      Collapse.getInstance(collapseElement) ||
+      new Collapse(collapseElement, { toggle: false });
+
+    if (collapseElement.classList.contains("show")) {
+      bsCollapse.hide();
+    } else {
+      bsCollapse.show();
+    }
+  };
+
   return {
     displayName,
     navItems,
     dropdownItems,
     handleNavLinkClick,
+    handleToggle
   };
 };
 

@@ -32,23 +32,45 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
       return (
         <div className="row g-4">
           {items.standings.map((group, index) => {
-            const top2 = {
-              ...group,
-              teams: group.teams.slice(0, 2),
-            };
             return (
               <div key={index} className="col-12 col-md-6 col-lg-4 col-xl-3">
-                <GroupTable group={top2} groupIndex={index} draggable={false} />
+                <GroupTable
+                  group={group}
+                  groupIndex={index}
+                  draggable={false}
+                  rankings={true}
+                />
               </div>
             );
           })}
+
           <div className="col-12 mt-4">
-            <h6 className="fw-bold">Third Place Teams:</h6>
-            <p>
-              {(items.thirdPlaceOrder.slice(0, 8) || [])
-                .map((t) => `${t.team}`)
-                .join(", ")}
-            </p>
+            <h6 className="fw-bold">Advancing Third Place Teams:</h6>
+
+            <div className="row g-2">
+              {(items.thirdPlaceOrder.slice(0, 8) || []).map((t, index) => (
+                <div
+                  key={index}
+                  className="col-6 col-sm-4 col-md-3 col-lg-2 col-xl"
+                >
+                  <div className="card text-center shadow-sm h-100">
+                    <div className="card-body p-2 d-flex flex-column align-items-center justify-content-center">
+                      <img
+                        src={`${import.meta.env.BASE_URL}flags/${t.team}.png`}
+                        alt={`${t.team} flag`}
+                        style={{
+                          width: "24px",
+                          height: "24px",
+                          objectFit: "cover",
+                          borderRadius: "2px",
+                        }}
+                      />
+                      <small>{t.team}</small>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       );

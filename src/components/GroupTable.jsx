@@ -1,7 +1,13 @@
 import React from "react";
 import DraggableTeam from "./Picks/Standings/DraggableTeam.jsx";
 
-const GroupTable = ({ group, groupIndex, moveTeam, draggable = false, rankings = false }) => (
+const GroupTable = ({
+  group,
+  groupIndex,
+  moveTeam,
+  draggable = false,
+  rankings = false,
+}) => (
   <div
     className="card shadow-sm h-100"
     style={{ backgroundColor: group.colour }}
@@ -13,47 +19,50 @@ const GroupTable = ({ group, groupIndex, moveTeam, draggable = false, rankings =
       <div className="list-group flex-grow-1">
         {group.teams.map((team, index) => {
           const key = team.id || `${groupIndex}-${index}`;
-          return draggable ? (
+          return (
             <div key={key} className="d-flex align-items-center">
-              {/* ⭐ placing number */}
-              <div
-                className="fw-bold me-2"
-                style={{
-                  textAlign: "center",
-                }}
-              >
-                {index + 1}
-              </div>
+              {rankings && (
+                <div
+                  className="fw-bold me-2"
+                  style={{
+                    textAlign: "center",
+                  }}
+                >
+                  {index + 1}
+                </div>
+              )}
 
               <div className="flex-grow-1">
-                <DraggableTeam
-                  team={team}
-                  index={index}
-                  groupIndex={groupIndex}
-                  moveTeam={(fromIndex, toIndex) =>
-                    moveTeam(groupIndex, fromIndex, toIndex)
-                  }
-                />
+                {draggable ? (
+                  <DraggableTeam
+                    team={team}
+                    index={index}
+                    groupIndex={groupIndex}
+                    moveTeam={(fromIndex, toIndex) =>
+                      moveTeam(groupIndex, fromIndex, toIndex)
+                    }
+                  />
+                ) : (
+                  <div
+                    key={key}
+                    className="d-flex justify-content-start p-2"
+                    style={{ cursor: "default" }}
+                  >
+                    <img
+                      src={`${import.meta.env.BASE_URL}flags/${team}.png`}
+                      alt={`${team} flag`}
+                      className="me-3 mx-2"
+                      style={{
+                        width: "24px",
+                        height: "24px",
+                        objectFit: "cover",
+                        borderRadius: "2px",
+                      }}
+                    />
+                    <span>{team}</span>
+                  </div>
+                )}
               </div>
-            </div>
-          ) : (
-            <div
-              key={key}
-              className="d-flex justify-content-start p-2"
-              style={{ cursor: "default" }}
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}flags/${team}.png`}
-                alt={`${team} flag`}
-                className="me-3 mx-2"
-                style={{
-                  width: "24px",
-                  height: "24px",
-                  objectFit: "cover",
-                  borderRadius: "2px",
-                }}
-              />
-              <span>{team}</span>
             </div>
           );
         })}

@@ -6,7 +6,7 @@ import Button from "../../../components/Button.jsx";
 import LoadingSpinner from "../../../components/LoadingSpinner.jsx";
 
 const ReviewPicks = ({ user }) => {
-  const { data, loading, errors, handleSubmit, navigate } = useReviewPicks(user);
+  const { data, loading, errors, submitting, handleSubmit, navigate } = useReviewPicks(user);
 
   if (loading) return <LoadingSpinner />;
 
@@ -40,10 +40,10 @@ const ReviewPicks = ({ user }) => {
       <div className="text-center mt-4">
         <Button
           color="success"
-          disabled={errors.length > 0}
+          disabled={errors.length > 0 || submitting}
           onClick={handleSubmit}
         >
-          Submit Final Picks
+          {submitting ? "Submitting..." : "Submit Final Picks"}
         </Button>
       </div>
     </>

@@ -3,17 +3,16 @@ const RulesData = [
     title: "Tournament Format",
     content: `There are 48 teams entered into the 2026 World Cup tournament. The teams
         are divided into 12 groups of 4. The tournament begins with a total of
-        36 group stage games in which the teams in each group play each other
-        once. At the end of this group stage, only 16 teams will remain. The top
-        2 teams in each group plus the 4 top 3rd place teams (based on most
-        points in the group) will advance to the next round. The 16 teams will
+        72 group stage games in which the teams in each group play each other
+        once. The top 2 teams in each group plus the 8 top 3rd place teams (based on most
+        points in the group) will advance to the next round. The 32 teams will
         then enter a single game knockout stage with the 16 teams reduced to 8
         teams (quarter finals, then to 4 teams (semi-finals) and then 2
         finalists where the eventual winner is declared.`
   },
   {
     title: "How the pool will work",
-    content: `There are 5 steps to completing the pool entry as outlined below. In
+    content: `There are 4 steps to completing the pool entry as outlined below. In
         each step, there are opportunities to accumulate points. The entry with
         the highest point total will win the grand prize with other prizes
         available for those finishing in 2nd, 3rd, 4th and 5th.`

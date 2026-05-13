@@ -8,6 +8,7 @@ const useReviewPicks = (user) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const steps = {
@@ -18,13 +19,14 @@ const useReviewPicks = (user) => {
         val &&
         Object.keys(val).length > 0 &&
         !Object.values(val).some(
-          (pick) => !pick.result || pick.result.trim() === ""
+          (pick) => !pick.result || pick.result.trim() === "",
         ),
     },
     step2Picks: {
       stage: "Standings",
       initialState: {},
-      validate: (val) => val && Object.keys(val).length > 0,
+      validate: (val) =>
+        val && Object.keys(val).length > 0 && val.thirdPlaceOrder.length === 8,
     },
     step3Picks: {
       stage: "Knockout Stage",
@@ -35,15 +37,17 @@ const useReviewPicks = (user) => {
         !Object.values(val).some(
           (pick) =>
             !Array.isArray(pick) ||
-            pick.some((v) => typeof v !== "string" || v.trim() === "")
+            pick.some((v) => typeof v !== "string" || v.trim() === ""),
         ),
     },
     step4Picks: {
       stage: "Total Goals Prediction",
       initialState: {},
-      validate: (val) => val && typeof val.totalGoals === "string" &&
-    val.totalGoals.trim() !== "" &&
-    !Number.isNaN(Number(val.totalGoals)),
+      validate: (val) =>
+        val &&
+        typeof val.totalGoals === "string" &&
+        val.totalGoals.trim() !== "" &&
+        !Number.isNaN(Number(val.totalGoals)),
     },
   };
 
@@ -58,44 +62,47 @@ const useReviewPicks = (user) => {
   };
 
   const handleSubmit = async () => {
-  if (!user) return alert("No user signed in!");
+    if (!user) return alert("No user signed in!");
 
-  try {
+    setSubmitting(true);
 
-    await saveToFirestore("userPicks", data, user);
+    try {
+      await saveToFirestore("userPicks", data, user);
 
-    await updateDoc(doc(db, "users", user.uid), {
-      picksSubmitted: true,
-    });
+      await updateDoc(doc(db, "users", user.uid), {
+        picksSubmitted: true,
+      });
 
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    const userData = userDoc.data();
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const userData = userDoc.data();
 
-    const name =
-      `${userData?.firstName ?? ""} ${userData?.lastName ?? ""}`.trim() ||
-      "Unknown";
+      const name =
+        `${userData?.firstName ?? ""} ${userData?.lastName ?? ""}`.trim() ||
+        "Unknown";
 
-    const champion = data?.step3Picks?.CHAMPION?.[0] || "";
+      const champion = data?.step3Picks?.CHAMPION?.[0] || "";
 
-    await setDoc(
-      doc(db, "leaderboard", user.uid),
-      {
-        name,
-        step1pts: 0,
-        step2pts: 0,
-        step3pts: 0,
-        total: 0,
-        champion,
-      },
-      { merge: true }
-    );
+      await setDoc(
+        doc(db, "leaderboard", user.uid),
+        {
+          name,
+          step1pts: 0,
+          step2pts: 0,
+          step3pts: 0,
+          total: 0,
+          champion,
+        },
+        { merge: true },
+      );
 
-    alert("Final picks submitted!");
-  } catch (err) {
-    console.error(err);
-    alert("Error saving picks. Please try again.");
-  }
-};
+      navigate("/picksSubmitted");
+    } catch (err) {
+      console.error(err);
+      alert("Error saving picks. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -117,7 +124,7 @@ const useReviewPicks = (user) => {
     setLoading(false);
   }, [user]);
 
-  return { data, loading, errors, handleSubmit, navigate };
+  return { data, loading, errors, submitting, handleSubmit, navigate };
 };
 
 export default useReviewPicks;

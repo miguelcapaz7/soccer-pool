@@ -121,7 +121,7 @@ const useMarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
 
         Object.keys(masterPicks).forEach((matchId) => {
           if (userStep1[matchId]?.result === masterPicks[matchId]?.result) {
-            pts += 3;
+            pts += 2;
           }
         });
 

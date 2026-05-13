@@ -20,6 +20,7 @@ const StandingsPicks = ({ user }) => {
               groupIndex={index}
               moveTeam={moveTeam}
               draggable={true}
+              rankings={true}
             />
           </div>
         ))}

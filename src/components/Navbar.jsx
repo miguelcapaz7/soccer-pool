@@ -3,7 +3,7 @@ import useNavbar from "../hooks/useNavbar";
 import logo from "../assets/images/world-cup-2026-logo.jpg";
 
 const Navbar = () => {
-  const { displayName, navItems, dropdownItems, handleNavLinkClick } =
+  const { displayName, navItems, dropdownItems, handleNavLinkClick, handleToggle } =
     useNavbar();
 
   return (
@@ -24,11 +24,10 @@ const Navbar = () => {
         <button
           className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          onClick={handleToggle}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -39,6 +38,7 @@ const Navbar = () => {
                 <li className="nav-item" key={index}>
                 <NavLink
                   className="nav-link mx-3 text-white bg-primary rounded"
+                  style={{ maxWidth: "fit-content" }}
                   to="/yourPicks"
                   onClick={handleNavLinkClick}
                 >
@@ -58,7 +58,7 @@ const Navbar = () => {
             ))}
           </ul>
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li className="nav-item dropdown mx-3">
+            <li className="nav-item dropdown mx-3" style={{ maxWidth: "fit-content"}}>
               <button
                 className="nav-link dropdown-toggle text-white bg-transparent border-0"
                 data-bs-toggle="dropdown"
