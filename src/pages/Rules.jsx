@@ -1,5 +1,4 @@
 import MainLayout from "../layouts/MainLayout.jsx";
-import RulesData from "../data/RulesData.js";
 
 const Rules = () => {
   return (
