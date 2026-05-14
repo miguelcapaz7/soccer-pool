@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import usePicksSubmitted from "../hooks/usePicksSubmitted";
 
 const PicksSubmitted = () => {
-  const navigate = useNavigate();
+  const { user, profile, navigate } = usePicksSubmitted();
+
+  if (!profile) return null;
 
   return (
     <div className="container text-center py-5 mt-5">

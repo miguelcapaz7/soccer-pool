@@ -13,7 +13,7 @@ const Form = ({ fields, onSubmit, buttonText, footer, showDivider }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
 
       {fields.map(({ name, type, placeholder, required }) => (
         <div key={name} className="mb-3">
