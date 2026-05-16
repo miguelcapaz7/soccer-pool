@@ -5,11 +5,12 @@ const Rules = () => {
     <MainLayout title="Rules">
       <section className="mb-5">
         <h3 className="fw-bold mb-3 border-bottom pb-2">
-          World Cup Tournament Format
+          World Cup 2026 Tournament Format
         </h3>
 
         <p className="text-muted lh-lg">
-          The 2026 FIFA World Cup features 48 teams divided into 12 groups of 4, with a total of 104 games.
+          The 2026 FIFA World Cup features 48 teams divided into 12 groups of 4,
+          with a total of 104 games.
         </p>
         <h6 className="fw-bold"> Matches</h6>
         <ul className="text-muted lh-lg">
@@ -39,14 +40,44 @@ const Rules = () => {
           <div className="col-12 col-md-6">
             <div className="card shadow-sm h-100">
               <div className="card-body">
-                <h5 className="fw-bold">Step 1 — Group Stage Predictions</h5>
+                <h5 className="fw-bold mb-3">
+                  Step 1 — Group Stage Predictions
+                </h5>
 
-                <ul className="mb-0 lh-lg text-muted">
-                  <li>Predict the result of each group stage match</li>
-                  <li>2 points per correct prediction</li>
-                  <li>144 total points available</li>
-                  <li>$200 prize for highest score</li>
+                <p className="text-muted mb-1">
+                  Predict the result for each group stage match.
+                </p>
+                <ul className="mb-0 lh-lg text-muted small mb-2">
+                  <li>
+                    Select the team you predict will win under the{" "}
+                    <strong>Home</strong> or <strong>Away</strong> column
+                  </li>
+                  <li>
+                    Select <strong>Tie</strong> if you predict that match will
+                    end in a draw
+                  </li>
                 </ul>
+
+                <div className="border rounded-3 bg-light p-3 mb-3">
+                  <div className="fw-semibold mb-2">Points & Scoring</div>
+
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">Correct prediction</span>
+                    <strong>2 pts</strong>
+                  </div>
+
+                  <div className="d-flex justify-content-between small py-1 border-top">
+                    <span className="text-muted">Maximum points available</span>
+                    <strong>144 pts</strong>
+                  </div>
+                </div>
+
+                <div className="alert alert-warning py-2 px-3 mb-0 small">
+                  <strong>$250 Bonus Prize:</strong> Awarded to the contestant
+                  with the highest Step 1 score. In the event of a tie, the
+                  prize will be divided evenly among tied contestants for this
+                  step.
+                </div>
               </div>
             </div>
           </div>
@@ -55,15 +86,39 @@ const Rules = () => {
           <div className="col-12 col-md-6">
             <div className="card shadow-sm h-100">
               <div className="card-body">
-                <h5 className="fw-bold">Step 2 — Group Standings</h5>
+                <h5 className="fw-bold mb-3">Step 2 — Group Standings</h5>
+                <p className="text-muted mb-1">
+                  Predict the final standings for all 12 groups.
+                </p>
 
-                <ul className="mb-0 lh-lg text-muted">
+                <ul className="mb-0 lh-lg text-muted small mb-2">
                   <li>Select the top 2 teams from each group</li>
-                  <li>Select the best 8 third-place teams that will advance</li>
-                  <li>2 points awarded for each correct advancing team</li>
-                  <li>Bonus 2 points for exact standings positions</li>
-                  <li>128 total points available</li>
+                  <li>
+                    Also select the <strong>8 best third-place teams </strong>
+                    that will advance to the knockout stage
+                  </li>
                 </ul>
+
+                <div className="border rounded-3 bg-light p-3 mb-3">
+                  <div className="fw-semibold mb-2">Points & Scoring</div>
+
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">Correct advancing team</span>
+                    <strong>2 pts</strong>
+                  </div>
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">
+                      <b>[BONUS]</b> Correct standing of{" "}
+                      <strong>advancing</strong> team
+                    </span>
+                    <strong>2 pts</strong>
+                  </div>
+
+                  <div className="d-flex justify-content-between small py-1 border-top">
+                    <span className="text-muted">Maximum points available</span>
+                    <strong>128 pts</strong>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -72,16 +127,59 @@ const Rules = () => {
           <div className="col-12 col-md-6">
             <div className="card shadow-sm h-100">
               <div className="card-body">
-                <h5 className="fw-bold">Step 3 — Knockout Stage</h5>
-
-                <ul className="mb-0 lh-lg text-muted">
-                  <li>Predict the knockout bracket</li>
-                  <li>Round of 16: 2 pts per correct team</li>
-                  <li>Quarter Finals: 4 pts per correct team</li>
-                  <li>Semi Finals: 8 pts per correct team</li>
-                  <li>Finalists: 10 pts each</li>
-                  <li>Champion: 15 pts</li>
+                <h5 className="fw-bold mb-3">
+                  Step 3 — Knockout Stage Bracket
+                </h5>
+                <div className="alert alert-warning py-2 px-3 mb-3 small">
+                  <div>
+                    Teams selected in Step 2 will automatically populate the
+                    knockout stage bracket. Advancing third-place teams will be
+                    positioned according to official FIFA tournament rules.
+                  </div>
+                </div>
+                <p className="text-muted mb-1">
+                  Predict the winning team throughout the knockout stage
+                </p>
+                <ul className="mb-0 lh-md text-muted small mb-2">
+                  <li>
+                    Complete the bracket by selecting the team you predict will
+                    win in each match of the knockout stage
+                  </li>
                 </ul>
+
+                <div className="border rounded-3 bg-light p-3 mb-3">
+                  <div className="fw-semibold mb-2">Points & Scoring</div>
+
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">Round of 16</span>
+                    <strong>2 pts</strong>
+                  </div>
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">Quarter Finals</span>
+                    <strong>4 pts</strong>
+                  </div>
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">Semi Finals</span>
+                    <strong>8 pts</strong>
+                  </div>
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">Finalists</span>
+                    <strong>10 pts</strong>
+                  </div>
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">3rd Place Winner</span>
+                    <strong>5 pts</strong>
+                  </div>
+                  <div className="d-flex justify-content-between small py-1">
+                    <span className="text-muted">World Cup Champion</span>
+                    <strong>20 pts</strong>
+                  </div>
+
+                  <div className="d-flex justify-content-between small py-1 border-top">
+                    <span className="text-muted">Maximum points available</span>
+                    <strong>141 pts</strong>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -90,12 +188,28 @@ const Rules = () => {
           <div className="col-12 col-md-6">
             <div className="card shadow-sm h-100">
               <div className="card-body">
-                <h5 className="fw-bold">Step 4 — Total Goals Tiebreaker</h5>
-
-                <ul className="mb-0 lh-lg text-muted">
-                  <li>Predict the total goals scored in the tournament <b>without going over </b></li>
+                <h5 className="fw-bold mb-3">
+                  Step 4 — Total Goals Tiebreaker
+                </h5>
+                <div className="alert alert-warning py-2 px-3 mb-3 small">
+                  <div>
+                    This step will be used in case there is a tie between
+                    contestants in contention for a prize other than the step 1
+                    prize.
+                  </div>
+                </div>
+                <p className="text-muted mb-1">
+                  Predict the total number of goals scored during the
+                  tournament.{" "}
+                </p>
+                <ul className="mb-0 lh-lg text-muted small mb-2">
+                  <li>Enter your total goals prediction in the provided box</li>
+                  <li>
+                    <strong>
+                      Closest without going over will be the winner
+                    </strong>
+                  </li>
                   <li>Penalty shootout goals do not count</li>
-                  <li>Tiebreaking purposes only, in the case where the top contestants are tied</li>
                 </ul>
               </div>
             </div>
@@ -107,17 +221,55 @@ const Rules = () => {
         <h3 className="fw-bold mb-3 border-bottom pb-2">Entry Fee</h3>
 
         <p className="text-muted">
-          Entry fee is $30 per submission with a target of 50 total entries.
+          Entry fee is $50 per submission with a target of 50 total entries.
         </p>
       </section>
 
       <section className="mb-5">
         <h3 className="fw-bold mb-3 border-bottom pb-2">Prize Allocation</h3>
 
-        <p className="text-muted">
-          Total projected prize pool is approximately $1500 depending on total
-          entries received.
-        </p>
+        <div className="text-muted">
+          <p className="mb-3">
+            Total projected prize pool is approximately <strong>$2500</strong>,
+            depending on total entries received, and will be awarded as follows:
+          </p>
+
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "350px",
+            }}
+          >
+            <div className="card shadow-sm border-0">
+              <div className="card-body p-0">
+                {[
+                  ["1st place", "$700"],
+                  ["2nd place", "$500"],
+                  ["3rd place", "$400"],
+                  ["4th place", "$300"],
+                  ["5th place", "$200"],
+                  ["6th place", "$100"],
+                  ["7th place", "$50"],
+                ].map(([place, prize], index) => (
+                  <div
+                    key={place}
+                    className={`d-flex justify-content-between align-items-center px-3 py-3 ${
+                      index !== 6 ? "border-bottom" : ""
+                    }`}
+                  >
+                    <span className="fw-semibold">{place}</span>
+                    <span className="text-success fw-bold">{prize}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="alert alert-warning mt-3 mb-0 py-2 shadow-sm d-flex justify-content-between align-items-center">
+              <strong>Step 1 Winner Prize</strong>{" "}
+              <span className="text-success fw-bold">$250</span>
+            </div>
+          </div>
+        </div>
       </section>
     </MainLayout>
   );

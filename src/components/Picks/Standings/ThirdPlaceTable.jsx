@@ -4,7 +4,7 @@ const ThirdPlaceTable = ({ teams, selectedTeams, toggleTeam }) => (
   <div className="card shadow-sm">
     <div className="card-body text-center">
       <h4 className="card-title mb-2">Top 3rd Place Teams</h4>
-      <p className="text-muted mb-2">Select the top 8 third place teams that will advance</p>
+      <p className="text-muted mb-2 small">Select the top 8 third place teams that will advance</p>
 
       <div className="list-group">
         {teams.map((teamObj, index) => {

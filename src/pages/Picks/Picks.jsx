@@ -16,8 +16,8 @@ const Picks = () => {
   return (
     <div className={`${containerClass} py-5 mt-5`}>
       <div className="card text-center mb-3 shadow-sm p-4">
-        <h2 className="mb-3">{stepData.title}</h2>
-        <p className="text-muted mb-0">{stepData.subtitle}</p>
+        <h3 className="mb-3">{stepData.title}</h3>
+        <p className="text-muted mb-0 small">{stepData.subtitle}</p>
       </div>
 
       <StepComponent user={user} />
