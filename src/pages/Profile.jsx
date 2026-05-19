@@ -20,7 +20,7 @@ const Profile = () => {
   } = useProfile();
 
   return (
-    <MainLayout title="My Profile">
+    <MainLayout title="Profile">
       <div
         className="bg-white border shadow-sm rounded-4 p-4"
         style={{ maxWidth: "500px", margin: "0 auto" }}

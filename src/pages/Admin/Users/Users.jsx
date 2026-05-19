@@ -4,13 +4,8 @@ import Button from "../../../components/Button.jsx";
 import LoadingSpinner from "../../../components/LoadingSpinner.jsx";
 
 const Users = () => {
-  const {
-    users,
-    loading,
-    error,
-    handleViewPool,
-    handleDeleteUser,
-  } = useUsers();
+  const { users, loading, error, handleViewPool, handleDeleteUser } =
+    useUsers();
 
   return (
     <MainLayout title="Users">
@@ -22,16 +17,22 @@ const Users = () => {
           <p className="text-center">No users found.</p>
         )}
         <p>Number of users: {users.length}</p>
-        <div className="table-responsive">
-          <table className="table table-bordered align-middle">
-            <thead className="table-light">
+        <div className="table-responsive rounded-3 shadow-sm border small">
+          <table className="table align-middle mb-0">
+            <thead
+              className="table-dark"
+              style={{
+                letterSpacing: "0.3px",
+              }}
+            >
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Submitted</th>
-                <th>Actions</th>
+                <th className="py-2 border-0 text-center">Name</th>
+                <th className="py-2 border-0 text-center">Email</th>
+                <th className="py-2 border-0 text-center">Submitted</th>
+                <th className="py-2 border-0 text-center">Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {[...users]
                 .sort((a, b) =>
@@ -44,27 +45,45 @@ const Users = () => {
                   ),
                 )
                 .map((u, index) => (
-                  <tr key={u.id}>
-                    <td>
+                  <tr
+                    key={u.id}
+                    style={{
+                      backgroundColor: u.picksSubmitted
+                        ? "#fff3cd"
+                        : "transparent",
+                    }}
+                  >
+                    <td className="py-3 fw-semibold text-center">
                       {`${u.firstName || ""} ${u.lastName || ""}` || "User"}
                     </td>
-                    <td>{u.email || "N/A"}</td>
-                    <td>{u.picksSubmitted ? "Yes" : "No"}</td>
-                    <td>
-                      <Button
-                        color="success"
-                        className="me-2"
-                        onClick={() => handleViewPool(u.id)}
-                      >
-                        View Pool
-                      </Button>
-                      <Button
-                        color="danger"
-                        variant="danger"
-                        onClick={() => handleDeleteUser(u.id)}
-                      >
-                        Delete
-                      </Button>
+ 
+                    <td className="py-3 text-muted text-center">{u.email || "N/A"}</td>
+
+                    <td
+                      className="py-3 text-center"
+
+                    >
+                      {u.picksSubmitted ? "Yes" : "No"}
+                    </td>
+
+                    <td className="py-2 text-center">
+                      <div className="d-flex flex-column flex-md-row justify-content-center gap-2">
+                        <Button
+                          color="success"
+                          size="sm"
+                          onClick={() => handleViewPool(u.id)}
+                        >
+                          View Pool
+                        </Button>
+
+                        <Button
+                          color="danger"
+                          size="sm"
+                          onClick={() => handleDeleteUser(u.id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}

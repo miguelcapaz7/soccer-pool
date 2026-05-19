@@ -19,7 +19,7 @@ const Leaderboard = () => {
           </div>
         </div>
       ) : (
-        <LeaderboardTable leaders={leaders} columnHeaders={columnHeaders} columns={columns} />
+        <LeaderboardTable leaders={leaders} columnHeaders={columnHeaders} columns={columns}/>
       )}
     </MainLayout>
   );
