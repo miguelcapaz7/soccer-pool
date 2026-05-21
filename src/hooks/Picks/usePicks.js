@@ -1,11 +1,12 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getPickSteps } from "../../utils/Picks/picksUtils";
 import { useAuth } from "../../context/AuthContext";
 
 const usePicks = () => {
   const { step } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const { user, profile } = useAuth();
   const location = useLocation();
 
@@ -17,10 +18,16 @@ const usePicks = () => {
   const containerClass = stepData.wider ? "page-container" : "container";
 
   useEffect(() => {
+    if (profile !== undefined) {
+      setLoading(false);
+    }
+  }, [profile]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  return { user, profile, navigate, stepData, StepComponent, containerClass };
+  return { user, profile, loading, navigate, stepData, StepComponent, containerClass };
 };
 
 export default usePicks;

@@ -4,9 +4,16 @@ import { useAuth } from "../context/AuthContext";
 
 const usePicksSubmitted = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const { user, profile } = useAuth();
 
-  return { user, profile, navigate };
+  useEffect(() => {
+    if (profile !== undefined) {
+      setLoading(false);
+    }
+  }, [profile]);
+
+  return { user, profile, loading, navigate };
 };
 
 export default usePicksSubmitted;

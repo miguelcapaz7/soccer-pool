@@ -1,16 +1,30 @@
 import usePicks from "../../hooks/Picks/usePicks";
+import PicksSubmittedCard from "../../components/Picks/PicksSubmittedCard";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const Picks = () => {
-  const { user, profile, navigate, stepData, StepComponent, containerClass } =
-    usePicks();
+  const {
+    user,
+    profile,
+    loading,
+    navigate,
+    stepData,
+    StepComponent,
+    containerClass,
+  } = usePicks();
 
+  if (loading) return <LoadingSpinner />;
   if (!profile) return null;
 
   if (profile.picksSubmitted) {
     return (
-      <div className="container text-center py-5 mt-5">
-        <h2>You have already submitted your picks.</h2>
-      </div>
+      <PicksSubmittedCard
+        title="Picks Already Submitted"
+        message="You have already submitted your picks. No further changes can be
+              made at this time."
+        buttonText="View Your Picks"
+        onButtonClick={() => navigate("/yourPicks")}
+      />
     );
   }
   return (

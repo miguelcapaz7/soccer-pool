@@ -37,7 +37,7 @@ const Navbar = () => {
               item === "View Your Picks" ? (
                 <li className="nav-item" key={index}>
                 <NavLink
-                  className="nav-link mx-3 text-white bg-primary rounded"
+                  className="nav-link mx-3 text-white"
                   style={{ maxWidth: "fit-content" }}
                   to="/yourPicks"
                   onClick={handleNavLinkClick}
