@@ -6,8 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 const usePicks = () => {
   const { step } = useParams();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const { user, profile } = useAuth();
+  const { user, profile, loading } = useAuth();
   const location = useLocation();
 
   const pickSteps = getPickSteps();
@@ -16,12 +15,6 @@ const usePicks = () => {
   const StepComponent = stepData.component;
 
   const containerClass = stepData.wider ? "page-container" : "container";
-
-  useEffect(() => {
-    if (profile !== undefined) {
-      setLoading(false);
-    }
-  }, [profile]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

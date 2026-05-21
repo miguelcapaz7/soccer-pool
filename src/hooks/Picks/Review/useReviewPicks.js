@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { saveToFirestore } from "../../../utils/Picks/firestoreUtils.js";
 import { updateDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { useAuth } from "../../../context/AuthContext.jsx";
 import { db } from "../../../firebase.js";
 
 const useReviewPicks = (user) => {
@@ -9,6 +10,7 @@ const useReviewPicks = (user) => {
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const { setProfile } = useAuth();
   const navigate = useNavigate();
 
   const steps = {

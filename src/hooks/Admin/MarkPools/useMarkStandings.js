@@ -179,7 +179,6 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
               masterAdvancingTeams.includes(team)
             ) {
               step2pts += 2;
-              console.log(`${team} correctly advances +2 pts. Total: ${step2pts}`)
             }
 
             // exact standing bonus
@@ -189,7 +188,6 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
               userAdvancingTeams.includes(team)
             ) {
               step2pts += 2;
-              console.log(`${team} correct standing bonus +2 pts. Total: ${step2pts}`)
             }
           });
         });

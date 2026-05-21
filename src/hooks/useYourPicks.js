@@ -35,7 +35,6 @@ const useYourPicks = () => {
           const data = snapshot.data();
           setPicks(data);
 
-          console.log("User picks loaded:", data);
           setLoading(false);
         },
         (err) => {

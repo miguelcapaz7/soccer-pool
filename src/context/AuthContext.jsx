@@ -1,13 +1,7 @@
-import {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useMemo,
-} from "react";
+import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 const AuthContext = createContext(null);
 
@@ -25,34 +19,57 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    let profileUnsubscribe = null;
+
+    const authUnsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
 
-      if (currentUser) {
-        try {
-          const usersDoc = doc(db, "users", currentUser.uid);
-          const snapshot = await getDoc(usersDoc);
-          setProfile(snapshot.exists() ? snapshot.data() : null);
-        } catch (err) {
-          console.error("Error fetching user profile:", err);
-          setProfile(null);
-        }
-      } else {
-        setProfile(null);
+      // clean up previous Firestore listener
+      if (profileUnsubscribe) {
+        profileUnsubscribe();
+        profileUnsubscribe = null;
       }
 
-      setLoading(false);
+      if (currentUser) {
+        const usersDoc = doc(db, "users", currentUser.uid);
+
+        profileUnsubscribe = onSnapshot(
+          usersDoc,
+          (snapshot) => {
+            setProfile(snapshot.exists() ? snapshot.data() : null);
+            setLoading(false);
+          },
+          (err) => {
+            console.error("Error listening to user profile:", err);
+            setProfile(null);
+            setLoading(false);
+          }
+        );
+      } else {
+        setProfile(null);
+        setLoading(false);
+      }
     });
 
-    return () => unsubscribe();
+    return () => {
+      authUnsubscribe();
+      if (profileUnsubscribe) profileUnsubscribe();
+    };
   }, []);
 
-  const value = useMemo(() => ({ 
-    user, 
-    profile,
-    setProfile,
-    loading 
-  }), [user, profile, setProfile, loading]);
+  const value = useMemo(
+    () => ({
+      user,
+      profile,
+      loading,
+      setProfile
+    }),
+    [user, profile, loading, setProfile]
+  );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
