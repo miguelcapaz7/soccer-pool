@@ -136,6 +136,14 @@ const useKnockoutStagePicks = (user) => {
     });
   }, [saveStep3]);
 
+  const reconcileChampion = (updated) => {
+    const finalists = updated["F"] || ["", ""];
+    const champ = updated["CHAMPION"]?.[0];
+    if (champ && !finalists.includes(champ)) {
+      updated["CHAMPION"] = [""];
+    }
+  };
+
   const propagateWinnerChange = (
     updated,
     currentMatchId,
@@ -143,19 +151,15 @@ const useKnockoutStagePicks = (user) => {
     newWinner,
   ) => {
     if (!oldWinner || oldWinner === newWinner) return;
-
     let matchId = currentMatchId;
 
     while (true) {
-      // Final → Champion
       if (matchId === "F") {
         if (updated["CHAMPION"]?.[0] === oldWinner) {
           updated["CHAMPION"] = [newWinner];
         }
         break;
       }
-
-      // 3rd place → 3rdWinner
       if (matchId === "3P") {
         if (updated["3rdWinner"]?.[0] === oldWinner) {
           updated["3rdWinner"] = [newWinner];
@@ -166,6 +170,24 @@ const useKnockoutStagePicks = (user) => {
       const meta = generateBracketMap[matchId];
       if (!meta) break;
 
+      // SF feeds two destinations (F and 3P) with a side-aware slot.
+      if (matchId.startsWith("SF")) {
+        const fSlot = meta.colIndex < 4 ? 0 : 1;
+
+        if (updated["F"]?.[fSlot] === oldWinner) {
+          updated["F"][fSlot] = newWinner;
+          matchId = "F";
+          continue;
+        }
+        if (updated["3P"]?.[fSlot] === oldWinner) {
+          updated["3P"][fSlot] = newWinner;
+          matchId = "3P";
+          continue;
+        }
+        break;
+      }
+
+      // Generic R32 -> R16 -> QF -> SF propagation
       const totalCols = 9;
       const midPoint = Math.floor(totalCols / 2);
       const isLeftSide = meta.colIndex < midPoint;
@@ -176,16 +198,13 @@ const useKnockoutStagePicks = (user) => {
       const nextMatch = Object.entries(generateBracketMap).find(
         ([, m]) => m.colIndex === nextCol && m.matchupIndex === nextMatchup,
       );
-
       if (!nextMatch) break;
-
       const [nextMatchId] = nextMatch;
 
       if (updated[nextMatchId]?.[nextSlot] === oldWinner) {
         updated[nextMatchId][nextSlot] = newWinner;
         matchId = nextMatchId;
       } else {
-        // stop once oldWinner is no longer advancing
         break;
       }
     }
@@ -211,29 +230,29 @@ const useKnockoutStagePicks = (user) => {
             ? prev["CHAMPION"]?.[0]
             : matchId === "3P"
               ? prev["3rdWinner"]?.[0]
-              : (() => {
-                  const totalCols = 9;
-                  const midPoint = Math.floor(totalCols / 2);
-                  const isLeftSide = colIndex < midPoint;
-                  const nextCol = isLeftSide ? colIndex + 1 : colIndex - 1;
-                  const nextMatchup = Math.floor(matchupIndex / 2);
-                  const nextSlot = matchupIndex % 2 === 0 ? 0 : 1;
-
-                  const nextMatch = Object.entries(generateBracketMap).find(
-                    ([, meta]) =>
-                      meta.colIndex === nextCol &&
-                      meta.matchupIndex === nextMatchup,
-                  );
-
-                  if (!nextMatch) return null;
-
-                  const [nextMatchId] = nextMatch;
-                  return prev[nextMatchId]?.[nextSlot];
-                })();
+              : matchId.startsWith("SF")
+                ? prev["F"]?.[colIndex < 4 ? 0 : 1]
+                : (() => {
+                    const totalCols = 9;
+                    const midPoint = Math.floor(totalCols / 2);
+                    const sideIsLeft = colIndex < midPoint;
+                    const nextCol = sideIsLeft ? colIndex + 1 : colIndex - 1;
+                    const nextMatchup = Math.floor(matchupIndex / 2);
+                    const nextSlot = matchupIndex % 2 === 0 ? 0 : 1;
+                    const nextMatch = Object.entries(generateBracketMap).find(
+                      ([, meta]) =>
+                        meta.colIndex === nextCol &&
+                        meta.matchupIndex === nextMatchup,
+                    );
+                    if (!nextMatch) return null;
+                    const [nextMatchId] = nextMatch;
+                    return prev[nextMatchId]?.[nextSlot];
+                  })();
 
         if (matchId === "F") {
           updated["CHAMPION"] = [teamName];
           propagateWinnerChange(updated, "F", oldWinner, teamName);
+          reconcileChampion(updated);
           saveStep3(updated);
           return updated;
         }
@@ -241,24 +260,28 @@ const useKnockoutStagePicks = (user) => {
         if (matchId === "3P") {
           updated["3rdWinner"] = [teamName];
           propagateWinnerChange(updated, "3P", oldWinner, teamName);
+          reconcileChampion(updated);
           saveStep3(updated);
           return updated;
         }
 
         if (matchId.startsWith("SF")) {
+          const fSlot = isLeftSide ? 0 : 1;
           const opponent = prev[matchId][teamIndex === 0 ? 1 : 0];
+
+          // Read the old downstream slots before any mutation.
+          const oldFinalist = prev["F"]?.[fSlot];
+          const oldThirdSeat = prev["3P"]?.[fSlot];
+
           updated["F"] = updated["F"] || ["", ""];
           updated["3P"] = updated["3P"] || ["", ""];
+          updated["F"][fSlot] = teamName;
+          updated["3P"][fSlot] = opponent;
 
-          if (isLeftSide) {
-            updated["F"][0] = teamName;
-            updated["3P"][0] = opponent;
-          } else {
-            updated["F"][1] = teamName;
-            updated["3P"][1] = opponent;
-          }
+          propagateWinnerChange(updated, "F", oldFinalist, teamName);
+          propagateWinnerChange(updated, "3P", oldThirdSeat, opponent);
+          reconcileChampion(updated);
 
-          propagateWinnerChange(updated, "F", oldWinner, teamName);
           saveStep3(updated);
           return updated;
         }
@@ -275,7 +298,7 @@ const useKnockoutStagePicks = (user) => {
 
           propagateWinnerChange(updated, nextMatchId, oldWinner, teamName);
         }
-
+        reconcileChampion(updated);
         saveStep3(updated);
         return updated;
       });
