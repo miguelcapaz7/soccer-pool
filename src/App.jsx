@@ -54,8 +54,9 @@ function App() {
                   <Route path="/admin/viewPool/:userId" element={<ViewPool />} />
                 </Route>
               </Route>
+              <Route path="*" element={<Navigate to="/home" replace />} />
             </Route>
-            <Route path="/" element={<Navigate to="/login" />} />
+            {/* <Route path="/" element={<Navigate to="/login" />} /> */}
           </Routes>
         </div>
       </AuthProvider>
