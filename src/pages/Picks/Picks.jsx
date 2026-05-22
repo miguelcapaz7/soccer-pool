@@ -19,9 +19,8 @@ const Picks = () => {
   if (profile.picksSubmitted) {
     return (
       <PicksSubmittedCard
-        title="Picks Already Submitted"
-        message="You have already submitted your picks. No further changes can be
-              made at this time."
+        title="Picks Submitted"
+        message="You have submitted your picks. Good luck!"
         buttonText="View Your Picks"
         onButtonClick={() => navigate("/yourPicks")}
       />

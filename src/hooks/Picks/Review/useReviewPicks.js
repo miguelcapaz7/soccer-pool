@@ -97,7 +97,6 @@ const useReviewPicks = (user) => {
         { merge: true },
       );
 
-      navigate("/picksSubmitted");
     } catch (err) {
       console.error(err);
       alert("Error saving picks. Please try again.");

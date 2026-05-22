@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { collection, onSnapshot, deleteDoc, updateDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  deleteDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -16,10 +22,13 @@ const useUsers = () => {
       const unsubscribe = onSnapshot(
         usersCollection,
         (snapshot) => {
-          const usersData = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
+          const usersData = snapshot.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .sort((a, b) =>
+              (a.firstName || "").localeCompare(b.firstName || "", undefined, {
+                sensitivity: "base",
+              }),
+            );
           setUsers(usersData);
           setLoading(false);
         },
@@ -47,11 +56,7 @@ const useUsers = () => {
   };
 
   const handleUnsubmit = async (userId) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to unsubmit this user's picks?",
-      )
-    )
+    if (!window.confirm("Are you sure you want to unsubmit this user's picks?"))
       return;
 
     try {
@@ -85,7 +90,14 @@ const useUsers = () => {
     }
   };
 
-  return { users, loading, error, handleViewPool, handleUnsubmit, handleDeleteUser };
+  return {
+    users,
+    loading,
+    error,
+    handleViewPool,
+    handleUnsubmit,
+    handleDeleteUser,
+  };
 };
 
 export default useUsers;

@@ -15,7 +15,6 @@ import Rules from "./pages/Rules.jsx";
 import Picks from "./pages/Picks/Picks.jsx";
 import Profile from "./pages/Profile.jsx";
 import YourPicks from "./pages/YourPicks.jsx";
-import PicksSubmitted from "./pages/PicksSubmitted.jsx";
 import Admin from "./pages/Admin/Admin.jsx";
 import Users from "./pages/Admin/Users/Users.jsx";
 import ViewPool from "./pages/Admin/Users/ViewPool.jsx";
@@ -47,7 +46,6 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/yourPicks" element={<YourPicks />} />
                 <Route path="/picks/:step" element={<Picks />} />
-                <Route path="/picksSubmitted" element={<PicksSubmitted />} />
                 <Route element={<AdminRoute />}>
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/admin/markPools" element={<MarkPools />} />
