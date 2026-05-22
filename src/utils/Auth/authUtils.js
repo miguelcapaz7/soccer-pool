@@ -19,3 +19,6 @@ export const createAccount = async ({ firstName, lastName, email, password }) =>
 
 export const loginUser = ({ email, password }) => 
   signInWithEmailAndPassword(auth, email, password).then((res) => res.user);
+
+export const toAuthErrorMessage = (err, codeMap) =>
+  codeMap[err?.code] || "Something went wrong. Please try again.";

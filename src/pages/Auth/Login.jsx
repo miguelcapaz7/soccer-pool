@@ -1,32 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../layouts/AuthLayout.jsx";
 import Form from "../../components/Auth/Form.jsx";
-import { loginUser } from "../../utils/Auth/authUtils.js";
+import useLogin from "../../hooks/Auth/useLogin.js";
+
+const LOGIN_FIELDS = [
+  { name: "email", type: "email", placeholder: "Email", required: true },
+  {
+    name: "password",
+    type: "password",
+    placeholder: "Password",
+    required: true,
+    marginBottom: 4,
+  },
+];
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const loginFields = [
-    { name: "email", type: "email", placeholder: "Email", required: true },
-    { name: "password", type: "password", placeholder: "Password", required: true, marginBottom: 4 },
-  ];
-
-  const handleLogin = async (data) => {
-    try {
-      await loginUser(data);
-      navigate("/home");
-    } catch (err) {
-      throw new Error("Username or password is incorrect");
-    }
-  };
+  const form = useLogin();
 
   return (
     <AuthLayout title="Login">
       <Form
-        fields={loginFields}
-        onSubmit={handleLogin}
+        fields={LOGIN_FIELDS}
+        form={form}
         buttonText="Login"
-        showDivider={true}
+        showDivider
         footer={
           <>
             Don't have an account?{" "}
