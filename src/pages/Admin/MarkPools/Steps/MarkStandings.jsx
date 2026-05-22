@@ -31,6 +31,7 @@ const MarkStandings = ({ registerSave, markDirty, isSaving }) => {
               groupIndex={index}
               moveTeam={moveTeam}
               draggable={true}
+              rankings={true}
             />
           </div>
         ))}

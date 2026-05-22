@@ -4,8 +4,14 @@ import Button from "../../../components/Button.jsx";
 import LoadingSpinner from "../../../components/LoadingSpinner.jsx";
 
 const Users = () => {
-  const { users, loading, error, handleViewPool, handleDeleteUser } =
-    useUsers();
+  const {
+    users,
+    loading,
+    error,
+    handleViewPool,
+    handleUnsubmit,
+    handleDeleteUser,
+  } = useUsers();
 
   return (
     <MainLayout title="Users">
@@ -56,13 +62,12 @@ const Users = () => {
                     <td className="py-3 fw-semibold text-center">
                       {`${u.firstName || ""} ${u.lastName || ""}` || "User"}
                     </td>
- 
-                    <td className="py-3 text-muted text-center">{u.email || "N/A"}</td>
 
-                    <td
-                      className="py-3 text-center"
+                    <td className="py-3 text-muted text-center">
+                      {u.email || "N/A"}
+                    </td>
 
-                    >
+                    <td className="py-3 text-center">
                       {u.picksSubmitted ? "Yes" : "No"}
                     </td>
 
@@ -71,11 +76,19 @@ const Users = () => {
                         <Button
                           color="success"
                           size="sm"
-                          onClick={() => handleViewPool(u.id)}
+                          onClick={() => handleViewPool(u)}
+                          disabled={!u.picksSubmitted}
                         >
                           View Pool
                         </Button>
-
+                        <Button
+                          color="warning"
+                          size="sm"
+                          onClick={() => handleUnsubmit(u.id)}
+                          disabled={!u.picksSubmitted}
+                        >
+                          Unsubmit
+                        </Button>
                         <Button
                           color="danger"
                           size="sm"

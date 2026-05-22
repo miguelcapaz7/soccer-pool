@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import { collection, onSnapshot, deleteDoc, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -38,8 +38,36 @@ const useUsers = () => {
     }
   }, []);
 
-  const handleViewPool = (userId) => {
-    navigate(`/admin/viewPool/${userId}`);
+  const handleViewPool = (user) => {
+    navigate(`/admin/viewPool/${user.id}`, {
+      state: {
+        userName: `${user.firstName} ${user.lastName}`,
+      },
+    });
+  };
+
+  const handleUnsubmit = async (userId) => {
+    if (
+      !window.confirm(
+        "Are you sure you want to unsubmit this user's picks?",
+      )
+    )
+      return;
+
+    try {
+      await Promise.all([
+        updateDoc(doc(db, "users", userId), {
+          picksSubmitted: false,
+        }),
+        deleteDoc(doc(db, "userPicks", userId)),
+        deleteDoc(doc(db, "leaderboard", userId)),
+      ]);
+
+      alert("User picks successfully unsubmitted.");
+    } catch (err) {
+      console.error("Error unsubmitting user picks:", err);
+      alert("Failed to unsubmit user picks.");
+    }
   };
 
   const handleDeleteUser = async (userId) => {
@@ -57,7 +85,7 @@ const useUsers = () => {
     }
   };
 
-  return { users, loading, error, handleViewPool, handleDeleteUser };
+  return { users, loading, error, handleViewPool, handleUnsubmit, handleDeleteUser };
 };
 
 export default useUsers;

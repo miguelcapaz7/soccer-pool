@@ -136,6 +136,60 @@ const useKnockoutStagePicks = (user) => {
     });
   }, [saveStep3]);
 
+  const propagateWinnerChange = (
+    updated,
+    currentMatchId,
+    oldWinner,
+    newWinner,
+  ) => {
+    if (!oldWinner || oldWinner === newWinner) return;
+
+    let matchId = currentMatchId;
+
+    while (true) {
+      // Final → Champion
+      if (matchId === "F") {
+        if (updated["CHAMPION"]?.[0] === oldWinner) {
+          updated["CHAMPION"] = [newWinner];
+        }
+        break;
+      }
+
+      // 3rd place → 3rdWinner
+      if (matchId === "3P") {
+        if (updated["3rdWinner"]?.[0] === oldWinner) {
+          updated["3rdWinner"] = [newWinner];
+        }
+        break;
+      }
+
+      const meta = generateBracketMap[matchId];
+      if (!meta) break;
+
+      const totalCols = 9;
+      const midPoint = Math.floor(totalCols / 2);
+      const isLeftSide = meta.colIndex < midPoint;
+      const nextCol = isLeftSide ? meta.colIndex + 1 : meta.colIndex - 1;
+      const nextMatchup = Math.floor(meta.matchupIndex / 2);
+      const nextSlot = meta.matchupIndex % 2 === 0 ? 0 : 1;
+
+      const nextMatch = Object.entries(generateBracketMap).find(
+        ([, m]) => m.colIndex === nextCol && m.matchupIndex === nextMatchup,
+      );
+
+      if (!nextMatch) break;
+
+      const [nextMatchId] = nextMatch;
+
+      if (updated[nextMatchId]?.[nextSlot] === oldWinner) {
+        updated[nextMatchId][nextSlot] = newWinner;
+        matchId = nextMatchId;
+      } else {
+        // stop once oldWinner is no longer advancing
+        break;
+      }
+    }
+  };
   // Handles team selection and propogate winners
   const handleSelectTeam = useCallback(
     (matchId, colIndex, matchupIndex, teamIndex) => {
@@ -152,13 +206,45 @@ const useKnockoutStagePicks = (user) => {
       setTeamsByMatchId((prev) => {
         const updated = { ...prev };
 
+        const oldWinner =
+          matchId === "F"
+            ? prev["CHAMPION"]?.[0]
+            : matchId === "3P"
+              ? prev["3rdWinner"]?.[0]
+              : (() => {
+                  const totalCols = 9;
+                  const midPoint = Math.floor(totalCols / 2);
+                  const isLeftSide = colIndex < midPoint;
+                  const nextCol = isLeftSide ? colIndex + 1 : colIndex - 1;
+                  const nextMatchup = Math.floor(matchupIndex / 2);
+                  const nextSlot = matchupIndex % 2 === 0 ? 0 : 1;
+
+                  const nextMatch = Object.entries(generateBracketMap).find(
+                    ([, meta]) =>
+                      meta.colIndex === nextCol &&
+                      meta.matchupIndex === nextMatchup,
+                  );
+
+                  if (!nextMatch) return null;
+
+                  const [nextMatchId] = nextMatch;
+                  return prev[nextMatchId]?.[nextSlot];
+                })();
+
         if (matchId === "F") {
           updated["CHAMPION"] = [teamName];
+          propagateWinnerChange(updated, "F", oldWinner, teamName);
           saveStep3(updated);
           return updated;
         }
 
-        // Handle semifinal → final & 3rd place
+        if (matchId === "3P") {
+          updated["3rdWinner"] = [teamName];
+          propagateWinnerChange(updated, "3P", oldWinner, teamName);
+          saveStep3(updated);
+          return updated;
+        }
+
         if (matchId.startsWith("SF")) {
           const opponent = prev[matchId][teamIndex === 0 ? 1 : 0];
           updated["F"] = updated["F"] || ["", ""];
@@ -171,17 +257,12 @@ const useKnockoutStagePicks = (user) => {
             updated["F"][1] = teamName;
             updated["3P"][1] = opponent;
           }
+
+          propagateWinnerChange(updated, "F", oldWinner, teamName);
           saveStep3(updated);
           return updated;
         }
 
-        if (matchId === "3P") {
-          updated["3rdWinner"] = [teamName];
-          saveStep3(updated);
-          return updated;
-        }
-
-        // Find next match in bracket map
         const nextMatch = Object.entries(generateBracketMap).find(
           ([, meta]) =>
             meta.colIndex === nextCol && meta.matchupIndex === nextMatchup,
@@ -191,7 +272,10 @@ const useKnockoutStagePicks = (user) => {
           const [nextMatchId] = nextMatch;
           updated[nextMatchId] = updated[nextMatchId] || ["", ""];
           updated[nextMatchId][nextSlot] = teamName;
+
+          propagateWinnerChange(updated, nextMatchId, oldWinner, teamName);
         }
+
         saveStep3(updated);
         return updated;
       });
