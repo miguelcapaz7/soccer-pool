@@ -21,13 +21,16 @@ const KnockoutStagePicks = ({ user }) => {
 
   if (missingStep2) {
     return (
-      <div className="text-center py-4">
-        <p className="mb-3 text-danger">
+      <div className="py-4 text-center d-flex align-items-center justify-content-center">
+        <div className="alert alert-warning shadow-sm" role="alert">
+        <h5 className="mb-2">Step 2 Required</h5>
+        <p className="mb-3">
           Please complete Step 2 before proceeding to the knockout stage.
         </p>
         <Button color="dark" onClick={() => navigate("/picks/standingsPicks")}>
           Go to Step 2
         </Button>
+      </div>
       </div>
     );
   }

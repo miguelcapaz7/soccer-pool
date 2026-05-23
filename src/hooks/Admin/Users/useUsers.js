@@ -55,38 +55,42 @@ const useUsers = () => {
     });
   };
 
-  const handleUnsubmit = async (userId) => {
-    if (!window.confirm("Are you sure you want to unsubmit this user's picks?"))
+  const handleUnsubmit = async (user) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to unsubmit entry for ${user.firstName} ${user.lastName}?`,
+      )
+    )
       return;
 
     try {
       await Promise.all([
-        updateDoc(doc(db, "users", userId), {
+        updateDoc(doc(db, "users", user.id), {
           picksSubmitted: false,
         }),
-        deleteDoc(doc(db, "userPicks", userId)),
-        deleteDoc(doc(db, "leaderboard", userId)),
+        deleteDoc(doc(db, "userPicks", user.id)),
+        deleteDoc(doc(db, "leaderboard", user.id)),
       ]);
 
-      alert("User picks successfully unsubmitted.");
+      alert(`Successfully unsubmitted entry for ${user.firstName} ${user.lastName}.`);
     } catch (err) {
-      console.error("Error unsubmitting user picks:", err);
-      alert("Failed to unsubmit user picks.");
+      console.error(`Error unsubmitting entry for ${user.firstName} ${user.lastName}:`, err);
+      alert(`Failed to unsubmit entry for ${user.firstName} ${user.lastName}.`);
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+  const handleDeleteUser = async (user) => {
+    if (!window.confirm(`Are you sure you want to delete ${user.firstName} ${user.lastName}?`)) return;
     try {
       await Promise.all([
-        deleteDoc(doc(db, "users", userId)),
-        deleteDoc(doc(db, "userPicks", userId)),
-        deleteDoc(doc(db, "leaderboard", userId)),
+        deleteDoc(doc(db, "users", user.id)),
+        deleteDoc(doc(db, "userPicks", user.id)),
+        deleteDoc(doc(db, "leaderboard", user.id)),
       ]);
-      alert("User deleted successfully");
+      alert(`${user.firstName} ${user.lastName} deleted successfully`);
     } catch (err) {
-      console.error("Error deleting user:", err);
-      alert("Failed to delete user");
+      console.error(`Error deleting ${user.firstName} ${user.lastName}:`, err);
+      alert(`Failed to delete ${user.firstName} ${user.lastName}`);
     }
   };
 

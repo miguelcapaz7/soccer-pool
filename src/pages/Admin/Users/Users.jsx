@@ -58,8 +58,12 @@ const Users = () => {
                         {u.email || "N/A"}
                       </td>
 
-                      <td className="py-3 text-center">
-                        {u.picksSubmitted ? "Yes" : "No"}
+                      <td
+                        className={`py-3 text-center fw-bold ${
+                          u.picksSubmitted ? "text-success" : "text-danger"
+                        }`}
+                      >
+                        {u.picksSubmitted ? "YES" : "NO"}
                       </td>
 
                       <td className="py-2 text-center">
@@ -68,14 +72,13 @@ const Users = () => {
                             color="success"
                             size="sm"
                             onClick={() => handleViewPool(u)}
-                            disabled={!u.picksSubmitted}
                           >
-                            View Pool
+                            View Entry
                           </Button>
                           <Button
                             color="warning"
                             size="sm"
-                            onClick={() => handleUnsubmit(u.id)}
+                            onClick={() => handleUnsubmit(u)}
                             disabled={!u.picksSubmitted}
                           >
                             Unsubmit
@@ -83,7 +86,7 @@ const Users = () => {
                           <Button
                             color="danger"
                             size="sm"
-                            onClick={() => handleDeleteUser(u.id)}
+                            onClick={() => handleDeleteUser(u)}
                           >
                             Delete
                           </Button>

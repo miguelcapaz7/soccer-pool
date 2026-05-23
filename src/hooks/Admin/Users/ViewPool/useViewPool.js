@@ -23,7 +23,7 @@ const useViewPool = () => {
         (snapshot) => {
           if (!snapshot.exists()) {
             setPicks(null);
-            setError("This user has not submitted any picks.");
+            setError(`${userName} has not submitted their picks.`);
             setLoading(false);
             return;
           }
