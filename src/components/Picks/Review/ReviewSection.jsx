@@ -30,10 +30,10 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
 
     if (step === 2) {
       return (
-        <div className="row g-4">
+        <div className="row g-3 g-md-4">
           {items.standings.map((group, index) => {
             return (
-              <div key={index} className="col-12 col-md-6 col-lg-4 col-xl-3">
+              <div key={index} className="col-6 col-md-4 col-lg-3 col-xl-2">
                 <GroupTable
                   group={group}
                   groupIndex={index}

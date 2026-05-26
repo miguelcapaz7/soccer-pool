@@ -4,15 +4,31 @@ import {
   getMatchId,
   getGroupStageMatchups,
 } from "../../../utils/Picks/GroupStage/groupStageUtils.js";
+import MatchRow from "./MatchRow.jsx";
 
 const MatchDayTable = ({
   matchDay,
   groupStagePicks,
   handlePick,
   clickable = true,
-  review = false
+  review = false,
 }) => {
   const matchups = getGroupStageMatchups(matchDay);
+
+  const rows = GroupsData.flatMap((groupData) =>
+    matchups.map(([i, j], matchIndex) => {
+      const matchId = getMatchId(matchDay, groupData.group, matchIndex);
+      const result = groupStagePicks[matchId]?.result ?? null;
+      return {
+        matchId,
+        group: groupData.group,
+        home: groupData.teams[i],
+        away: groupData.teams[j],
+        result,
+        needsAttention: review && result === "",
+      };
+    }),
+  );
 
   return (
     <div className="card shadow-sm h-100">
@@ -21,56 +37,30 @@ const MatchDayTable = ({
       </div>
 
       <div className="card-body p-0">
-        <table className={`table table-sm ${clickable ? "table-hover" : ""} mb-0`}>
-          <thead className="table-light">
-            <tr>
-              <th className="text-center small-col">Grp</th>
-              <th className="text-center small-col">Home</th>
-              <th className="text-center small-col">Tie</th>
-              <th className="text-center small-col">Away</th>
-            </tr>
-          </thead>
+        <div
+          className="d-flex align-items-center gap-2 px-2 py-1 border-bottom bg-light small text-muted fw-semibold text-uppercase"
+          style={{ letterSpacing: "0.3px" }}
+        >
+          <div className="btn-group w-100">
+            <div className="text-center" style={{ flex: "1 1 0" }}>Home</div>
+            <div className="text-center" style={{ flex: "0 0 4rem" }}>Tie</div>
+            <div className="text-center" style={{ flex: "1 1 0" }}>Away</div>
+          </div>
+        </div>
 
-          <tbody>
-            {GroupsData.map((groupData) =>
-              matchups.map(([i, j], matchIndex) => {
-                const matchId = getMatchId(
-                  matchDay,
-                  groupData.group,
-                  matchIndex
-                );
-                const result = groupStagePicks[matchId]?.result ?? null;
-                const options = [groupData.teams[i], "Tie", groupData.teams[j]];
-                const needsAttention = review && (result === "");
-
-                return (
-                  <tr key={matchId} className={needsAttention ? "table-danger" : ""}>
-                    <td className="text-center fw-bold">{groupData.group}</td>
-                    {options.map((option) => (
-                      <td
-                        key={option}
-                        className={`text-center ${
-                          result === option ? "table-primary" : ""
-                        } ${clickable ? "clickable" : ""}`}
-                        style={{
-                          cursor: clickable ? "pointer" : "default",
-                          minWidth: "70px",
-                        }}
-                        onClick={() => {
-                          if (clickable) {
-                            handlePick(matchId, option);
-                          }
-                        }}
-                      >
-                        {option !== "Tie" ? option : "–"}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+        {rows.map((row) => (
+          <MatchRow
+            key={row.matchId}
+            matchId={row.matchId}
+            group={row.group}
+            home={row.home}
+            away={row.away}
+            currentPick={row.result}
+            clickable={clickable}
+            needsAttention={row.needsAttention}
+            onPick={handlePick}
+          />
+        ))}
       </div>
     </div>
   );

@@ -230,7 +230,7 @@ const Rules = () => {
 
         <div className="text-muted">
           <p className="mb-3">
-            Total projected prize pool is approximately <strong>$2500</strong>,
+            Total projected prize pool is approximately <strong>$2500</strong>{" "}
             depending on total entries received, and will be awarded as follows:
           </p>
 

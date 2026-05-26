@@ -28,3 +28,24 @@ export const getRankedLeaders = (snap) => {
     placing: i + 1,
   }));
 };
+
+export const ROW_BG = {
+  0: "#fff3cd", // gold
+  1: "#f1f3f5", // silver
+  2: "#f8e5d0", // bronze
+  3: "#d0ebff", // sky
+  4: "#e7f5ff", // sky lighter
+  5: "#f1f9ff", // sky lightest
+  6: "#f8fbfd", // barely there
+};
+
+export const PLACING_BADGE_CLASS = {
+  1: "bg-warning text-dark",
+  2: "bg-secondary",
+  3: "bg-dark",
+};
+
+export const totalBadgeClass = (value) =>
+  `rounded-pill px-2 py-1 fw-semibold ${
+    PLACING_BADGE_CLASS[value] ?? "bg-warning text-dark border"
+  }`;
