@@ -33,18 +33,16 @@ const Picks = () => {
   const progressPct = isReview ? 100 : (stepNumber / totalSteps) * 100;
 
   return (
-    <div className={`${containerClass} picks-page px-3 px-md-4 py-4 py-md-5 mt-4`}>
+    <div
+      className={`${containerClass} picks-page px-3 px-md-4 py-4 py-md-5 mt-4`}
+    >
       <div className="card border-0 shadow-sm mb-4">
-        <div className="card-body p-4 p-md-4 text-center">
-          <div className="d-flex align-items-center justify-content-center mb-3">
-            <span
-              className="text-uppercase small fw-semibold text-muted"
-              style={{ letterSpacing: "0.08em" }}
-            >
-              {isReview
-                ? "Final Review"
-                : `Step ${stepNumber} of ${totalSteps}`}
-            </span>
+        <div className="card-body p-4 text-center">
+          <div
+            className="text-uppercase small fw-semibold text-muted mb-3"
+            style={{ letterSpacing: "0.08em" }}
+          >
+            {isReview ? "Final Review" : `Step ${stepNumber} of ${totalSteps}`}
           </div>
 
           <div
