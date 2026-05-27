@@ -9,13 +9,13 @@ const PickButtons = ({ matchId, options, currentPick, clickable, onPick }) => (
           type="button"
           disabled={!clickable}
           onClick={() => clickable && onPick(matchId, value)}
-          className={`btn btn-md text-dark ${
+          className={`btn btn-sm text-dark ${
             selected ? "btn-primary text-white" : "btn-outline-secondary"
           }`}
           style={{
             minHeight: "2.25rem",
             whiteSpace: "normal",
-            flex: isTie ? "0 0 4rem" : "1 1 0",
+            flex: isTie ? "0 0 3rem" : "1 1 0",
           }}
         >
           {label}

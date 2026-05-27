@@ -10,17 +10,26 @@ const usePicks = () => {
   const location = useLocation();
 
   const pickSteps = getPickSteps();
-
   const stepData = pickSteps[step];
   const StepComponent = stepData.component;
-
   const containerClass = stepData.wider ? "page-container" : "container";
+
+  const totalSteps = Object.values(pickSteps).filter((s) => !s.isReview).length;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  return { user, profile, loading, navigate, stepData, StepComponent, containerClass };
+  return {
+    user,
+    profile,
+    loading,
+    navigate,
+    stepData,
+    StepComponent,
+    containerClass,
+    totalSteps,
+  };
 };
 
 export default usePicks;

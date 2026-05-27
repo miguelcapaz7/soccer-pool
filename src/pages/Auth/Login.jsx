@@ -4,13 +4,19 @@ import Form from "../../components/Auth/Form.jsx";
 import useLogin from "../../hooks/Auth/useLogin.js";
 
 const LOGIN_FIELDS = [
-  { name: "email", type: "email", placeholder: "Email", required: true },
+  {
+    name: "email",
+    type: "email",
+    placeholder: "Email",
+    required: true,
+    autoComplete: "email",
+  },
   {
     name: "password",
     type: "password",
     placeholder: "Password",
     required: true,
-    marginBottom: 4,
+    autoComplete: "current-password",
   },
 ];
 

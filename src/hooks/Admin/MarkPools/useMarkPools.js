@@ -4,10 +4,10 @@ const useMarkPools = () => {
   const navigate = useNavigate();
 
   const menus = [
-    { title: "Step 1 - Group Stage", path: "/groupStagePicks" },
-    { title: "Step 2 - Standings", path: "/standings" },
-    { title: "Step 3 - Knockout Stage", path: "/knockoutStagePicks" },
-    { title: "Step 4 - Total Goals Prediction", path: "/totalGoalsPrediction" },
+    { title: "Group Stage", path: "/groupStagePicks" },
+    { title: "Standings", path: "/standings" },
+    { title: "Knockout Stage", path: "/knockoutStagePicks" },
+    { title: "Total Goals Prediction", path: "/totalGoalsPrediction" },
   ];
 
   return { navigate, menus }

@@ -1,6 +1,7 @@
 import usePicks from "../../hooks/Picks/usePicks";
 import PicksSubmittedCard from "../../components/Picks/PicksSubmittedCard";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import "../../assets/styles/Picks.css";
 
 const Picks = () => {
   const {
@@ -11,6 +12,7 @@ const Picks = () => {
     stepData,
     StepComponent,
     containerClass,
+    totalSteps,
   } = usePicks();
 
   if (loading) return <LoadingSpinner />;
@@ -26,30 +28,67 @@ const Picks = () => {
       />
     );
   }
+
+  const { stepNumber, isReview, title, subtitle, previous, next } = stepData;
+  const progressPct = isReview ? 100 : (stepNumber / totalSteps) * 100;
+
   return (
-    <div className={`${containerClass} py-5 mt-5`}>
-      <div className="card text-center mb-3 shadow-sm p-4">
-        <h3 className="mb-3">{stepData.title}</h3>
-        <p className="text-muted mb-0 small">{stepData.subtitle}</p>
+    <div className={`${containerClass} picks-page px-3 px-md-4 py-4 py-md-5 mt-4`}>
+      <div className="card border-0 shadow-sm mb-4">
+        <div className="card-body p-4 p-md-4 text-center">
+          <div className="d-flex align-items-center justify-content-center mb-3">
+            <span
+              className="text-uppercase small fw-semibold text-muted"
+              style={{ letterSpacing: "0.08em" }}
+            >
+              {isReview
+                ? "Final Review"
+                : `Step ${stepNumber} of ${totalSteps}`}
+            </span>
+          </div>
+
+          <div
+            className="progress mb-4"
+            style={{ height: "6px", backgroundColor: "#f1f3f5" }}
+          >
+            <div
+              className="progress-bar bg-dark"
+              role="progressbar"
+              style={{
+                width: `${progressPct}%`,
+                transition: "width 0.4s ease",
+              }}
+              aria-valuenow={progressPct}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            />
+          </div>
+
+          <h3 className="fw-bold mb-2">{title}</h3>
+          <p className="text-muted mb-0 small">{subtitle}</p>
+        </div>
       </div>
 
       <StepComponent user={user} />
 
-      <div className="mt-4 d-flex justify-content-around">
-        {stepData.previous && (
+      <div className="picks-nav mt-4 mt-md-5 d-flex gap-2 gap-md-3">
+        {previous ? (
           <button
-            className="btn btn-dark"
-            onClick={() => navigate(`/picks/${stepData.previous}`)}
+            className="btn btn-outline-dark flex-grow-1 flex-md-grow-0 px-md-4"
+            onClick={() => navigate(`/picks/${previous}`)}
           >
             Back
           </button>
+        ) : (
+          <div className="flex-grow-1 flex-md-grow-0" />
         )}
-        {stepData.next && (
+
+        {next && (
           <button
-            className="btn btn-dark"
-            onClick={() => navigate(`/picks/${stepData.next}`)}
+            className="btn btn-dark flex-grow-1 flex-md-grow-0 ms-md-auto px-md-4"
+            onClick={() => navigate(`/picks/${next}`)}
           >
-            Next
+            {isReview ? "Submit Picks" : "Next"}
           </button>
         )}
       </div>

@@ -4,12 +4,24 @@ import GroupsData from "../data/GroupsData.js";
 import MainLayout from "../layouts/MainLayout.jsx";
 import Button from "../components/Button.jsx";
 import GroupTable from "../components/GroupTable.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import HeroBanner from "../components/HeroBanner.jsx";
+import StatStrip from "../components/StatStrip.jsx";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { profile } = useAuth();
+
+  const handleStart = () => {
+    navigate("/picks/groupStagePicks");
+  };
 
   return (
-    <MainLayout title="FIFA World Cup 2026 Soccer Pool">
+    <MainLayout>
+      <HeroBanner onStartClick={handleStart} />
+
+      <StatStrip />
+
       <div className="row g-3 g-md-4">
         {GroupsData.map((group, index) => (
           <div className="col-6 col-md-4 col-lg-3 col-xl-2" key={index}>
@@ -21,14 +33,6 @@ const Home = () => {
             />
           </div>
         ))}
-      </div>
-      <div className="text-center mt-4">
-        <Button
-          onClick={() => navigate("/picks/groupStagePicks")}
-          color="success"
-        >
-          Start
-        </Button>
       </div>
     </MainLayout>
   );

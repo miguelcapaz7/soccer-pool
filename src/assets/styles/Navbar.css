@@ -1,0 +1,79 @@
+.app-navbar {
+  background: #0d1117;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 0;
+}
+
+.app-nav-link {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  margin: 0 2px;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.app-nav-link:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.app-nav-link.active {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.app-nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+}
+
+.app-user-toggle {
+  color: rgba(255, 255, 255, 0.85) !important;
+  padding: 0.4rem 0.75rem !important;
+  border-radius: 999px !important;
+  transition: background 0.15s ease;
+}
+
+.app-user-toggle:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+}
+
+/* Mobile menu refinements */
+@media (max-width: 991px) {
+  .app-nav-link.active::after {
+    display: none;
+  }
+  
+  .app-nav-link.active {
+    border-left: 3px solid white;
+    border-radius: 0;
+  }
+
+  .navbar-collapse {
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 0.5rem;
+  }
+}

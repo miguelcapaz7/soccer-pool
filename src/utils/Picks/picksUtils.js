@@ -8,43 +8,42 @@ export const getPickSteps = () => {
   const pickSteps = {
     groupStagePicks: {
       component: GroupStagePicks,
-      title: "STEP 1 - Group Stage",
-      subtitle:
-        "Predict the result of each group stage match by selecting the team or tie. 2 points for every correct prediction.",
+      stepNumber: 1,
+      title: "Group Stage",
+      subtitle: "Select your predicted winner or tie for each group stage match. 2 points for every correct prediction.",
       previous: null,
       next: "standingsPicks",
     },
     standingsPicks: {
       component: StandingsPicks,
-      title: "STEP 2 - Group Standings",
-      subtitle:
-        "Drag & drop the teams within each table to predict the final group stage standings. 2 points for each correct advancing team, +2 bonus if the order is exact.",
+      stepNumber: 2,
+      title: "Group Standings",
+      subtitle: "Drag & drop the teams within each table to predict the group stage standings. 2 points for each correct advancing team, plus 2 bonus points for the correct standing of the advancing team.",
       previous: "groupStagePicks",
       next: "knockoutStagePicks",
     },
     knockoutStagePicks: {
       component: KnockoutStagePicks,
-      title: "STEP 3 - Knockout Stage Bracket",
-      subtitle:
-        "Complete the bracket with your predictions for the knockout stages",
+      stepNumber: 3,
+      title: "Knockout Stage Bracket",
+      subtitle: "Select the team you predict will win in each match of the bracket.",
       previous: "standingsPicks",
       next: "totalGoalsPrediction",
       wider: true,
     },
     totalGoalsPrediction: {
       component: TotalGoalsPrediction,
-      title: "STEP 4 - Total Goals Tiebreaker",
-      subtitle:
-        "For tie breaker purpose only, predict the total amount of goals that \
-          will be scored in the tournament (excluding shootout goals). Closest \
-          without going over wins.",
+      stepNumber: 4,
+      title: "Total Goals Tiebreaker",
+      subtitle: "For tiebreaking purposes, enter your prediction for the total amount of goals scored in the tournament.",
       previous: "knockoutStagePicks",
       next: "reviewPicks",
     },
     reviewPicks: {
       component: ReviewPicks,
-      title: "Review Picks",
-      subtitle: "Please review all your picks.",
+      isReview: true,
+      title: "Review Your Picks",
+      subtitle: "Once submitted, picks can't be changed.",
       previous: "totalGoalsPrediction",
       next: null,
     },

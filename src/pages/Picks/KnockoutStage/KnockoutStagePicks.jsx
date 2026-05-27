@@ -23,33 +23,36 @@ const KnockoutStagePicks = ({ user }) => {
     return (
       <div className="py-4 text-center d-flex align-items-center justify-content-center">
         <div className="alert alert-warning shadow-sm" role="alert">
-        <h5 className="mb-2">Step 2 Required</h5>
-        <p className="mb-3">
-          Please complete Step 2 before proceeding to the knockout stage.
-        </p>
-        <Button color="dark" onClick={() => navigate("/picks/standingsPicks")}>
-          Go to Step 2
-        </Button>
-      </div>
+          <h5 className="mb-2">Step 2 Required</h5>
+          <p className="mb-3">
+            Please complete Step 2 before proceeding to the knockout stage.
+          </p>
+          <Button
+            color="dark"
+            onClick={() => navigate("/picks/standingsPicks")}
+          >
+            Go to Step 2
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-   <>
-    <div className="bracket-scroll-wrapper">
-      <Bracket
-        bracket={bracket}
-        handleSelectTeam={handleSelectTeam}
-        resetBracket={resetBracket}
-      />
-    </div>
-    <div className="text-center">
-          <Button color="dark" className="" onClick={resetBracket}>
+    <>
+      <div className="bracket-scroll-wrapper">
+        <Bracket
+          bracket={bracket}
+          handleSelectTeam={handleSelectTeam}
+          resetBracket={resetBracket}
+        />
+      </div>
+      <div className="text-center">
+        <Button color="dark" className="" onClick={resetBracket}>
           Reset Bracket
         </Button>
-    </div>
-</>
+      </div>
+    </>
   );
 };
 

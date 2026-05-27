@@ -9,21 +9,35 @@ const CREATE_ACCOUNT_FIELDS = [
     type: "text",
     placeholder: "First Name",
     required: true,
+    autoComplete: "given-name",
   },
-  { name: "lastName", type: "text", placeholder: "Last Name", required: true },
-  { name: "email", type: "email", placeholder: "Email", required: true },
+  {
+    name: "lastName",
+    type: "text",
+    placeholder: "Last Name",
+    required: true,
+    autoComplete: "family-name",
+  },
+  {
+    name: "email",
+    type: "email",
+    placeholder: "Email",
+    required: true,
+    autoComplete: "email",
+  },
   {
     name: "password",
     type: "password",
     placeholder: "Password",
     required: true,
+    autoComplete: "new-password",
   },
   {
     name: "confirmPassword",
     type: "password",
     placeholder: "Confirm Password",
     required: true,
-    marginBottom: 4,
+    autoComplete: "new-password",
   },
 ];
 

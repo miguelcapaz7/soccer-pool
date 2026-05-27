@@ -6,21 +6,52 @@ const TotalGoalsPrediction = ({ user }) => {
     useTotalGoalsPrediction(user);
 
   return (
-    <div className="d-flex flex-column align-items-center mt-4">
-      <label htmlFor="goalPrediction" className="form-label fw-bold">
-        Enter your prediction:
-      </label>
-      <input
-        id="goalPrediction"
-        type="text"
-        className="form-control w-25 text-center"
-        placeholder="e.g. 145"
-        value={goalPrediction}
-        onChange={(e) => handleGoalInput(e.target.value)}
-      />
-      {goalPredictionError && (
-        <div className="text-danger mt-2">{goalPredictionError}</div>
-      )}
+    <div className="d-flex justify-content-center px-3 py-4">
+      <div
+        className="card shadow-sm border-0 w-100"
+        style={{ maxWidth: "480px" }}
+      >
+        <div className="card-body p-4 p-md-4">
+          <label
+            htmlFor="goalPrediction"
+            className="form-label small text-uppercase fw-semibold text-muted"
+            style={{ letterSpacing: "0.05em" }}
+          >
+            Your Prediction
+          </label>
+
+          <div className="position-relative mb-2">
+            <input
+              id="goalPrediction"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              className={`form-control form-control-lg text-center fw-bold ${
+                goalPredictionError ? "is-invalid" : ""
+              }`}
+              placeholder="0"
+              value={goalPrediction}
+              onChange={(e) => handleGoalInput(e.target.value)}
+              style={{ fontSize: "2rem", height: "80px" }}
+            />
+            <span
+              className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted small"
+              style={{ pointerEvents: "none" }}
+            >
+              goals
+            </span>
+          </div>
+
+          {goalPredictionError && (
+            <div className="text-danger small mb-3">{goalPredictionError}</div>
+          )}
+
+          <div className="alert alert-warning border-0 py-2 px-3 mt-3 mb-0 small">
+            <strong>Closest without going over</strong> wins. Penalty shootout
+            goals don't count.
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

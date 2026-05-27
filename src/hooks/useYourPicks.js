@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
@@ -9,12 +10,13 @@ const useYourPicks = () => {
   const [picks, setPicks] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const steps = [
-    { key: "step1Picks", title: "Step 1", step: 1 },
-    { key: "step2Picks", title: "Step 2", step: 2 },
-    { key: "step3Picks", title: "Step 3", step: 3 },
-    { key: "step4Picks", title: "Step 4", step: 4 },
+    { key: "step1Picks", title: "Group Stage", step: 1 },
+    { key: "step2Picks", title: "Group Standings", step: 2 },
+    { key: "step3Picks", title: "Knockout Stage Bracket", step: 3 },
+    { key: "step4Picks", title: "Total Goals Prediction", step: 4 },
   ];
 
   useEffect(() => {
@@ -52,7 +54,7 @@ const useYourPicks = () => {
     }
   }, [userId]);
 
-  return { picks, loading, error, steps };
+  return { picks, loading, error, steps, navigate };
 };
 
 export default useYourPicks;
