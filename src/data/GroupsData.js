@@ -2,62 +2,62 @@ const GroupsData = [
     {
       group: "A",
       teams: ["Mexico", "South Africa", "South Korea", "Czechia"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "B",
       teams: ["Canada", "Bosnia", "Qatar", "Switzerland"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "C",
       teams: ["Brazil", "Morocco", "Haiti", "Scotland"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "D",
       teams: ["USA", "Paraguay", "Australia", "Turkey"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "E",
       teams: ["Germany", "Curacao", "Cote d'Ivoire", "Ecuador"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "F",
       teams: ["Netherlands", "Japan", "Sweden", "Tunisia"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "G",
       teams: ["Belgium", "Egypt", "Iran", "New Zealand"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "H",
       teams: ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "I",
       teams: ["France", "Senegal", "Iraq", "Norway"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "J",
       teams: ["Argentina", "Algeria", "Austria", "Jordan"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "K",
       teams: ["Portugal", "Congo DR", "Uzbekistan", "Colombia"],
-      colour: ""
+      abbr: ""
     },
     {
       group: "L",
       teams: ["England", "Croatia", "Ghana", "Panama"],
-      colour: ""
+      abbr: ""
     }
   ];
 export default GroupsData;

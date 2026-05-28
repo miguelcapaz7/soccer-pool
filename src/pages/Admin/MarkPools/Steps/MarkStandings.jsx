@@ -18,14 +18,11 @@ const MarkStandings = ({ registerSave, markDirty, isSaving }) => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <>
       {/* Groups Grid */}
-      <div className="row g-4">
+      <div className="row g-2 g-md-3">
         {standings.map((group, index) => (
-          <div
-            className="col-12 col-md-6 col-lg-4 col-xl-3"
-            key={group.group}
-          >
+          <div className="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-2" key={group.group}>
             <GroupTable
               group={group}
               groupIndex={index}
@@ -47,7 +44,7 @@ const MarkStandings = ({ registerSave, markDirty, isSaving }) => {
           />
         </div>
       </div>
-    </DndProvider>
+    </>
   );
 };
 

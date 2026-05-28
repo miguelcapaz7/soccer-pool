@@ -14,10 +14,10 @@ const ReviewPicks = ({ user }) => {
     <>
       {errors.length > 0 && (
         <div className="alert alert-danger">
-          <h5>Incomplete Picks:</h5>
+          <h5 className="fw-bold">Incomplete Picks:</h5>
           <ul>
             {errors.map((err, idx) => (
-              <li key={idx}>{err}</li>
+              <li key={idx} className="small">{err}</li>
             ))}
           </ul>
         </div>
