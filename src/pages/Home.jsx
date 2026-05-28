@@ -4,13 +4,11 @@ import GroupsData from "../data/GroupsData.js";
 import MainLayout from "../layouts/MainLayout.jsx";
 import Button from "../components/Button.jsx";
 import GroupTable from "../components/GroupTable.jsx";
-import { useAuth } from "../context/AuthContext.jsx";
 import HeroBanner from "../components/HeroBanner.jsx";
 import StatStrip from "../components/StatStrip.jsx";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { profile } = useAuth();
 
   const handleStart = () => {
     navigate("/picks/groupStagePicks");

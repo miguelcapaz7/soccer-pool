@@ -19,7 +19,7 @@ const MarkPoolsStep = () => {
   return (
     <div className="container py-5 mt-5">
       <div className="d-flex align-items-center justify-content-between mb-2">
-        <h4 className="mb-0">{config.title}</h4>
+        <h4 className="mb-0 fw-bold">{config.title}</h4>
 
         <button
           className="btn btn-primary"

@@ -8,19 +8,19 @@ import MarkTotalGoalsPrediction from "../../../pages/Admin/MarkPools/Steps/MarkT
 const useMarkPoolsStep = () => {
   const pickSteps = {
     groupStagePicks: {
-      title: "Step 1 – Group Stage",
+      title: "Group Stage",
       component: MarkGroupStage,
     },
     standings: {
-      title: "Step 2 – Standings",
+      title: "Standings",
       component: MarkStandings,
     },
     knockoutStagePicks: {
-      title: "Step 3 – Knockout Stage",
+      title: "Knockout Stage",
       component: MarkKnockoutStage,
     },
     totalGoalsPrediction: {
-      title: "Step 4 – Total Goals",
+      title: "Total Goals",
       component: MarkTotalGoalsPrediction,
     },
   };
