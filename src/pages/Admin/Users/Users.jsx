@@ -60,7 +60,7 @@ const Users = () => {
           </div>
           <div className="small text-muted text-truncate">
             Date Joined:{" "}
-            {user.createdAt?.toDate().toLocaleDateString || "N/A"}
+            {user.createdAt?.toDate().toLocaleDateString() || "N/A"}
           </div>
         </div>
         <StatusBadge submitted={user.picksSubmitted} />
