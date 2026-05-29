@@ -69,6 +69,30 @@ export const totalBadgeClass = (value) =>
     accent: "#9a5a25",
     label: "3rd Place",
   },
+  4: {
+    bg: "#d0ebff",
+    color: "#1e293b",
+    accent: "#212529",
+    label: "4th Place",
+  },
+  5: {
+    bg: "#daefff",
+    color: "#1e293b",
+    accent: "#212529",
+    label: "5th Place",
+  },
+  6: {
+    bg: "#e5f2fc",
+    color: "#1e293b",
+    accent: "#212529",
+    label: "6th Place",
+  },
+  7: {
+    bg: "#ecf4fa",
+    color: "#1e293b",
+    accent: "#212529",
+    label: "7th Place",
+  },
 };
 
 export const getPodiumStyle = (placing) =>

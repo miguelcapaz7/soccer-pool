@@ -13,12 +13,12 @@ const LeaderboardCard = ({
   );
 
   const podium = getPodiumStyle(user.placing);
-  const isTop3 = user.placing <= 3;
+  const isTop7 = user.placing <= 7;
 
   return (
     <div
       className="card border-0 shadow-sm leaderboard-card"
-      style={isTop3 ? { borderTop: `3px solid ${podium.accent}` } : {}}
+      style={isTop7 ? { borderTop: `3px solid ${podium.accent}` } : {}}
     >
       <div className="card-body p-3 p-md-4">
         <div className="d-flex align-items-center gap-3">
@@ -39,7 +39,7 @@ const LeaderboardCard = ({
             <div className="fw-bold text-truncate" style={{ fontSize: "1rem" }}>
               {user[primaryColumn]}
             </div>
-            {isTop3 && (
+            {isTop7 && (
               <div
                 className="text-uppercase fw-semibold"
                 style={{
