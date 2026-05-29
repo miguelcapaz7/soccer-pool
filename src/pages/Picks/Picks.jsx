@@ -15,6 +15,9 @@ const Picks = () => {
     totalSteps,
   } = usePicks();
 
+  const PICKS_DEADLINE = new Date("2026-06-11T12:00:00-07:00");
+  const entriesClosed = new Date() >= PICKS_DEADLINE;
+
   if (loading) return <LoadingSpinner />;
   if (!profile) return null;
 
@@ -26,6 +29,34 @@ const Picks = () => {
         buttonText="View Your Picks"
         onButtonClick={() => navigate("/yourPicks")}
       />
+    );
+  }
+
+  if (entriesClosed) {
+    return (
+      <div className="container mt-5 py-5">
+        <div className="d-flex justify-content-center align-items-center py-5 px-3">
+          <div
+            className="card border-0 shadow-sm text-center w-100"
+            style={{ maxWidth: "440px" }}
+          >
+            <div className="card-body p-4 p-md-4">
+              <h5 className="text-danger mb-4">Picks Closed</h5>
+
+              <button
+                className="btn btn-dark px-4"
+                onClick={() => navigate("/home")}
+              >
+                Return to Home
+              </button>
+
+              <div className="mt-4 pt-4 border-top small text-muted">
+                The World Cup has started. You can no longer submit an entry.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 
