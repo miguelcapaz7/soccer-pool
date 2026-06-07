@@ -24,7 +24,7 @@ const useCountdown = (targetDate) => {
 };
 
 const Countdown = () => {
-  const time = useCountdown("2026-06-11T20:00:00-05:00");
+  const time = useCountdown("2026-06-11T12:00:00-07:00");
 
   if (time.done) return <h2 className="fw-bold">The tournament has begun</h2>;
 
