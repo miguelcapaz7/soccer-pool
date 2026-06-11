@@ -5,7 +5,7 @@ import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 const Leaderboard = () => {
   const { leaders, loading, error, columnHeaders, columns, lastUpdated } = useLeaderboard();
-  const date = new Date("2026-06-10T21:00:00-07:00");
+  const date = new Date("2026-06-11T21:00:00-07:00");
   const leaderboardAvailable = new Date() >= date;
 
   return (
