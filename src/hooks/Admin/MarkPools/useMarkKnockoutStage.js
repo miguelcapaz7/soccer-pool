@@ -6,6 +6,7 @@ import {
   doc,
   setDoc,
   onSnapshot,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 import {
@@ -179,8 +180,7 @@ const useMarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
     const extractRoundTeams = (picks, prefix) => {
       const teams = [];
       Object.entries(picks).forEach(([matchId, val]) => {
-        if (matchId.startsWith(prefix))
-          val.forEach((t) => t && teams.push(t));
+        if (matchId.startsWith(prefix)) val.forEach((t) => t && teams.push(t));
       });
       return new Set(teams);
     };
@@ -220,6 +220,14 @@ const useMarkKnockoutStage = ({ registerSave, markDirty, isSaving }) => {
     });
 
     await batch.commit();
+
+    await setDoc(
+      doc(db, "metadata", "leaderboard"),
+      {
+        lastUpdated: serverTimestamp(),
+      },
+      { merge: true },
+    );
 
     isDirtyRef.current = false;
   }, [teamsByMatchId, step3Ref]);

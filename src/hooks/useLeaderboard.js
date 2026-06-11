@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, doc } from "firebase/firestore";
 import { db } from "../firebase";
 import { getRankedLeaders } from "../utils/leaderboardUtils";
 
@@ -7,6 +7,8 @@ const useLeaderboard = () => {
   const [leaders, setLeaders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [lastUpdated, setLastUpdated] = useState(null);
+
   const columnHeaders = {
     placing: "#",
     name: "Name",
@@ -42,7 +44,18 @@ const useLeaderboard = () => {
     return () => unsubscribe();
   }, []);
 
-  return { leaders, loading, error, columnHeaders, columns };
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      doc(db, "metadata", "leaderboard"),
+      (snap) => {
+        setLastUpdated(snap.data()?.lastUpdated?.toDate() ?? null);
+      },
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  return { leaders, loading, error, columnHeaders, columns, lastUpdated, };
 };
 
 export default useLeaderboard;

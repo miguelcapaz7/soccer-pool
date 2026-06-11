@@ -7,6 +7,7 @@ import {
   collection,
   getDocs,
   writeBatch,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { generateEmptyGroupStagePicks } from "../../../utils/Picks/GroupStage/groupStageUtils";
@@ -133,6 +134,14 @@ const useMarkGroupStage = ({ registerSave, markDirty, isSaving }) => {
       });
 
       await batch.commit();
+
+      await setDoc(
+        doc(db, "metadata", "leaderboard"),
+        {
+          lastUpdated: serverTimestamp(),
+        },
+        { merge: true },
+      );
 
       dirtyMatchesRef.current.clear();
       isDirtyRef.current = false;

@@ -271,8 +271,8 @@ const Rules = () => {
 
         <div className="text-muted">
           <p className="mb-3">
-            Total projected prize pool is approximately <strong>$2500</strong>{" "}
-            depending on total entries received, and will be awarded as follows:
+            The prize pool is <strong>$2550</strong> and will be awarded as
+            follows:
           </p>
 
           <div
@@ -307,7 +307,7 @@ const Rules = () => {
 
             <div className="alert alert-warning mt-3 mb-0 py-2 shadow-sm d-flex justify-content-between align-items-center">
               <strong>Step 1 Winner Prize</strong>{" "}
-              <span className="text-success fw-bold">$250</span>
+              <span className="text-success fw-bold">$300</span>
             </div>
           </div>
         </div>

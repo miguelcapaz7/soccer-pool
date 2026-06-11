@@ -6,6 +6,7 @@ import {
   getDocs,
   collection,
   writeBatch,
+  serverTimestamp
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { generateInitialStandings } from "../../../utils/Picks/Standings/standingsUtils";
@@ -196,6 +197,14 @@ const useMarkStandings = ({ registerSave, markDirty, isSaving }) => {
       });
 
       await batch.commit();
+
+      await setDoc(
+        doc(db, "metadata", "leaderboard"),
+        {
+          lastUpdated: serverTimestamp(),
+        },
+        { merge: true },
+      );
 
       isDirtyRef.current = false;
     });
