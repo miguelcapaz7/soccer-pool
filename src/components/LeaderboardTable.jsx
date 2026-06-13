@@ -41,7 +41,7 @@ const LeaderboardTable = ({
                       className={`py-2 text-nowrap ${emphasized ? "fw-semibold" : ""}`}
                     >
                       {isTotal ? (
-                        <span className={totalBadgeClass(user[col])}>
+                        <span className={totalBadgeClass()}>
                           {user[col]}
                         </span>
                       ) : (

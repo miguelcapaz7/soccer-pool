@@ -45,10 +45,8 @@ export const PLACING_BADGE_CLASS = {
   3: "bg-dark",
 };
 
-export const totalBadgeClass = (value) =>
-  `rounded-pill px-2 py-1 fw-semibold ${
-    PLACING_BADGE_CLASS[value] ?? "bg-warning text-dark border"
-  }`;
+export const totalBadgeClass = () =>
+  "rounded-pill px-2 py-1 fw-semibold bg-warning text-dark border";
 
   const PODIUM_STYLES = {
   1: {
