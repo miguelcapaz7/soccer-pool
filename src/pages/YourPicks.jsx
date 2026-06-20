@@ -4,7 +4,7 @@ import ReviewSection from "../components/Picks/Review/ReviewSection.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 const YourPicks = () => {
-  const { picks, loading, error, steps, navigate } = useYourPicks();
+  const { picks, masterPicks, loading, error, steps, navigate } = useYourPicks();
 
   return (
     <MainLayout title="Your Picks">
@@ -46,6 +46,7 @@ const YourPicks = () => {
                     title={title}
                     items={picks[key]}
                     step={step}
+                    masterPicks={masterPicks}
                   />
                 ),
             )}

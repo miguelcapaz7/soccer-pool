@@ -9,6 +9,7 @@ const useViewPool = () => {
   const userName = location.state?.userName || "User";
 
   const [picks, setPicks] = useState({});
+  const [masterPicks, setMasterPicks] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -36,10 +37,18 @@ const useViewPool = () => {
           console.error("Error fetching user pool:", err);
           setError("Failed to load user pool.");
           setLoading(false);
-        }
+        },
       );
 
-      return () => unsubscribe();
+      const masterUnsub = onSnapshot(doc(db, "master", "step1"), (snap) => {
+        setMasterPicks(snap.data()?.step1Picks ?? {});
+      });
+
+      return () => {
+        unsubscribe();
+        masterUnsub();
+      };
+      
     } catch (err) {
       console.error("Unexpected error loading user pool:", err);
       setError("Failed to load user pool.");
@@ -47,7 +56,7 @@ const useViewPool = () => {
     }
   }, [userId]);
 
-  return { picks, loading, error, userName };
+  return { picks, masterPicks, loading, error, userName };
 };
 
 export default useViewPool;

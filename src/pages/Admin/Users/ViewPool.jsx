@@ -4,7 +4,7 @@ import ReviewSection from "../../../components/Picks/Review/ReviewSection";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const ViewPool = () => {
-  const { picks, loading, error, userName } = useViewPool();
+  const { picks, masterPicks, loading, error, userName } = useViewPool();
 
   const steps = [
     { key: "step1Picks", title: "Step 1", step: 1 },
@@ -35,6 +35,7 @@ const ViewPool = () => {
                     title={title}
                     items={picks[key]}
                     step={step}
+                    masterPicks={masterPicks}
                   />
                 )
             )}

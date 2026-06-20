@@ -12,6 +12,7 @@ const MatchDayTable = ({
   handlePick,
   clickable = true,
   review = false,
+  masterPicks,
 }) => {
   const matchups = getGroupStageMatchups(matchDay);
 
@@ -56,6 +57,7 @@ const MatchDayTable = ({
             home={row.home}
             away={row.away}
             currentPick={row.result}
+            actualResult={masterPicks?.[row.matchId]?.result}
             clickable={clickable}
             needsAttention={row.needsAttention}
             onPick={handlePick}

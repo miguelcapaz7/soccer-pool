@@ -8,6 +8,7 @@ const useYourPicks = () => {
   const { user } = useAuth();
   const userId = user?.uid;
   const [picks, setPicks] = useState({});
+  const [masterPicks, setMasterPicks] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -46,7 +47,14 @@ const useYourPicks = () => {
         },
       );
 
-      return () => unsubscribe();
+      const masterUnsub = onSnapshot(doc(db, "master", "step1"), (snap) => {
+        setMasterPicks(snap.data()?.step1Picks ?? {});
+      });
+
+      return () => {
+        unsubscribe();
+        masterUnsub();
+      };
     } catch (err) {
       console.error("Unexpected error loading user pool:", err);
       setError("Failed to load user pool.");
@@ -54,7 +62,7 @@ const useYourPicks = () => {
     }
   }, [userId]);
 
-  return { picks, loading, error, steps, navigate };
+  return { picks, masterPicks, loading, error, steps, navigate };
 };
 
 export default useYourPicks;

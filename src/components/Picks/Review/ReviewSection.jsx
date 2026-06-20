@@ -5,7 +5,7 @@ import MatchDayTable from "../GroupStage/MatchDayTable.jsx";
 import Bracket from "../KnockoutStage/Bracket.jsx";
 import { convertTeamsToColumns } from "../../../utils/Picks/KnockoutStage/knockoutStageUtils.js";
 
-const ReviewSection = ({ title, items, onEdit, step }) => {
+const ReviewSection = ({ title, items, onEdit, step, masterPicks }) => {
   const hasData =
     items &&
     (Array.isArray(items)
@@ -42,6 +42,7 @@ const ReviewSection = ({ title, items, onEdit, step }) => {
                 groupStagePicks={items}
                 clickable={false}
                 review={true}
+                masterPicks={masterPicks}
               />
             </div>
           ))}
